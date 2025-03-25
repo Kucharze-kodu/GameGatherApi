@@ -1,6 +1,7 @@
 using GameGather.Application.Persistance;
 using GameGather.Domain.Aggregates.Users;
 using GameGather.Infrastructure.Persistance;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameGather.Infrastructure.Repositories;
 
@@ -13,13 +14,15 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var user = await _dbContext.Users.FirstOrDefaultAsync(r => r.Email == email);
+
+        return user;
     }
 
-    public Task<int> AddUserAsync(User user, CancellationToken cancellationToken = default)
+    public async Task AddUserAsync(User user, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await _dbContext.Users.AddAsync(user);
     }
 }

@@ -1,5 +1,8 @@
 using System.Reflection.Metadata;
+using GameGather.Application.Persistance;
+using GameGather.Infrastructure.Database;
 using GameGather.Infrastructure.Persistance;
+using GameGather.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,18 +19,9 @@ public static class DependencyInjection
             options.UseNpgsql(configuration.GetConnectionString("Default"),
                 r =>
                     r.MigrationsAssembly(typeof(DependencyInjection).Assembly.ToString())));
-        try
-        {
-            using (var conn = new NpgsqlConnection(configuration.GetConnectionString("Default")))
-            {
-                conn.Open();
-                Console.WriteLine("Połączenie z bazą danych działa!");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Błąd połączenia: {ex.Message}");
-        }
+
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }

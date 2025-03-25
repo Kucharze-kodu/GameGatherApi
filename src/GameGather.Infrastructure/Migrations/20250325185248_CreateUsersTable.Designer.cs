@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameGather.Infrastructure.Migrations
 {
     [DbContext(typeof(GameGatherDbContext))]
-    [Migration("20250325173920_CreateUsersTable")]
+    [Migration("20250325185248_CreateUsersTable")]
     partial class CreateUsersTable
     {
         /// <inheritdoc />
@@ -29,7 +29,10 @@ namespace GameGather.Infrastructure.Migrations
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("timestamp with time zone");
@@ -62,21 +65,6 @@ namespace GameGather.Infrastructure.Migrations
 
                     b.Property<DateTime?>("VerifiedOnUtc")
                         .HasColumnType("timestamp with time zone");
-
-                    b.ComplexProperty<Dictionary<string, object>>("Ban", "GameGather.Domain.Aggregates.Users.User.Ban#Ban", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<DateTime>("CreatedOnUtc")
-                                .HasColumnType("timestamp with time zone");
-
-                            b1.Property<DateTime?>("ExpiresOnUtc")
-                                .HasColumnType("timestamp with time zone");
-
-                            b1.Property<string>("Message")
-                                .IsRequired()
-                                .HasColumnType("text");
-                        });
 
                     b.ComplexProperty<Dictionary<string, object>>("Password", "GameGather.Domain.Aggregates.Users.User.Password#Password", b1 =>
                         {
@@ -120,6 +108,29 @@ namespace GameGather.Infrastructure.Migrations
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>
                 {
+                    b.OwnsOne("GameGather.Domain.Aggregates.Users.ValueObjects.Ban", "Ban", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("integer");
+
+                            b1.Property<DateTime>("CreatedOnUtc")
+                                .HasColumnType("timestamp with time zone");
+
+                            b1.Property<DateTime?>("ExpiresOnUtc")
+                                .HasColumnType("timestamp with time zone");
+
+                            b1.Property<string>("Message")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsOne("GameGather.Domain.Aggregates.Users.ValueObjects.ResetPasswordToken", "ResetPasswordToken", b1 =>
                         {
                             b1.Property<int>("UserId")
@@ -144,6 +155,8 @@ namespace GameGather.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
+
+                    b.Navigation("Ban");
 
                     b.Navigation("ResetPasswordToken");
                 });

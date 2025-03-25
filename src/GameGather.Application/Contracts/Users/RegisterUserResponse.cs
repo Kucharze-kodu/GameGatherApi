@@ -1,5 +1,5 @@
 namespace GameGather.Application.Contracts.Users;
 
 public record RegisterUserResponse(
-    int Id,
+    int? Id,
     string Message);

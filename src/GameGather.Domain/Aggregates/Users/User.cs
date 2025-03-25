@@ -17,7 +17,7 @@ public sealed class User : AggregateRoot<UserId>
     public DateTime LastModifiedOnUtc { get; private set; }
     public VerificationToken VerificationToken { get; private set; }
     public ResetPasswordToken? ResetPasswordToken { get; private set; }
-    public Ban Ban { get; private set; }
+    public Ban? Ban { get; private set; }
     public Role Role { get; private set; }
     
     private User(UserId id) : base(id)
@@ -52,7 +52,7 @@ public sealed class User : AggregateRoot<UserId>
     )
     {
         var user = new User(
-            UserId.Create(0),
+            default,
             firstName,
             lastName,
             email,

@@ -16,8 +16,10 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder
             .Property(r => r.Id)
-            .HasConversion(c => c.Value,
-                value => UserId.Create(value));
+            .HasConversion(
+                c => c.Value,
+                value => UserId.Create(value))
+            .ValueGeneratedOnAdd();
 
         // Firstname
         builder
@@ -52,7 +54,7 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
         
         // Ban
         builder
-            .ComplexProperty(r => r.Ban);
+            .OwnsOne(r => r.Ban);
         
         // Role
         builder
