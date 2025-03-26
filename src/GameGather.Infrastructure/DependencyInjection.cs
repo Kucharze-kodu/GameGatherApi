@@ -40,6 +40,8 @@ public static class DependencyInjection
 
         services.AddAuthorization();
 
+        services.AddHttpContextAccessor();
+
         
         return services;
     }
