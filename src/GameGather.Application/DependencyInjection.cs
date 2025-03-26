@@ -1,6 +1,7 @@
 using System.Reflection;
 using FluentValidation;
 using GameGather.Application.Common.Behavior;
+using GameGather.Application.Configurations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,9 @@ public static class DependencyInjection
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        services.ConfigureOptions<PasswordOptionsSetup>();
+        
         return services;
     }
 }

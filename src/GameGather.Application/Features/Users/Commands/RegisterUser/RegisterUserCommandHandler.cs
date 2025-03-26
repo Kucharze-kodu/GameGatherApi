@@ -2,6 +2,7 @@ using ErrorOr;
 using GameGather.Application.Common.Messaging;
 using GameGather.Application.Contracts.Users;
 using GameGather.Application.Persistance;
+using GameGather.Application.Utils;
 using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Common.Errors;
 
@@ -11,12 +12,16 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, R
 {
     private IUserRepository _userRepository;
     private IUnitOfWork _unitOfWork;
+    private IPasswordHasher _passwordHasher;
 
-    public RegisterUserCommandHandler(IUserRepository userRepository, 
-        IUnitOfWork unitOfWork)
+    public RegisterUserCommandHandler(
+        IUserRepository userRepository, 
+        IUnitOfWork unitOfWork,
+        IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<ErrorOr<RegisterUserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -28,11 +33,13 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, R
             return Errors.User.DuplicateEmail;
         }
 
+        var passwordHash = _passwordHasher.Hash(request.Password);
+        
         var user = User.Create(
             request.FirstName,
             request.LastName,
             request.Email,
-            request.Password,
+            passwordHash,
             request.Birthday);
 
         await _userRepository.AddUserAsync(user);

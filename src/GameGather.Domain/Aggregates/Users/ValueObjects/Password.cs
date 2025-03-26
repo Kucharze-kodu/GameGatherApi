@@ -28,6 +28,8 @@ public sealed class Password : ValueObject
         return this;
     }
     
+    public bool IsExpired(int days) => LastModifiedOnUtc.AddDays(days) < DateTime.UtcNow;
+    
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

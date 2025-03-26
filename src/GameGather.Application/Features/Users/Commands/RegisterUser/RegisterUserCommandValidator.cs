@@ -1,4 +1,6 @@
 using FluentValidation;
+using GameGather.Application.Configurations;
+using Microsoft.Extensions.Configuration;
 
 namespace GameGather.Application.Features.Users.Commands.RegisterUser;
 
