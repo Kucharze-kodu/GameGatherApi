@@ -9,6 +9,6 @@ public static class TestModule
         app.MapGet("/api/ping", async () =>
         {
             return Ok("pong");
-        });
+        }).RequireAuthorization();
     }
 }

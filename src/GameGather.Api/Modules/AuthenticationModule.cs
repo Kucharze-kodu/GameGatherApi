@@ -1,3 +1,4 @@
+using GameGather.Application.Features.Users.Commands.LoginUser;
 using GameGather.Application.Features.Users.Commands.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,17 @@ public static class AuthenticationModule
     {
         app.MapPost("/api/register", async (
             [FromBody] RegisterUserCommand command,
+            [FromServices] ISender sender) =>
+        {
+            var response = await sender.Send(command);
+
+            return response.Match(
+                result => Ok(result),
+                errors => Problem(errors));
+        });
+
+        app.MapPost("/api/login", async (
+            [FromBody] LoginUserCommand command,
             [FromServices] ISender sender) =>
         {
             var response = await sender.Send(command);
