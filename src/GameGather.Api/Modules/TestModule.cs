@@ -1,3 +1,5 @@
+using GameGather.Application.Utils.Email;
+using Microsoft.AspNetCore.Mvc;
 using static GameGather.Api.Common.HttpResultsExtensions;
 
 namespace GameGather.Api.Modules;
@@ -10,5 +12,14 @@ public static class TestModule
         {
             return Ok("pong");
         }).RequireAuthorization();
+
+        app.MapPost("/api/test-email", async (
+            [FromBody] EmailMessage emailMessage,
+            [FromServices] IEmailService emailService
+        ) =>
+        {
+            var response = await emailService.SendEmailAsync(emailMessage);
+            return Ok(response);
+        });
     }
 }

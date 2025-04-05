@@ -1,6 +1,7 @@
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Common.Interfaces;
 using GameGather.Domain.Common.Primitives;
+using Newtonsoft.Json;
 
 namespace GameGather.Domain.Aggregates.Users.ValueObjects;
 
@@ -11,6 +12,7 @@ public sealed class VerificationToken : ValueObject, IToken
     public DateTime ExpiresOnUtc { get; private set; }
     public TokenType Type { get; private set; }
 
+    [JsonConstructor]
     private VerificationToken()
     {
         Value = Guid.NewGuid();

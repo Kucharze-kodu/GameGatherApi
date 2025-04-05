@@ -2,6 +2,7 @@ using GameGather.Api.Modules;
 using GameGather.Application;
 using GameGather.Infrastructure;
 using GameGather.Infrastructure.Authentication;
+using GameGather.Infrastructure.Utils.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
@@ -65,6 +66,8 @@ var app = builder.Build();
     app.UseAuthentication();
 
     app.UseAuthorization();
+    
+    app.ApplyMigration();
 
     app.Run();
 }

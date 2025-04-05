@@ -1,4 +1,5 @@
 using GameGather.Domain.Common.Primitives;
+using Newtonsoft.Json;
 
 namespace GameGather.Domain.Aggregates.Users.ValueObjects;
 
@@ -8,6 +9,7 @@ public sealed class Password : ValueObject
     public DateTime? ExpiresOnUtc { get; private set; }
     public DateTime LastModifiedOnUtc { get; private set; }
 
+    [JsonConstructor]
     private Password(string value)
     {
         Value = value;

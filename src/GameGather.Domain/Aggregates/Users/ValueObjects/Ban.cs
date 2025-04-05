@@ -1,4 +1,5 @@
 using GameGather.Domain.Common.Primitives;
+using Newtonsoft.Json;
 
 namespace GameGather.Domain.Aggregates.Users.ValueObjects;
 
@@ -8,6 +9,7 @@ public sealed class Ban : ValueObject
     public DateTime? ExpiresOnUtc { get; private set; }
     public string Message { get; private set; }
 
+    [JsonConstructor]
     private Ban(string message, DateTime? expiresOnUtc)
     {
         CreatedOnUtc = DateTime.UtcNow;
