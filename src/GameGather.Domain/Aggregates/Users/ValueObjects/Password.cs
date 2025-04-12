@@ -6,7 +6,6 @@ namespace GameGather.Domain.Aggregates.Users.ValueObjects;
 public sealed class Password : ValueObject
 {
     public string Value { get; private set; }
-    public DateTime? ExpiresOnUtc { get; private set; }
     public DateTime LastModifiedOnUtc { get; private set; }
 
     [JsonConstructor]
@@ -20,12 +19,10 @@ public sealed class Password : ValueObject
 
     public Password Load(
         string value,
-        DateTime? expiresOnUtc,
         DateTime lastModifiedOnUtc
     )
     {
         Value = value;
-        ExpiresOnUtc = expiresOnUtc;
         LastModifiedOnUtc = lastModifiedOnUtc;
         return this;
     }
@@ -35,7 +32,6 @@ public sealed class Password : ValueObject
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
-        yield return ExpiresOnUtc;
         yield return LastModifiedOnUtc;
     }
 }
