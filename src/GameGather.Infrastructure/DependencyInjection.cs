@@ -26,7 +26,9 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtProvider, JwtProvider>();
-        
+
+        services.AddScoped<ISessionGameRepository, SessionGameRepository>();
+
         services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
