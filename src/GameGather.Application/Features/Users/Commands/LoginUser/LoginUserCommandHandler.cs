@@ -45,6 +45,12 @@ public sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, 
             return Errors.User.InvalidCredentials;
         }
         
+        // User is not verified
+        if (user.VerifiedOnUtc is null)
+        {
+            return Errors.User.NotVerified;
+        }
+        
         // Password expired
         if (user.Password.IsExpired(_passwordOptions.ExpiryInDays))
         {
