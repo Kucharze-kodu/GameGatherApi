@@ -1,6 +1,5 @@
 ﻿using GameGather.Domain.Aggregates.Comments.ValueObcjets;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
-using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Primitives;
 
@@ -18,7 +17,8 @@ namespace GameGather.Domain.Aggregates.Comments
         {
         }
 
-        private Comment(CommentId id,
+        private Comment(
+            CommentId id,
             UserId userId,
             SessionGameId sessionGameId,
             string text,
@@ -31,7 +31,36 @@ namespace GameGather.Domain.Aggregates.Comments
         }
 
 
+        public Comment Create(
+            UserId userId,
+            SessionGameId sessionGameId,
+            string text)
+        {
+            var comment = new Comment(
+                default,
+                userId,
+                sessionGameId,
+                text,
+                DateTime.Today
+                );
 
+            return comment;
+        }
 
+        public Comment Load(
+            CommentId id,
+            UserId userId,
+            SessionGameId sessionGameId,
+            string text,
+            DateTime dateComment)
+        {
+            Id = id;
+            UserId = userId;
+            SessionGameId = sessionGameId;
+            Text = text;
+            DateComment = dateComment;
+
+            return this;
+        }
     }
 }

@@ -2,7 +2,9 @@
 using GameGather.Domain.Aggregates.PostGames;
 using GameGather.Domain.Aggregates.SessionGameLists;
 using GameGather.Domain.Aggregates.SessionGames;
+using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users;
+using GameGather.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameGather.Infrastructure.Persistance;
@@ -15,7 +17,7 @@ public class GameGatherDbContext : DbContext
     }
     
     public DbSet<User> Users { get; set; }
-    
+
     public DbSet<SessionGame> SessionGames { get; set; }
     public DbSet<SessionGameList> SessionGameLists { get; set; }
     public DbSet<Comment> Comments { get; set; }
@@ -49,14 +51,17 @@ public class GameGatherDbContext : DbContext
             .HasKey(sgl => new { sgl.UserId, sgl.SessionGameId });
 
         modelBuilder.Entity<SessionGameList>()
-            .HasOne<User>() 
-            .WithMany()
-            .HasForeignKey(sgl => sgl.UserId);
+            .Property(sgl => sgl.UserId)
+            .HasConversion(
+                id => id.Value,
+                value => UserId.Create(value));
 
         modelBuilder.Entity<SessionGameList>()
-            .HasOne<SessionGame>()
-            .WithMany()
-            .HasForeignKey(sgl => sgl.SessionGameId);
+            .Property(sgl => sgl.SessionGameId)
+            .HasConversion(
+                id => id.Value,
+                value => SessionGameId.Create(value));
+
 
     }
 }

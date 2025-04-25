@@ -1,6 +1,5 @@
 ﻿using GameGather.Domain.Aggregates.PostGames.Enums;
 using GameGather.Domain.Aggregates.PostGames.ValueObcjets;
-using GameGather.Domain.Aggregates.SessionGames;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Primitives;
@@ -49,15 +48,17 @@ public sealed class PostGame : AggregateRoot<PostGameId>
     }
 
     public PostGame Load(
-        SessionGameId id,
-        string name,
+        PostGameId id,
         UserId gameMasterId,
-        string gameMasterName)
+        DateTime dayPost,
+        DateTime gameTime,
+        State state)
     {
         Id = id;
-        Name = name;
         GameMasterId = gameMasterId;
-        GameMasterName = gameMasterName;
+        DayPost = dayPost;
+        GameTime = gameTime;
+        State = state;
         return this;
     }
 }
