@@ -10,7 +10,7 @@ namespace GameGather.Domain.Aggregates.SessionGames;
 
 public sealed class SessionGame : AggregateRoot<SessionGameId>
 {
-    public string Name { get; private set; }
+    public string Name { get; set; }
     public UserId GameMasterId { get; private set; }
     public string GameMasterName { get; private set; }
 

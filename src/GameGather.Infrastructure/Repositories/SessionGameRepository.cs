@@ -1,6 +1,9 @@
 ﻿using GameGather.Application.Persistance;
+using GameGather.Domain.Aggregates.SessionGames;
+using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
+using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Infrastructure.Persistance;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace GameGather.Infrastructure.Repositories
 {
@@ -13,6 +16,54 @@ namespace GameGather.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task CreateSessionGame(SessionGame sessionGame, CancellationToken cancellationToken = default)
+        {
+            await _dbContext.SessionGames.AddAsync(sessionGame);
+        }
 
+
+        public async Task DeleteSessionGame(SessionGameId sessionGameId, UserId userId, CancellationToken cancellationToken = default)
+        {
+
+            var result = await _dbContext.SessionGames.FirstOrDefaultAsync(
+                                c => c.Id == sessionGameId && c.GameMasterId == userId);
+            if (result == null)
+            {
+                return;
+            }
+            _dbContext.SessionGames.Remove(result);
+
+        }
+
+        public async Task EditSessionGame(SessionGameId sessionGameId, string name, UserId userId, CancellationToken cancellationToken = default)
+        {
+            var result = await _dbContext.SessionGames.FirstOrDefaultAsync(
+                                c => c.Id == sessionGameId && c.GameMasterId == userId);
+            if (result == null)
+            {
+                return;
+            }
+            if (name == null)
+            {
+                return;
+            }
+
+            result.Name = name;
+
+        }
+
+        public async Task<IEnumerable<SessionGame>> GetAllSessionGame(CancellationToken cancellationToken = default)
+        {
+            var resultlist = await _dbContext.SessionGames.ToListAsync();
+
+            return resultlist;
+        }
+
+        public async Task<SessionGame?> GetSessionGame(SessionGameId sessionGameId, CancellationToken cancellationToken = default)
+        {
+            var result = await _dbContext.SessionGames.FirstOrDefaultAsync(c => c.Id == sessionGameId);
+
+            return result;
+        }
     }
 }
