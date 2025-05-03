@@ -21,5 +21,9 @@ public static partial class Errors
         public static Error NotVerified = Error.Unauthorized(
             code: "User.NotVerified",
             description: "User not verified");
+        
+        public static Error InvalidToken = Error.Conflict(
+            code: "User.InvalidToken",
+            description: $"The provided token is invalid or has expired");
     }
 }

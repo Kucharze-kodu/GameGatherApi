@@ -37,9 +37,16 @@ public sealed class VerificationToken : ValueObject, IToken
         return this;
     }
     
-    public bool Verify()
+    public bool Verify(Guid token)
     {
-        if (ExpiresOnUtc.CompareTo(DateTime.UtcNow) == 1)
+        // Check if the token is valid
+        if (Value != token)
+        {
+            return false;
+        }
+
+        // Check if the token is expired
+        if (ExpiresOnUtc.CompareTo(DateTime.UtcNow) != 1)
         {
             return false;
         }
@@ -53,5 +60,10 @@ public sealed class VerificationToken : ValueObject, IToken
         yield return CreatedOnUtc;
         yield return ExpiresOnUtc;
         yield return Type;
+    }
+
+    public bool Verify()
+    {
+        throw new NotImplementedException();
     }
 }

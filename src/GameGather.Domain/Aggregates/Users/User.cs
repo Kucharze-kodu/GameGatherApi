@@ -103,5 +103,18 @@ public sealed class User : AggregateRoot<UserId>
         return this;
     }
     
+    public bool Verify(Guid token)
+    {
+        if (!VerificationToken.Verify(token))
+        {
+            return false;
+        }
+        
+        VerifiedOnUtc = DateTime.UtcNow;
+        LastModifiedOnUtc = DateTime.UtcNow;
+        VerificationToken = null;
+        return true;
+    }
+    
     
 }

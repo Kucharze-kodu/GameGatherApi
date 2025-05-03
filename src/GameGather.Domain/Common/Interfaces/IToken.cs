@@ -4,5 +4,5 @@ namespace GameGather.Domain.Common.Interfaces;
 
 public interface IToken
 {
-    bool Verify();
+    bool Verify(Guid token);
 }
