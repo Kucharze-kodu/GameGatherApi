@@ -42,19 +42,44 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
         
         // Password
         builder
-            .ComplexProperty(r => r.Password);
+            .OwnsOne(r => r.Password, password =>
+            {
+                password.ToTable("Passwords");
+                password.Property(x => x.Value).HasColumnName("Value");
+                password.Property(x => x.LastModifiedOnUtc).HasColumnName("LastModifiedOnUtc");
+            });
         
         // VerificationToken
         builder
-            .ComplexProperty(r => r.VerificationToken);
+            .OwnsOne(r => r.VerificationToken, token =>
+            {
+                token.ToTable("VerificationTokens");
+                token.Property(x => x.Value).HasColumnName("Value");
+                token.Property(x => x.CreatedOnUtc).HasColumnName("CreatedOnUtc");
+                token.Property(x => x.ExpiresOnUtc).HasColumnName("ExpiresOnUtc");
+                token.Property(x => x.Type).HasColumnName("Type");
+            });
         
         // ResetPasswordToken
         builder
-            .OwnsOne(r => r.ResetPasswordToken);
+            .OwnsOne(r => r.ResetPasswordToken, token =>
+            {
+                token.ToTable("ResetPasswordTokens");
+                token.Property(x => x.Value).HasColumnName("Value");
+                token.Property(x => x.CreatedOnUtc).HasColumnName("CreatedOnUtc");
+                token.Property(x => x.ExpiresOnUtc).HasColumnName("ExpiresOnUtc");
+                token.Property(x => x.Type).HasColumnName("Type");
+            });
         
         // Ban
         builder
-            .OwnsOne(r => r.Ban);
+            .OwnsOne(r => r.Ban, ban =>
+            {
+                ban.ToTable("Bans");
+                ban.Property(x => x.CreatedOnUtc).HasColumnName("CreatedOnUtc");
+                ban.Property(x => x.ExpiresOnUtc).HasColumnName("ExpiresOnUtc");
+                ban.Property(x => x.Message).HasColumnName("Message");
+            });
         
         // Role
         builder
