@@ -13,5 +13,7 @@ namespace GameGather.Application.Persistance
 
         Task<SessionGame?> GetSessionGame(SessionGameId sessionGameId, CancellationToken cancellationToken = default);
         Task<IEnumerable<SessionGame>> GetAllSessionGame(CancellationToken cancellationToken = default);
+
+        Task<bool> IsThisGameMaster(UserId userId, SessionGameId sessionGameId, CancellationToken cancellationToken = default);
     }
 }

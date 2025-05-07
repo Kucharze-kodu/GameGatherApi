@@ -57,15 +57,16 @@ var app = builder.Build();
     app.UseSwagger(); 
     app.UseSwaggerUI();
 
+    // ENDPOINTS
     app.AddTestEndpoints();
     app.AddAuthenticationEndpoints();
+    app.AddPlayerManagerEndpoints();
+    app.AddSessionGameModuleEndpoints();
+    // END ENDPOINTS
 
     app.UseHttpsRedirection();
-
     app.UseAuthentication();
-
     app.UseAuthorization();
-
     app.Run();
 }
 

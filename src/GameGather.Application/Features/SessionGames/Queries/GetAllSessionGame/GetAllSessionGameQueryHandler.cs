@@ -1,4 +1,4 @@
-﻿using ErrorOr;
+﻿/*using ErrorOr;
 using GameGather.Application.Common.Messaging;
 using GameGather.Application.Features.SessionGames.Queries.DTOs;
 using GameGather.Application.Persistance;
@@ -36,3 +36,4 @@ namespace GameGather.Application.Features.SessionGames.Queries.GetAllSessionGame
         }
     }
 }
+*/

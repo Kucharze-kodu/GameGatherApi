@@ -5,6 +5,7 @@ using GameGather.Infrastructure.Authentication;
 using GameGather.Infrastructure.Database;
 using GameGather.Infrastructure.Persistance;
 using GameGather.Infrastructure.Repositories;
+using GameGather.Infrastructure.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,13 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtProvider, JwtProvider>();
 
+        services.AddScoped<IUserContext, UserContext>();
+
         services.AddScoped<ISessionGameRepository, SessionGameRepository>();
+        services.AddScoped<IPlayerManagerRepository, PlayerManagerRepository>();
+
+
+
 
         services.AddAuthentication(x =>
             {

@@ -23,4 +23,9 @@ public sealed class UserContext : IUserContext
         .HttpContext?
         .User
         .GetUserId();
+
+    public string? UserName => _httpContextAccessor
+        .HttpContext?
+        .User
+        .GetUserName();
 }

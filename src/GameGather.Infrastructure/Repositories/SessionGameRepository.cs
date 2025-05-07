@@ -65,5 +65,18 @@ namespace GameGather.Infrastructure.Repositories
 
             return result;
         }
+
+
+        public async Task<bool> IsThisGameMaster(UserId userId, SessionGameId sessionGameId, CancellationToken cancellationToken = default)
+        {
+            var result = await _dbContext.SessionGames.FirstOrDefaultAsync(c => c.GameMasterId == userId && c.Id == sessionGameId);
+
+            if( result is not null)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

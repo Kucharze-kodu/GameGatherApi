@@ -34,12 +34,13 @@ namespace GameGather.Application.Features.SessionGames.Commands.CreateSessionGam
             }
 
             var id = _userContext.UserId;
+            var nameUser = _userContext.UserName;
             UserId userId = UserId.Create(Convert.ToInt32(id));
 
             var session = SessionGame.Create(
                 request.Name,
                 userId,
-                "Name"                
+                nameUser
                 );
 
             await _sessionGameRepository.CreateSessionGame(session);
