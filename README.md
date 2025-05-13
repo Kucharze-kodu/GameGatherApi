@@ -31,7 +31,7 @@ GameGather is a web application that helps users manage their board game collect
 - CQRS (Command Query Responsibility Segregation)
 - Repository Pattern
 - Unit of Work Pattern
-- Dependency Injection
+- Dependency Injection 
 - MediatR 
 
 
