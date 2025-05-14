@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Primitives;
@@ -29,6 +30,7 @@ public sealed class User : AggregateRoot<UserId>
     {
     }
 
+    [JsonConstructor]
     private User(
         UserId id,
         string firstName,
@@ -63,6 +65,12 @@ public sealed class User : AggregateRoot<UserId>
             email,
             password,
             birthday);
+        
+        user.RaiseDomainEvent(new UserRegistered(
+            firstName,
+            lastName,
+            email,
+            user.VerificationToken.Value));
 
         return user;
     }

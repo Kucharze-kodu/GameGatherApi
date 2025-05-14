@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace GameGather.Infrastructure.Authentication;
 
-public class JwtOptionsSetup : IConfigureOptions<JwtOptions>
+public sealed class JwtOptionsSetup : IConfigureOptions<JwtOptions>
 {
     private const string SectionName = "Jwt";
     private readonly IConfiguration _configuration;

@@ -6,4 +6,5 @@ public record LoginUserResponse(
     string Lastname,
     string Email,
     string Token,
-    DateTime TokenExpiresOnUtc);
+    DateTime TokenExpiresOnUtc,
+    bool PasswordExpired = false);

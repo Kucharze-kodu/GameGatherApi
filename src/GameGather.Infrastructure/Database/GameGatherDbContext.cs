@@ -5,6 +5,7 @@ using GameGather.Domain.Aggregates.SessionGames;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
+using GameGather.Infrastructure.Utils.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameGather.Infrastructure.Persistance;
@@ -17,6 +18,7 @@ public class GameGatherDbContext : DbContext
     }
     
     public DbSet<User> Users { get; set; }
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
     public DbSet<SessionGame> SessionGames { get; set; }
     public DbSet<SessionGameList> SessionGameLists { get; set; }

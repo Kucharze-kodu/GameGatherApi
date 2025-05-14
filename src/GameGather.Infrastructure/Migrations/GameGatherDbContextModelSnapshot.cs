@@ -204,6 +204,7 @@ namespace GameGather.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+
             modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
                 {
                     b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", null)
@@ -235,6 +236,7 @@ namespace GameGather.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
                 });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>
