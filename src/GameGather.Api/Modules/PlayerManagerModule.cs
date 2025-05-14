@@ -21,7 +21,8 @@ namespace GameGather.Api.Modules
                 return response.Match(
                     result => Ok(result),
                     errors => Problem(errors));
-            });
+            }).RequireAuthorization()
+            .WithTags("SessionForPlayer"); ;
 
             app.MapPost("/api/Player/RemovePlayerFromSession", async (
                 [FromBody] RemovePlayerManagerCommand command,
@@ -32,7 +33,8 @@ namespace GameGather.Api.Modules
                 return response.Match(
                     result => Ok(result),
                     errors => Problem(errors));
-            });
+            }).RequireAuthorization()
+             .WithTags("SessionForPlayer"); ;
         }
     }
 }

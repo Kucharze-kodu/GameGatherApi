@@ -35,7 +35,7 @@ namespace GameGather.Infrastructure.Repositories
 
         }
 
-        public async Task EditSessionGame(SessionGameId sessionGameId, string name, UserId userId, CancellationToken cancellationToken = default)
+        public async Task EditSessionGame(SessionGameId sessionGameId, string name, string description, UserId userId, CancellationToken cancellationToken = default)
         {
             var result = await _dbContext.SessionGames.FirstOrDefaultAsync(
                                 c => c.Id == sessionGameId && c.GameMasterId == userId);
@@ -43,13 +43,14 @@ namespace GameGather.Infrastructure.Repositories
             {
                 return;
             }
-            if (name == null)
+            if (name is not null)
             {
-                return;
+                result.Name = name;
             }
-
-            result.Name = name;
-
+            if (description is not null)
+            {
+                result.Description = description;
+            }
         }
 
         public async Task<IEnumerable<SessionGame>> GetAllSessionGame(CancellationToken cancellationToken = default)

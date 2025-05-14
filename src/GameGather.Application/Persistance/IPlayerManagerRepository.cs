@@ -10,7 +10,7 @@ namespace GameGather.Application.Persistance
         Task AddPlayerToSession(SessionGameList sessionGame, CancellationToken cancellationToken = default);
         Task RemovePlayerToSession(SessionGameList sessionGame, CancellationToken cancellationToken = default);
 
-
+        Task<IEnumerable<string>?> GetSessionPlayers(SessionGameId sessionGameId, CancellationToken cancellationToken = default);
 
     }
 }

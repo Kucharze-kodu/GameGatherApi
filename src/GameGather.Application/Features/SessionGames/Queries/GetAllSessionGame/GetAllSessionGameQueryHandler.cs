@@ -1,4 +1,4 @@
-﻿/*using ErrorOr;
+﻿using ErrorOr;
 using GameGather.Application.Common.Messaging;
 using GameGather.Application.Features.SessionGames.Queries.DTOs;
 using GameGather.Application.Persistance;
@@ -27,8 +27,9 @@ namespace GameGather.Application.Features.SessionGames.Queries.GetAllSessionGame
 
             List<GetAllSessionGameDto> listOfSessionGame = result.Select(x => new GetAllSessionGameDto
             {
-                Id = Convert.ToInt32(x.Id),
+                Id = Convert.ToInt32(x.Id.Value),
                 Name = x.Name,
+                Description = x.Description,
                 GameMasterName = x.GameMasterName,
             }).ToList();
 
@@ -36,4 +37,3 @@ namespace GameGather.Application.Features.SessionGames.Queries.GetAllSessionGame
         }
     }
 }
-*/

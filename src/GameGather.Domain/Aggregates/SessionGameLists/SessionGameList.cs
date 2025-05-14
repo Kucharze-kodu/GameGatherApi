@@ -1,4 +1,5 @@
 ﻿using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
+using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 
 
@@ -8,8 +9,7 @@ public sealed class SessionGameList
 {
     public UserId UserId { get; private set; }
     public SessionGameId SessionGameId { get; private set; }
-
-
+    public User User { get; private set; } = null;
 
     public SessionGameList() { }
 

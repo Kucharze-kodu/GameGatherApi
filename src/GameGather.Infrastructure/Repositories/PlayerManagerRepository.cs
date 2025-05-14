@@ -3,7 +3,6 @@
 using GameGather.Application.Persistance;
 using GameGather.Domain.Aggregates.SessionGameLists;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
-using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +19,25 @@ namespace GameGather.Infrastructure.Repositories
 
         public async Task AddPlayerToSession(SessionGameList sessionGame, CancellationToken cancellationToken = default)
         {
-            await _dbContext.SessionGameLists.AddAsync(sessionGame);
+            var result = await _dbContext.SessionGameLists
+                .FirstOrDefaultAsync(x => x.SessionGameId == sessionGame.SessionGameId && x.UserId == sessionGame.UserId, cancellationToken);
 
+            if (result is not null)
+            {
+                return;
+            }
+            await _dbContext.SessionGameLists.AddAsync(sessionGame);
         }
 
+        public async Task<IEnumerable<string>?> GetSessionPlayers(SessionGameId sessionGameId, CancellationToken cancellationToken = default)
+        {
+            var result = await _dbContext.SessionGameLists
+                .Where(x=>x.SessionGameId == sessionGameId)
+                .Select(x => x.User.FirstName + "" + x.User.LastName) 
+                .ToListAsync(cancellationToken);
+
+            return result;
+        }
 
         public async Task RemovePlayerToSession(SessionGameList sessionGame, CancellationToken cancellationToken = default)
         {

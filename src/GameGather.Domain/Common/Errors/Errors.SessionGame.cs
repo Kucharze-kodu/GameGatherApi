@@ -10,6 +10,10 @@ namespace GameGather.Domain.Common.Errors
             public static Error IsNotAuthorized = Error.Conflict(
             code: "SessionGame.NotAuthorized",
             description: "Login to create sessio game");
+
+            public static Error IsWrongData = Error.Conflict(
+            code: "SessionGame.IsWrongData",
+            description: "We dont have data");
         }
     }
 }

@@ -11,6 +11,7 @@ namespace GameGather.Domain.Aggregates.SessionGames;
 public sealed class SessionGame : AggregateRoot<SessionGameId>
 {
     public string Name { get; set; }
+    public string Description { get; set; }
     public UserId GameMasterId { get; private set; }
     public string GameMasterName { get; private set; }
 
@@ -29,20 +30,23 @@ public sealed class SessionGame : AggregateRoot<SessionGameId>
     }
 
     private SessionGame(SessionGameId id, 
-        string name, 
+        string name,
+        string description,
         UserId gameMasterId, 
         string gameMasterName): base(id)
     {
         Name = name;
+        Description = description;
         GameMasterId = gameMasterId;
         GameMasterName = gameMasterName;
     }
 
-    public static SessionGame Create(string name, UserId gameMasterId, string gameMasterName)
+    public static SessionGame Create(string name,string description, UserId gameMasterId, string gameMasterName)
     {
         var sessionGame = new SessionGame(
             default,
             name,
+            description,
             gameMasterId,
             gameMasterName);
 
@@ -52,11 +56,13 @@ public sealed class SessionGame : AggregateRoot<SessionGameId>
     public SessionGame Load(
         SessionGameId id,
         string name,
+        string description,
         UserId gameMasterId,
         string gameMasterName)
     {
         Id = id;
         Name = name;
+        Description= description;
         GameMasterId = gameMasterId;
         GameMasterName = gameMasterName;
         return this;

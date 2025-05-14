@@ -35,7 +35,7 @@ namespace GameGather.Application.Features.PlayerManagers.Commands.RemovePlayerMa
         public async Task<ErrorOr<PlayerManagerResponse>> Handle(RemovePlayerManagerCommand request, CancellationToken cancellationToken)
         {
             var isVerify = _userContext.IsAuthenticated;
-            if (isVerify == true)
+            if (isVerify == false)
             {
                 return Errors.SessionGameList.IsNotAuthorized;
             }
@@ -61,7 +61,7 @@ namespace GameGather.Application.Features.PlayerManagers.Commands.RemovePlayerMa
             await _playerManagerRepository.RemovePlayerToSession(gameSession);
             await _unitOfWork.SaveChangesAsync();
 
-            return new PlayerManagerResponse("usunięto gracza");
+            return new PlayerManagerResponse("remove player");
         }
     }
 }

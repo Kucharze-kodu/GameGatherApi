@@ -28,7 +28,7 @@ namespace GameGather.Application.Features.PlayerManagers.Commands.AddPlayerManag
         public async Task<ErrorOr<PlayerManagerResponse>> Handle(AddPlayerManagerCommand request, CancellationToken cancellationToken)
         {
             var isVerify = _userContext.IsAuthenticated;
-            if (isVerify == true)
+            if (isVerify == false)
             {
                 return Errors.SessionGameList.IsNotAuthorized;
             }
@@ -45,7 +45,7 @@ namespace GameGather.Application.Features.PlayerManagers.Commands.AddPlayerManag
             await _playerManagerRepository.AddPlayerToSession(gameSession);
             await _unitOfWork.SaveChangesAsync();
 
-            return new PlayerManagerResponse("dodano gracza");
+            return new PlayerManagerResponse("add player");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GameGather.Domain.Aggregates.SessionGames;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
+using System.Runtime.CompilerServices;
 
 namespace GameGather.Application.Persistance
 {
@@ -8,7 +9,7 @@ namespace GameGather.Application.Persistance
     {
         Task CreateSessionGame(SessionGame sessionGame, CancellationToken cancellationToken = default);
         Task DeleteSessionGame(SessionGameId sessionGameId, UserId userId, CancellationToken cancellationToken = default);
-        Task EditSessionGame(SessionGameId sessionGameId, string name, UserId userId, CancellationToken cancellationToken = default);
+        Task EditSessionGame(SessionGameId sessionGameId, string name,string description, UserId userId, CancellationToken cancellationToken = default);
 
 
         Task<SessionGame?> GetSessionGame(SessionGameId sessionGameId, CancellationToken cancellationToken = default);

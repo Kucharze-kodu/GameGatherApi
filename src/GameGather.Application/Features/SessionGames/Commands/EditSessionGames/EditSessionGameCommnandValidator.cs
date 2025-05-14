@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
+
 
 namespace GameGather.Application.Features.SessionGames.Commands.EditSessionGames
 {
-    internal class EditSessionGameCommnandValidator
+    public class EditSessionGameCommnandValidator : AbstractValidator<EditSessionGameCommnand>
     {
+        public EditSessionGameCommnandValidator() 
+        {
+
+            RuleFor(r => r)
+             .Must(r => !string.IsNullOrWhiteSpace(r.Name) || !string.IsNullOrWhiteSpace(r.Description))
+             .WithMessage("new name or description is required");
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace GameGather.Application.Features.SessionGames.Commands.DeleteSessionGam
         {
 
             var isVerify = _userContext.IsAuthenticated;
-            if (isVerify == true)
+            if (isVerify == false)
             {
                 return Errors.SessionGame.IsNotAuthorized;
             }

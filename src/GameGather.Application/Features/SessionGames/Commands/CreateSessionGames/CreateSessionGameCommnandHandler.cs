@@ -28,7 +28,7 @@ namespace GameGather.Application.Features.SessionGames.Commands.CreateSessionGam
         public async Task<ErrorOr<SessionGameResponse>> Handle(CreateSessionGameCommnand request, CancellationToken cancellationToken)
         {
             var isVerify = _userContext.IsAuthenticated;
-            if(isVerify == true)
+            if(isVerify == false)
             {
                 return Errors.SessionGame.IsNotAuthorized;
             }
@@ -39,6 +39,7 @@ namespace GameGather.Application.Features.SessionGames.Commands.CreateSessionGam
 
             var session = SessionGame.Create(
                 request.Name,
+                request.Description,
                 userId,
                 nameUser
                 );
@@ -46,7 +47,7 @@ namespace GameGather.Application.Features.SessionGames.Commands.CreateSessionGam
             await _sessionGameRepository.CreateSessionGame(session);
             await _unitOfWork.SaveChangesAsync();
 
-            return new SessionGameResponse("utworzono sesje");
+            return new SessionGameResponse("create session game");
         }
     }
 }
