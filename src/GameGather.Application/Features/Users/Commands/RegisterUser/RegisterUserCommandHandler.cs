@@ -40,14 +40,14 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, R
             request.LastName,
             request.Email,
             passwordHash,
-            request.Birthday);
+            request.Birthday,
+            request.VerifyEmailUrl);
 
         await _userRepository.AddUserAsync(user, cancellationToken);
         
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RegisterUserResponse(
-            user.Id.Value,
             "Pomyslnie zarejestrowano");
 
     }

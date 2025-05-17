@@ -18,7 +18,7 @@ public class VerifyUserCommandHandler : ICommandHandler<VerifyUserCommand, strin
 
     public async Task<ErrorOr<string>> Handle(VerifyUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
         
         // User not found
         if (user is null)
@@ -26,8 +26,10 @@ public class VerifyUserCommandHandler : ICommandHandler<VerifyUserCommand, strin
             return Errors.User.NotFound;
         }
         
-        // Invalid token or token expired
-        if (!user.Verify(request.Token))
+        var verificationToken = Guid.Parse(request.VerificationCode);
+        
+        // Invalid token or token expired or already used
+        if (!user.Verify(verificationToken))
         {
             return Errors.User.InvalidToken;
         }

@@ -1,5 +1,6 @@
 using GameGather.Application.Features.Users.Commands.LoginUser;
 using GameGather.Application.Features.Users.Commands.RegisterUser;
+using GameGather.Application.Features.Users.Commands.ResendVerificationToken;
 using GameGather.Application.Features.Users.Commands.VerifyUser;
 using MediatR;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -35,15 +36,21 @@ public static class AuthenticationModule
                 errors => Problem(errors));
         });
         
-        app.MapPost("/api/verify", async (
-            [FromQuery] int userId,
-            [FromQuery] Guid token,
+        app.MapPost("/api/verify-email", async (
+            [FromBody] VerifyUserCommand command,
             [FromServices] ISender sender) =>
         {
-            var command = new VerifyUserCommand(
-                userId,
-                token);
-            
+            var response = await sender.Send(command);
+
+            return response.Match(
+                result => Ok(result),
+                errors => Problem(errors));
+        });
+
+        app.MapPost("/api/resend-verification-token", async(
+            [FromBody] ResendVerificationTokenCommand command,
+            [FromServices] ISender sender) =>
+        {
             var response = await sender.Send(command);
 
             return response.Match(

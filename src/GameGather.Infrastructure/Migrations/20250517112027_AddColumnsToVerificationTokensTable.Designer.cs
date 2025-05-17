@@ -3,6 +3,7 @@ using System;
 using GameGather.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameGather.Infrastructure.Migrations
 {
     [DbContext(typeof(GameGatherDbContext))]
-    partial class GameGatherDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250517112027_AddColumnsToVerificationTokensTable")]
+    partial class AddColumnsToVerificationTokensTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,15 +166,12 @@ namespace GameGather.Infrastructure.Migrations
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("ExpiresOnUtc");
 
-                            b1.Property<DateTime>("LastSendOnUtc")
+                            b1.Property<DateTime?>("LastSendOnUtc")
                                 .HasColumnType("timestamp with time zone");
 
                             b1.Property<int>("Type")
                                 .HasColumnType("integer")
                                 .HasColumnName("Type");
-
-                            b1.Property<DateTime?>("UsedOnUtc")
-                                .HasColumnType("timestamp with time zone");
 
                             b1.Property<Guid>("Value")
                                 .HasColumnType("uuid")
@@ -205,8 +205,8 @@ namespace GameGather.Infrastructure.Migrations
                                 .HasColumnType("integer")
                                 .HasColumnName("Type");
 
-                            b1.Property<DateTime?>("UsedOnUtc")
-                                .HasColumnType("timestamp with time zone");
+                            b1.Property<DateOnly?>("UsedOnUtc")
+                                .HasColumnType("date");
 
                             b1.Property<Guid>("Value")
                                 .HasColumnType("uuid")

@@ -24,6 +24,6 @@ public static partial class Errors
         
         public static Error InvalidToken = Error.Conflict(
             code: "User.InvalidToken",
-            description: $"The provided token is invalid or has expired");
+            description: $"The provided token is invalid or has expired or is already used");
     }
 }

@@ -19,8 +19,35 @@ public sealed class EmailService : IEmailService
             _emailOptions.ApiKeyPrivate
         );
     }
+    
+    public async Task<string> SendEmailWithVerificationTokenAsync(
+        string email,
+        string firstName,
+        string verificationToken,
+        string verifyEmailUrl,
+        CancellationToken cancellationToken = default)
+    {
+        var message = new EmailMessage(
+            "Verify your email",
+            "Welcome to GameGather",
+            $$"""
+                <h1>Welcome to GameGather</h1>
+                <p>Hi {{firstName}},</p>
+                <p>Thank you for registering on GameGather. 
+                Please verify your email address by pass this code: 
+                {{verificationToken}}</p>
+                Or click the button below to verify your email address:</p>
+                <a href="{{verifyEmailUrl}}?email={{email}}&verificationCode={{verificationToken}}" 
+                   style="display: inline-block; background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                    Verify Email
+                </a>
+                """,
+            email);
+        
+        return await SendEmailAsync(message);
+    }
 
-    public async Task<string> SendEmailAsync(EmailMessage emailMessage)
+    public async Task<string> SendEmailAsync(EmailMessage emailMessage, CancellationToken cancellationToken = default)
     {
         var request = new MailjetRequest
         {

@@ -10,6 +10,8 @@ public sealed class VerificationToken : ValueObject, IToken
     public Guid Value { get; private set; }
     public DateTime CreatedOnUtc { get; private set; }
     public DateTime ExpiresOnUtc { get; private set; }
+    public DateTime LastSendOnUtc { get; private set; }
+    public DateTime? UsedOnUtc { get; private set; }
     public TokenType Type { get; private set; }
 
     [JsonConstructor]
@@ -18,6 +20,7 @@ public sealed class VerificationToken : ValueObject, IToken
         Value = Guid.NewGuid();
         CreatedOnUtc = DateTime.UtcNow;
         ExpiresOnUtc = DateTime.UtcNow.AddDays(1);
+        LastSendOnUtc = DateTime.UtcNow;
         Type = TokenType.VerificationToken;
     }
 
@@ -27,12 +30,16 @@ public sealed class VerificationToken : ValueObject, IToken
         Guid value,
         DateTime createdOnUtc,
         DateTime expiresOnUtc,
+        DateTime lastSendOnUtc,
+        DateTime? usedOnUtc,
         TokenType type
     )
     {
         Value = value;
         CreatedOnUtc = createdOnUtc;
         ExpiresOnUtc = expiresOnUtc;
+        LastSendOnUtc = lastSendOnUtc;
+        UsedOnUtc = usedOnUtc;
         Type = type;
         return this;
     }
@@ -51,19 +58,48 @@ public sealed class VerificationToken : ValueObject, IToken
             return false;
         }
 
+        UsedOnUtc = DateTime.UtcNow;
         return true;
     }
+    
+    public TokenStatus CheckStatus()
+    {
+        // Check if the token was already sent
+        if (LastSendOnUtc.AddMinutes(5).CompareTo(DateTime.UtcNow) != -1)
+        {
+            return TokenStatus.TokenAlreadySent;
+        }
+        
+        // Check if the token is expired
+        if (ExpiresOnUtc.CompareTo(DateTime.UtcNow) != 1)
+        {
+            return TokenStatus.TokenExpired;
+        }
+        
+        // Check if the token was already used
+        if (UsedOnUtc is not null)
+        {
+            return TokenStatus.TokenUsed;
+        }
+
+        return TokenStatus.TokenReadyToResend;
+    }
+    
+    public TimeOnly GetTimeToResendToken()
+    {
+        var timeToResend = LastSendOnUtc.AddMinutes(5);
+        return TimeOnly.FromDateTime(timeToResend);
+    }
+
+    public void UpdateLastSendOnUtc() => LastSendOnUtc = DateTime.UtcNow;
     
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
         yield return CreatedOnUtc;
         yield return ExpiresOnUtc;
+        yield return LastSendOnUtc;
+        yield return UsedOnUtc;
         yield return Type;
-    }
-
-    public bool Verify()
-    {
-        throw new NotImplementedException();
     }
 }

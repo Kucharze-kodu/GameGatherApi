@@ -1,11 +1,9 @@
-using GameGather.Domain.Aggregates.Users;
-using GameGather.Domain.Common.Primitives;
+﻿using GameGather.Domain.Common.Primitives;
 
 namespace GameGather.Domain.DomainEvents;
 
-public sealed record UserRegistered(
+public record VerificationTokenRefreshed(
     string FirstName,
-    string LastName,
     string Email,
     Guid VerificationToken,
     string VerifyEmailUrl) : IDomainEvent;

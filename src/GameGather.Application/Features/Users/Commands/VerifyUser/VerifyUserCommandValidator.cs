@@ -6,14 +6,16 @@ public class VerifyUserCommandValidator : AbstractValidator<VerifyUserCommand>
 {
     public VerifyUserCommandValidator()
     {
-        RuleFor(r => r.Id)
+        RuleFor(r => r.Email)
             .NotEmpty()
-            .WithMessage("User ID is required");
+            .WithMessage("User email is required")
+            .EmailAddress()
+            .WithMessage("User email is not valid");
 
-        RuleFor(r => r.Token)
+        RuleFor(r => r.VerificationCode)
             .NotEmpty()
-            .WithMessage("Token is required")
+            .WithMessage("Verification code is required")
             .Must(x => x.ToString().Length == 36)
-            .WithMessage("Token must be 36 characters long");
+            .WithMessage("Verification code must be 36 characters long");
     }
 }
