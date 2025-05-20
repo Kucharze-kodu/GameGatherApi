@@ -2,6 +2,7 @@ using System.Reflection;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.UnitTests.TestUtils.Constants;
+using Constants = GameGather.Domain.UnitTests.TestUtils.Constants.Users.Constants;
 
 namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
 
@@ -43,23 +44,34 @@ public class VerificationTokenBuilder
         var type = typeof(VerificationToken);
         var instance = Activator.CreateInstance(type, nonPublic: true);
 
-        type.GetField("<Value>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(instance, _value);
+        type.GetField(
+                "<Value>k__BackingField",
+                BindingFlags.Instance | BindingFlags.NonPublic)?
+            .SetValue(instance, _value);
 
-        type.GetField("<CreatedOnUtc>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(instance, _createdOnUtc);
+        type.GetField(
+                "<CreatedOnUtc>k__BackingField",
+                BindingFlags.Instance | BindingFlags.NonPublic)?
+            .SetValue(instance, _createdOnUtc);
 
-        type.GetField("<ExpiresOnUtc>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(instance, _expiresOnUtc);
+        type.GetField(
+                "<ExpiresOnUtc>k__BackingField",
+                BindingFlags.Instance | BindingFlags.NonPublic)?
+            .SetValue(instance, _expiresOnUtc);
 
-        type.GetField("<LastSendOnUtc>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(instance, _lastSendOnUtc);
+        type.GetField(
+                "<LastSendOnUtc>k__BackingField",
+                BindingFlags.Instance | BindingFlags.NonPublic)?
+            .SetValue(instance, _lastSendOnUtc);
 
-        type.GetField("<UsedOnUtc>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(instance, _usedOnUtc);
+        type.GetField(
+                "<UsedOnUtc>k__BackingField",
+                BindingFlags.Instance | BindingFlags.NonPublic)?
+            .SetValue(instance, _usedOnUtc);
 
-        type.GetField("<Type>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(instance, _type);
+        type.GetField("<Type>k__BackingField",
+                BindingFlags.Instance | BindingFlags.NonPublic)?
+            .SetValue(instance, _type);
 
         return (VerificationToken)instance!;
     }
