@@ -40,7 +40,7 @@ public class ResendVerificationTokenCommandHandler : ICommandHandler<ResendVerif
         if (user.VerificationToken.CheckStatus() is TokenStatus.TokenAlreadySent)
         {
             return new ResendVerificationTokenResponse(
-                "Token already sent",
+                TokenStatus.TokenNotReadyToResend,
                 user.VerificationToken.GetTimeToResendToken());
         }
         
@@ -59,38 +59,19 @@ public class ResendVerificationTokenCommandHandler : ICommandHandler<ResendVerif
         // Token ready to resend
         if (user.VerificationToken.CheckStatus() is TokenStatus.TokenReadyToResend)
         {
-            await ResendVerificationToken(user, request.VerifyEmailUrl);
+            await _emailService.SendEmailWithVerificationTokenAsync(
+                user.Email,
+                user.FirstName,
+                user.VerificationToken.Value.ToString(),
+                request.VerifyEmailUrl,
+                cancellationToken);
             user.VerificationToken.UpdateLastSendOnUtc();
         }
         
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         
         return new ResendVerificationTokenResponse(
-            "Token sent",
+            TokenStatus.TokenAlreadySent,
             user.VerificationToken.GetTimeToResendToken());
-        
-        
-    }
-    
-    private async Task ResendVerificationToken(User user, string verifyEmailUrl)
-    {
-        var message = new EmailMessage(
-            "Verify your email",
-            "Welcome to GameGather",
-            $$"""
-              <h1>Welcome to GameGather</h1>
-              <p>Hi {{user.FirstName}},</p>
-              <p>Thank you for registering on GameGather.
-              Please verify your email address by pass this code:
-              {{user.VerificationToken.Value.ToString()}}</p>
-              Or click the button below to verify your email address:</p>
-              <a href="{{verifyEmailUrl}}?email={{user.Email}}&verificationCode={{user.VerificationToken.Value.ToString()}}"
-                 style="display: inline-block; background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-                  Verify Email
-              </a>
-              """,
-            user.Email);
-        
-        await _emailService.SendEmailAsync(message);
     }
 }

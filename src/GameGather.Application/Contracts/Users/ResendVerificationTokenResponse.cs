@@ -1,5 +1,7 @@
-﻿namespace GameGather.Application.Contracts.Users;
+﻿using GameGather.Domain.Aggregates.Users.Enums;
+
+namespace GameGather.Application.Contracts.Users;
 
 public record ResendVerificationTokenResponse(
-    string Message,
-    TimeOnly? TimeToWait = null);
+    TokenStatus Status,
+    TimeSpan? TimeToWait = null);

@@ -2,9 +2,10 @@
 
 public enum TokenStatus
 {
-    TokenExpired = 0,
+    TokenNotReadyToResend = 0,
     TokenAlreadySent = 1,
-    TokenReadyToResend = 2,
-    TokenUsed = 3,
-    TokenRefresh = 4,
+    TokenExpired = 2,
+    TokenReadyToResend = 3,
+    TokenUsed = 4,
+    TokenRefresh = 5,
 }

@@ -85,10 +85,11 @@ public sealed class VerificationToken : ValueObject, IToken
         return TokenStatus.TokenReadyToResend;
     }
     
-    public TimeOnly GetTimeToResendToken()
+    public TimeSpan GetTimeToResendToken()
     {
-        var timeToResend = LastSendOnUtc.AddMinutes(5);
-        return TimeOnly.FromDateTime(timeToResend);
+        var timeToResend = LastSendOnUtc.AddMinutes(5) - DateTime.UtcNow;
+
+        return timeToResend;
     }
 
     public void UpdateLastSendOnUtc() => LastSendOnUtc = DateTime.UtcNow;
