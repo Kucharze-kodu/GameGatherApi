@@ -3,6 +3,7 @@ using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
 using GameGather.Domain.UnitTests.TestUtils.Constants;
+using GameGather.Domain.UnitTests.TestUtils.Constants.Users;
 
 namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects;
 
@@ -12,7 +13,9 @@ public class VerificationTokenTests
     public void Create_Should_ReturnNewVerificationToken_WhenCalled()
     {
         // Arrange
-        var value = new VerificationTokenBuilder().Build().Value;
+        var value = new VerificationTokenBuilder()
+            .Build()
+            .Value;
         
         
         // Act
@@ -21,10 +24,32 @@ public class VerificationTokenTests
 
         // Assert
         
-        verificationToken.Value.Should().NotBe(value);
-        verificationToken.CreatedOnUtc.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromMinutes(5));
-        verificationToken.ExpiresOnUtc.Should().BeCloseTo(DateTime.UtcNow.AddDays(1), TimeSpan.FromMinutes(5));
-        verificationToken.LastSendOnUtc.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromMinutes(5));
+        verificationToken
+            .Value
+            .Should()
+            .NotBe(value);
+        verificationToken
+            .CreatedOnUtc
+            .Should()
+            .BeCloseTo(
+                DateTime.UtcNow, 
+                TimeSpan.FromMinutes(Constants.VerificationToken.MaxDifferenceInMinutes));
+        verificationToken
+            .ExpiresOnUtc
+            .Should()
+            .BeCloseTo(
+                DateTime.UtcNow.AddDays(Constants.VerificationToken.TokenValidityInDays),
+                TimeSpan.FromMinutes(Constants.VerificationToken.MaxDifferenceInMinutes));
+        verificationToken
+            .LastSendOnUtc
+            .Should()
+            .BeCloseTo(
+                DateTime.UtcNow, 
+                TimeSpan.FromMinutes(Constants.VerificationToken.MaxDifferenceInMinutes));
+        verificationToken
+            .Type
+            .Should()
+            .Be(Constants.VerificationToken.Type);
     }
     
     [Fact]
@@ -47,12 +72,30 @@ public class VerificationTokenTests
 
         // Assert
         
-        verificationToken.Value.Should().Be(verificationTokenToLoad.Value);
-        verificationToken.CreatedOnUtc.Should().Be(verificationTokenToLoad.CreatedOnUtc);
-        verificationToken.ExpiresOnUtc.Should().Be(verificationTokenToLoad.ExpiresOnUtc);
-        verificationToken.LastSendOnUtc.Should().Be(verificationTokenToLoad.LastSendOnUtc);
-        verificationToken.UsedOnUtc.Should().Be(verificationTokenToLoad.UsedOnUtc);
-        verificationToken.Type.Should().Be(verificationTokenToLoad.Type);
+        verificationToken
+            .Value
+            .Should()
+            .Be(verificationTokenToLoad.Value);
+        verificationToken
+            .CreatedOnUtc
+            .Should().
+            Be(verificationTokenToLoad.CreatedOnUtc);
+        verificationToken
+            .ExpiresOnUtc
+            .Should()
+            .Be(verificationTokenToLoad.ExpiresOnUtc);
+        verificationToken
+            .LastSendOnUtc
+            .Should()
+            .Be(verificationTokenToLoad.LastSendOnUtc);
+        verificationToken
+            .UsedOnUtc
+            .Should()
+            .Be(verificationTokenToLoad.UsedOnUtc);
+        verificationToken
+            .Type
+            .Should()
+            .Be(verificationTokenToLoad.Type);
     }
     
     [Fact]
@@ -69,7 +112,9 @@ public class VerificationTokenTests
 
         // Assert
         
-        isValid.Should().BeFalse();
+        isValid
+            .Should()
+            .BeFalse();
     }
 
     [Fact]
@@ -87,7 +132,9 @@ public class VerificationTokenTests
         
         // Assert
         
-        isValid.Should().BeFalse();
+        isValid
+            .Should()
+            .BeFalse();
     }
 
     [Fact]
@@ -103,8 +150,15 @@ public class VerificationTokenTests
         
         // Assert
         
-        verificationToken.UsedOnUtc.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromMinutes(5));
-        isValid.Should().BeTrue();
+        verificationToken
+            .UsedOnUtc
+            .Should()
+            .BeCloseTo(
+                DateTime.UtcNow, 
+                TimeSpan.FromMinutes(Constants.VerificationToken.MaxDifferenceInMinutes));
+        isValid
+            .Should()
+            .BeTrue();
     } 
     
     [Fact]
@@ -122,7 +176,9 @@ public class VerificationTokenTests
         
         // Assert
         
-        status.Should().Be(TokenStatus.TokenNotReadyToResend);
+        status
+            .Should()
+            .Be(TokenStatus.TokenNotReadyToResend);
     }
     
     [Fact]
@@ -132,7 +188,6 @@ public class VerificationTokenTests
         
         var verificationToken = new VerificationTokenBuilder()
             .WithExpiredToken()
-            .WithLastSendOnUtc(DateTime.UtcNow.AddHours(-1))
             .Build();
         
         // Act
@@ -141,7 +196,9 @@ public class VerificationTokenTests
         
         // Assert
         
-        status.Should().Be(TokenStatus.TokenExpired);
+        status
+            .Should()
+            .Be(TokenStatus.TokenExpired);
     }
     
     [Fact]
@@ -159,7 +216,9 @@ public class VerificationTokenTests
         
         // Assert
         
-        status.Should().Be(TokenStatus.TokenUsed);
+        status
+            .Should()
+            .Be(TokenStatus.TokenUsed);
     }
     
     [Fact]
@@ -177,7 +236,9 @@ public class VerificationTokenTests
         
         // Assert
         
-        status.Should().Be(TokenStatus.TokenReadyToResend);
+        status
+            .Should()
+            .Be(TokenStatus.TokenReadyToResend);
     }
     
     [Fact]
@@ -195,7 +256,11 @@ public class VerificationTokenTests
         
         // Assert
         
-        timeToResend.Should().BeCloseTo(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(1));
+        timeToResend
+            .Should()
+            .BeCloseTo(
+                TimeSpan.FromMinutes(Constants.VerificationToken.MinimumTimeToResendInMinutes),
+                TimeSpan.FromMinutes(Constants.VerificationToken.MaxDifferenceInMinutes));
     }
     
     [Fact]
@@ -211,6 +276,11 @@ public class VerificationTokenTests
         
         // Assert
         
-        verificationToken.LastSendOnUtc.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromMinutes(5));
+        verificationToken
+            .LastSendOnUtc
+            .Should()
+            .BeCloseTo(
+                DateTime.UtcNow,
+                TimeSpan.FromMinutes(Constants.VerificationToken.MaxDifferenceInMinutes));
     }
 }

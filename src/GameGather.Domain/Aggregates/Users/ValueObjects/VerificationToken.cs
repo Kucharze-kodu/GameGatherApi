@@ -13,13 +13,16 @@ public sealed class VerificationToken : ValueObject, IToken
     public DateTime LastSendOnUtc { get; private set; }
     public DateTime? UsedOnUtc { get; private set; }
     public TokenType Type { get; private set; }
+    
+    private const int TokenValidityInDays = 1;
+    private const int MinimumTimeToResendInMinutes = 5;
 
     [JsonConstructor]
     private VerificationToken()
     {
         Value = Guid.NewGuid();
         CreatedOnUtc = DateTime.UtcNow;
-        ExpiresOnUtc = DateTime.UtcNow.AddDays(1);
+        ExpiresOnUtc = DateTime.UtcNow.AddDays(TokenValidityInDays);
         LastSendOnUtc = DateTime.UtcNow;
         Type = TokenType.VerificationToken;
     }
@@ -65,13 +68,13 @@ public sealed class VerificationToken : ValueObject, IToken
     public TokenStatus CheckStatus()
     {
         // Check if the token was already sent
-        if (LastSendOnUtc.AddMinutes(5).CompareTo(DateTime.UtcNow) != -1)
+        if (IsTokenAlreadySent())
         {
             return TokenStatus.TokenNotReadyToResend;
         }
         
         // Check if the token is expired
-        if (ExpiresOnUtc.CompareTo(DateTime.UtcNow) != 1)
+        if (IsTokenExpired())
         {
             return TokenStatus.TokenExpired;
         }
@@ -87,7 +90,7 @@ public sealed class VerificationToken : ValueObject, IToken
     
     public TimeSpan GetTimeToResendToken()
     {
-        var timeToResend = LastSendOnUtc.AddMinutes(5) - DateTime.UtcNow;
+        var timeToResend = LastSendOnUtc.AddMinutes(MinimumTimeToResendInMinutes) - DateTime.UtcNow;
 
         return timeToResend;
     }
@@ -102,5 +105,18 @@ public sealed class VerificationToken : ValueObject, IToken
         yield return LastSendOnUtc;
         yield return UsedOnUtc;
         yield return Type;
+    }
+    
+    private bool IsTokenAlreadySent()
+    {
+        return LastSendOnUtc
+            .AddMinutes(MinimumTimeToResendInMinutes)
+            .CompareTo(DateTime.UtcNow) != -1;
+    }
+    
+    private bool IsTokenExpired()
+    {
+        return ExpiresOnUtc
+            .CompareTo(DateTime.UtcNow) != 1;
     }
 }

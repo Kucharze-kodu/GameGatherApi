@@ -12,5 +12,8 @@ public static partial class Constants
         public static readonly DateTime LastSendOnUtc = DateTime.UtcNow.AddHours(-2);
         public static readonly DateTime UsedOnUtc = DateTime.UtcNow.AddHours(-1);
         public const TokenType Type = TokenType.VerificationToken;
+        public const int TokenValidityInDays = 1;
+        public const int MinimumTimeToResendInMinutes = 5;
+        public const int MaxDifferenceInMinutes = 5;
     }
 }

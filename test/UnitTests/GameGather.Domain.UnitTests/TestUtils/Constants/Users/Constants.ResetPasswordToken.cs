@@ -13,6 +13,7 @@ public static partial class Constants
         public static readonly DateTime UsedOnUtc = DateTime.UtcNow.AddHours(-1);
         public const TokenType Type = TokenType.ResetPasswordToken;
         public const int TokenValidityInDays = 1;
+        public const int MinimumTimeToResendInMinutes = 5;
         public const int MaxDifferenceInMinutes = 5;
     }
 }

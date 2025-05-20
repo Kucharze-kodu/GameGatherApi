@@ -164,7 +164,9 @@ public class ResetPasswordTokenTests
         var resetPasswordToken = new ResetPasswordTokenBuilder()
             .WithLastSendOnUtc(DateTime
                 .UtcNow
-                .AddMinutes(Constants.ResetPasswordToken.MaxDifferenceInMinutes - 2))
+                .AddMinutes(Constants
+                    .ResetPasswordToken
+                    .MinimumTimeToResendInMinutes - 2))
             .Build();
         
         // Act
