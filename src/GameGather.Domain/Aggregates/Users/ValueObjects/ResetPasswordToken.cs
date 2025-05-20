@@ -13,15 +13,18 @@ public sealed class ResetPasswordToken : ValueObject, IToken
     public DateTime LastSendOnUtc { get; private set; }
     public DateTime? UsedOnUtc { get; private set; }
     public TokenType Type { get; private set; }
+    
+    private const int MinimumTimeToResendInMinutes = 5;
+    private const int TokenValidityInDays = 1;
 
     [JsonConstructor]
     private ResetPasswordToken()
     {
         Value = Guid.NewGuid();
         CreatedOnUtc = DateTime.UtcNow;
-        ExpiresOnUtc = DateTime.UtcNow.AddDays(1);
+        ExpiresOnUtc = DateTime.UtcNow.AddDays(TokenValidityInDays);
         LastSendOnUtc = DateTime.UtcNow;
-        Type = TokenType.VerificationToken;
+        Type = TokenType.ResetPasswordToken;
     }
 
     public static ResetPasswordToken Create() => new ResetPasswordToken();
@@ -53,7 +56,7 @@ public sealed class ResetPasswordToken : ValueObject, IToken
         }
         
         // Check if the token is expired
-        if (ExpiresOnUtc.CompareTo(DateTime.UtcNow) != 1)
+        if (IsTokenExpired())
         {
             return false;
         }
@@ -64,16 +67,16 @@ public sealed class ResetPasswordToken : ValueObject, IToken
     
     public TokenStatus CheckStatus()
     {
+        // Check if the token was already sent
+        if (IsTokenAlreadySent())
+        {
+            return TokenStatus.TokenNotReadyToResend;
+        }
+        
         // Check if the token is expired
-        if (ExpiresOnUtc.CompareTo(DateTime.UtcNow) != 1)
+        if (IsTokenExpired())
         {
             return TokenStatus.TokenExpired;
-        }
-
-        // Check if the token was already sent
-        if (LastSendOnUtc.CompareTo(DateTime.UtcNow) != 1)
-        {
-            return TokenStatus.TokenAlreadySent;
         }
         
         // Check if the token was already used
@@ -93,5 +96,18 @@ public sealed class ResetPasswordToken : ValueObject, IToken
         yield return LastSendOnUtc;
         yield return UsedOnUtc;
         yield return Type;
+    }
+    
+    private bool IsTokenAlreadySent()
+    {
+        return LastSendOnUtc
+            .AddMinutes(MinimumTimeToResendInMinutes)
+            .CompareTo(DateTime.UtcNow) != -1;
+    }
+    
+    private bool IsTokenExpired()
+    {
+        return ExpiresOnUtc
+            .CompareTo(DateTime.UtcNow) != 1;
     }
 }
