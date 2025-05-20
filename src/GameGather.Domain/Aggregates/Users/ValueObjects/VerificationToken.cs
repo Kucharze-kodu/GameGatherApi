@@ -67,7 +67,7 @@ public sealed class VerificationToken : ValueObject, IToken
         // Check if the token was already sent
         if (LastSendOnUtc.AddMinutes(5).CompareTo(DateTime.UtcNow) != -1)
         {
-            return TokenStatus.TokenAlreadySent;
+            return TokenStatus.TokenNotReadyToResend;
         }
         
         // Check if the token is expired
