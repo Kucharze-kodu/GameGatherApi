@@ -1,5 +1,6 @@
 using FluentAssertions;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
+using GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
 using GameGather.Domain.UnitTests.TestUtils.Constants;
 using Constants = GameGather.Domain.UnitTests.TestUtils.Constants.Users.Constants;
 
@@ -11,8 +12,8 @@ public class PasswordTests
     public void Create_Should_ReturnNewPassword_WhenValidValueIsProvided()
     {
         // Arrange
-        
-        var value = Constants.Password.Value;
+
+        var value = new PasswordBuilder().Build().Value;
 
         // Act
         
@@ -29,28 +30,29 @@ public class PasswordTests
     {
         // Arrange
         
-        var value = Constants.Password.Value;
-        var lastModifiedOnUtc = Constants.Password.LastModifiedOnUtc;
-        var password = Password.Create(value);
+        var passwordToLoad = new PasswordBuilder().Build();
+        var password = Password.Create("password");
         
         // Act
         
-        password.Load(value, lastModifiedOnUtc);
+        password.Load(
+            passwordToLoad.Value,
+            passwordToLoad.LastModifiedOnUtc
+        );
 
         // Assert
         
-        password.Value.Should().Be(value);
-        password.LastModifiedOnUtc.Should().Be(lastModifiedOnUtc);
+        password.Value.Should().Be(passwordToLoad.Value);
+        password.LastModifiedOnUtc.Should().Be(passwordToLoad.LastModifiedOnUtc);
     }
 
     [Fact]
     public void IsExpired_Should_ReturnTrue_WhenPasswordIsExpired()
     {
         // Arrange
-        
-        var password = Password.Create(Constants.Password.Value);
-        var lastModifiedOnUtc = DateTime.UtcNow.AddDays(-31);
-        password.Load(Constants.Password.Value, lastModifiedOnUtc);
+        var password = new PasswordBuilder()
+            .WithExpiredPassword()
+            .Build();
         
         // Act
         
@@ -65,10 +67,8 @@ public class PasswordTests
     public void IsExpired_Should_ReturnFalse_WhenPasswordIsNotExpired()
     {
         // Arrange
-        
-        var password = Password.Create(Constants.Password.Value);
-        var lastModifiedOnUtc = DateTime.UtcNow.AddDays(-10);
-        password.Load(Constants.Password.Value, lastModifiedOnUtc);
+        var password = new PasswordBuilder()
+            .Build();
         
         // Act
         
