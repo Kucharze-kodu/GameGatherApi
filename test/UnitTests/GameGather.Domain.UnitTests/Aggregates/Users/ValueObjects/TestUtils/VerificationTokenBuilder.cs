@@ -39,6 +39,12 @@ public class VerificationTokenBuilder
         return this;
     }
     
+    public VerificationTokenBuilder WithValue(Guid value)
+    {
+        _value = value;
+        return this;
+    }
+    
     public VerificationToken Build()
     {
         var type = typeof(VerificationToken);

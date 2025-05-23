@@ -8,6 +8,12 @@ public class PasswordBuilder
 {
     private string _value = Constants.Password.Value;
     private DateTime _lastModifiedOnUtc = Constants.Password.LastModifiedOnUtc;
+    
+    public PasswordBuilder WithValue(string value)
+    {
+        _value = value;
+        return this;
+    }
 
     public PasswordBuilder WithExpiredPassword()
     {

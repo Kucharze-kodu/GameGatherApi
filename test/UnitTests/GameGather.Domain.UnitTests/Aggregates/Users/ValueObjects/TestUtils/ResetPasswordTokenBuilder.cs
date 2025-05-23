@@ -38,6 +38,12 @@ public class ResetPasswordTokenBuilder
         return this;
     }
     
+    public ResetPasswordTokenBuilder WithValue(Guid value)
+    {
+        _value = value;
+        return this;
+    }
+    
     public ResetPasswordToken Build()
     {
         var type = typeof(ResetPasswordToken);
