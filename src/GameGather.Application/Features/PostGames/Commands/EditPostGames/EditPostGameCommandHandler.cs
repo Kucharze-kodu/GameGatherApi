@@ -40,7 +40,7 @@ namespace GameGather.Application.Features.PostGames.Commands.EditPostGames
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.GameSessionId));
             PostGameId postGameId = PostGameId.Create(Convert.ToInt32(request.PostGameId));
 
-            await _postGameRepository.EditPostGame(postGameId,sessionGameId, userId, request.PostDescription);
+            await _postGameRepository.EditPostGame(postGameId,sessionGameId, userId, request.GameTime, request.PostDescription);
             await _unitOfWork.SaveChangesAsync();
 
             return new PostGameResponse("Edited post game");

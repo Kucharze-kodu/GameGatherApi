@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameGather.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameGather.Infrastructure.Migrations
 {
     [DbContext(typeof(GameGatherDbContext))]
-    partial class GameGatherDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250525224313_databaseMigrationPostTest")]
+    partial class databaseMigrationPostTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,13 +237,11 @@ namespace GameGather.Infrastructure.Migrations
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
                 {
-                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", "SessionGame")
+                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", null)
                         .WithMany("Comments")
                         .HasForeignKey("SessionGameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("SessionGame");
                 });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.PostGames.PostGame", b =>

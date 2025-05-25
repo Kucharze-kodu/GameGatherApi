@@ -15,7 +15,10 @@ public sealed class PostGame : AggregateRoot<PostGameId>
     public DateTime DayPost {  get; set; }
     public DateTime GameTime { get; set; }
     public string PostDescription { get; set; }
+
     public SessionGame SessionGame { get; private set; } = null;
+
+
 
     private PostGame(PostGameId id) : base(id)
     {
@@ -30,7 +33,7 @@ public sealed class PostGame : AggregateRoot<PostGameId>
     {
         GameMasterId = gameMasterId;
         SessionGameId = sessionGameId;
-        DayPost = DateTime.Now;
+        DayPost = DateTime.UtcNow;
         GameTime = gameTime;
         PostDescription=postDescription;
     }

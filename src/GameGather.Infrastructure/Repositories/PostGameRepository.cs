@@ -6,6 +6,8 @@ using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
+
+
 namespace GameGather.Infrastructure.Repositories
 {
     public class PostGameRepository : IPostGameRepository
@@ -34,14 +36,18 @@ namespace GameGather.Infrastructure.Repositories
             _dbContext.PostGames.Remove(result);
         }
 
-        public async Task EditPostGame(PostGameId postGameId, SessionGameId sessionGameId, UserId userId, string postDescription, CancellationToken cancellationToken = default)
+        public async Task EditPostGame(PostGameId postGameId, SessionGameId sessionGameId, UserId userId, DateTime gameTime, string postDescription, CancellationToken cancellationToken = default)
         {
             var result = await _dbContext.PostGames.FirstOrDefaultAsync(
-                                           c => c.Id == postGameId && c.SessionGameId == sessionGameId && c.GameMasterId == userId);
+                               c => c.Id == postGameId && c.SessionGameId == sessionGameId && c.GameMasterId == userId);
 
             if (result == null)
             {
                 return;
+            }
+            if (gameTime > DateTime.UtcNow)
+            {
+                result.GameTime = gameTime;
             }
             if (postDescription is not null)
             {

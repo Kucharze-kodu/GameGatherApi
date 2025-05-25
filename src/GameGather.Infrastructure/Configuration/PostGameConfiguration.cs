@@ -36,7 +36,6 @@ namespace GameGather.Infrastructure.Configuration
                    id => id.Value,
                    value => SessionGameId.Create(value)
                );
-
         }
     }
 }
