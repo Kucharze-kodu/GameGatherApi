@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameGather.Infrastructure.Migrations
 {
     [DbContext(typeof(GameGatherDbContext))]
-    [Migration("20250425213438_CreateOtherTabels")]
-    partial class CreateOtherTabels
+    [Migration("20250525190529_databaseMigrationPostGame")]
+    partial class databaseMigrationPostGame
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,10 +71,11 @@ namespace GameGather.Infrastructure.Migrations
                     b.Property<DateTime>("GameTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("SessionGameId")
-                        .HasColumnType("integer");
+                    b.Property<string>("PostDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("State")
+                    b.Property<int>("SessionGameId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -106,6 +107,10 @@ namespace GameGather.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("GameMasterId")
                         .HasColumnType("integer");
@@ -167,9 +172,6 @@ namespace GameGather.Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<DateTime?>("ExpiresOnUtc")
-                                .HasColumnType("timestamp with time zone");
-
                             b1.Property<DateTime>("LastModifiedOnUtc")
                                 .HasColumnType("timestamp with time zone");
 
@@ -203,6 +205,36 @@ namespace GameGather.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("GameGather.Infrastructure.Utils.Outbox.OutboxMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OccuredOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ProcessedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessages");
+                });
+
             modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
                 {
                     b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", null)
@@ -229,11 +261,13 @@ namespace GameGather.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GameGather.Domain.Aggregates.Users.User", null)
+                    b.HasOne("GameGather.Domain.Aggregates.Users.User", "User")
                         .WithMany("SessionGames")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>

@@ -3,6 +3,7 @@ using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Primitives;
 using GameGather.Domain.Aggregates.SessionGameLists;
+using GameGather.Domain.DomainEvents;
 
 
 namespace GameGather.Domain.Aggregates.Users;

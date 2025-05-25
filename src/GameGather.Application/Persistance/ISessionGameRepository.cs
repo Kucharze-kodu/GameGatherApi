@@ -1,7 +1,8 @@
 ﻿using GameGather.Domain.Aggregates.SessionGames;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using System.Runtime.CompilerServices;
+
+
 
 namespace GameGather.Application.Persistance
 {

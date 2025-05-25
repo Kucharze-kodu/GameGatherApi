@@ -75,6 +75,7 @@ var app = builder.Build();
     app.AddAuthenticationEndpoints();
     app.AddPlayerManagerEndpoints();
     app.AddSessionGameModuleEndpoints();
+    app.AddPostGameEndpoints();
     // END ENDPOINTS
 
     app.UseHttpsRedirection();

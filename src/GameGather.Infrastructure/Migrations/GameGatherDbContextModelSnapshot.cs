@@ -68,10 +68,11 @@ namespace GameGather.Infrastructure.Migrations
                     b.Property<DateTime>("GameTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("SessionGameId")
-                        .HasColumnType("integer");
+                    b.Property<string>("PostDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("State")
+                    b.Property<int>("SessionGameId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -168,9 +169,6 @@ namespace GameGather.Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<DateTime?>("ExpiresOnUtc")
-                                .HasColumnType("timestamp with time zone");
-
                             b1.Property<DateTime>("LastModifiedOnUtc")
                                 .HasColumnType("timestamp with time zone");
 
@@ -204,6 +202,35 @@ namespace GameGather.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("GameGather.Infrastructure.Utils.Outbox.OutboxMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OccuredOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ProcessedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessages");
+                });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
                 {
@@ -231,12 +258,13 @@ namespace GameGather.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GameGather.Domain.Aggregates.Users.User", null)
+                    b.HasOne("GameGather.Domain.Aggregates.Users.User", "User")
                         .WithMany("SessionGames")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>

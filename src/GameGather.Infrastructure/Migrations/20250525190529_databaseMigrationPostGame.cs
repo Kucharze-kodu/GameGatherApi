@@ -7,11 +7,28 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameGather.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateOtherTabels : Migration
+    public partial class databaseMigrationPostGame : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "OutboxMessages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MessageType = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    OccuredOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ProcessedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ErrorMessage = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OutboxMessages", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "SessionGames",
                 columns: table => new
@@ -19,12 +36,46 @@ namespace GameGather.Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     GameMasterId = table.Column<int>(type: "integer", nullable: false),
                     GameMasterName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SessionGames", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Birthday = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    VerifiedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModifiedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ResetPasswordToken_Value = table.Column<Guid>(type: "uuid", nullable: true),
+                    ResetPasswordToken_CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ResetPasswordToken_ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ResetPasswordToken_Type = table.Column<int>(type: "integer", nullable: true),
+                    Ban_CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Ban_ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Ban_Message = table.Column<string>(type: "text", nullable: true),
+                    Role = table.Column<string>(type: "text", nullable: false),
+                    Password_LastModifiedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Password_Value = table.Column<string>(type: "text", nullable: false),
+                    VerificationToken_CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    VerificationToken_ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    VerificationToken_Type = table.Column<int>(type: "integer", nullable: false),
+                    VerificationToken_Value = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,7 +110,7 @@ namespace GameGather.Infrastructure.Migrations
                     SessionGameId = table.Column<int>(type: "integer", nullable: false),
                     DayPost = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     GameTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    State = table.Column<int>(type: "integer", nullable: false)
+                    PostDescription = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -110,6 +161,12 @@ namespace GameGather.Infrastructure.Migrations
                 name: "IX_SessionGameLists_SessionGameId",
                 table: "SessionGameLists",
                 column: "SessionGameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -119,6 +176,9 @@ namespace GameGather.Infrastructure.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "OutboxMessages");
+
+            migrationBuilder.DropTable(
                 name: "PostGames");
 
             migrationBuilder.DropTable(
@@ -126,6 +186,9 @@ namespace GameGather.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "SessionGames");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

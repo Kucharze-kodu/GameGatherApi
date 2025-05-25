@@ -28,6 +28,9 @@ namespace GameGather.Infrastructure.Configuration
                     value => UserId.Create(value)
                 );
 
+            builder.Navigation(sg => sg.PostGames)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
         }
     }
 }
