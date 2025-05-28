@@ -7,4 +7,5 @@ public sealed record UserRegistered(
     string FirstName,
     string LastName,
     string Email,
-    Guid VerificationToken) : IDomainEvent;
+    Guid VerificationToken,
+    string VerifyEmailUrl) : IDomainEvent;

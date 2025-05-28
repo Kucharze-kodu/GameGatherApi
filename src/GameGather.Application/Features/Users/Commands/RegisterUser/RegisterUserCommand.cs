@@ -9,4 +9,5 @@ public record RegisterUserCommand(
     string Email,
     string Password,
     string ConfirmPassword,
-    DateTime Birthday) : ICommand<RegisterUserResponse>;
+    DateTime Birthday,
+    string VerifyEmailUrl) : ICommand<RegisterUserResponse>;

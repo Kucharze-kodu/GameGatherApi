@@ -10,18 +10,21 @@ public sealed class Ban : ValueObject
     public string Message { get; private set; }
 
     [JsonConstructor]
-    private Ban(string message, DateTime? expiresOnUtc)
+    private Ban(string message = "Ban", DateTime? expiresOnUtc = null)
     {
         CreatedOnUtc = DateTime.UtcNow;
-        ExpiresOnUtc = expiresOnUtc;
+        ExpiresOnUtc = expiresOnUtc ?? DateTime.UtcNow.AddDays(1);
         Message = message;
     }
 
-    public static Ban Create(string message, DateTime? expiresOnUtc) => new Ban(message, expiresOnUtc);
+    public static Ban Create(
+        string? message = "Ban", 
+        DateTime? expiresOnUtc = null) 
+        => new Ban(message, expiresOnUtc);
 
     public Ban Load(
         DateTime createdOnUtc,
-        DateTime expiresOnUtc,
+        DateTime? expiresOnUtc,
         string message
     )
     {

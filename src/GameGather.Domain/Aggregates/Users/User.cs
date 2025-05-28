@@ -55,7 +55,8 @@ public sealed class User : AggregateRoot<UserId>
         string lastName,
         string email,
         string password,
-        DateTime birthday
+        DateTime birthday,
+        string verifyEmailUrl
     )
     {
         var user = new User(
@@ -70,7 +71,8 @@ public sealed class User : AggregateRoot<UserId>
             firstName,
             lastName,
             email,
-            user.VerificationToken.Value));
+            user.VerificationToken.Value,
+            verifyEmailUrl));
 
         return user;
     }
@@ -105,6 +107,39 @@ public sealed class User : AggregateRoot<UserId>
         VerificationToken = verificationToken;
         ResetPasswordToken = resetPasswordToken;
         return this;
+    }
+    
+    public bool IsVerified =>
+        VerifiedOnUtc is not null;
+    
+    public bool Verify(Guid token)
+    {
+        // Check if user is already verified
+        if (IsVerified)
+        {
+            return false;
+        }
+        
+        // Check if token is valid
+        if (!VerificationToken.Verify(token))
+        {
+            return false;
+        }
+        
+        VerifiedOnUtc = DateTime.UtcNow;
+        LastModifiedOnUtc = DateTime.UtcNow;
+        return true;
+    }
+    
+    public void GenerateNewVerificationToken(string verifyEmailUrl)
+    {
+        VerificationToken = VerificationToken.Create();
+        
+        RaiseDomainEvent(new VerificationTokenRefreshed(
+            FirstName,
+            Email,
+            VerificationToken.Value,
+            verifyEmailUrl));
     }
     
     
