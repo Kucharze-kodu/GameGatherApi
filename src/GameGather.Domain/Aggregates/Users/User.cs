@@ -4,6 +4,7 @@ using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Primitives;
 using GameGather.Domain.Aggregates.SessionGameLists;
 using GameGather.Domain.DomainEvents;
+using GameGather.Domain.Aggregates.Comments;
 
 
 namespace GameGather.Domain.Aggregates.Users;
@@ -26,6 +27,9 @@ public sealed class User : AggregateRoot<UserId>
 
     private readonly List<SessionGameList> _sessionGameList = new();
     public IReadOnlyCollection<SessionGameList> SessionGames => _sessionGameList.AsReadOnly();
+
+    public ICollection<Comment> Comments { get; private set; } = new List<Comment>();
+
 
     private User(UserId id) : base(id)
     {

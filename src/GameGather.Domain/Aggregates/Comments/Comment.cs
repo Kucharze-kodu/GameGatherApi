@@ -1,6 +1,7 @@
 ﻿using GameGather.Domain.Aggregates.Comments.ValueObcjets;
 using GameGather.Domain.Aggregates.SessionGames;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
+using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Primitives;
 
@@ -15,6 +16,7 @@ namespace GameGather.Domain.Aggregates.Comments
         public DateTime DateComment { get; private set; }
 
         public SessionGame SessionGame { get; private set; } = null;
+        public User User { get; private set; } = null;
 
         public Comment(CommentId id) : base(id)
         {

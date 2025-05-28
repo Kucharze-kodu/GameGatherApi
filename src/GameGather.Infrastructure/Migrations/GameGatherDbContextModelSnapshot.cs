@@ -47,6 +47,8 @@ namespace GameGather.Infrastructure.Migrations
 
                     b.HasIndex("SessionGameId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Comments");
                 });
 
@@ -172,39 +174,34 @@ namespace GameGather.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
+            modelBuilder.Entity("GameGather.Infrastructure.Utils.Outbox.OutboxMessage", b =>
                 {
-                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("SessionGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-            modelBuilder.Entity("GameGather.Domain.Aggregates.PostGames.PostGame", b =>
-                {
-                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", null)
-                        .WithMany("PostGames")
-                        .HasForeignKey("SessionGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-            modelBuilder.Entity("GameGather.Domain.Aggregates.SessionGameLists.SessionGameList", b =>
-                {
-                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", null)
-                        .WithMany("SessionGameLists")
-                        .HasForeignKey("SessionGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.HasOne("GameGather.Domain.Aggregates.Users.User", null)
-                        .WithMany("SessionGames")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("text");
 
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OccuredOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ProcessedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessages");
                 });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
@@ -215,7 +212,15 @@ namespace GameGather.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GameGather.Domain.Aggregates.Users.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("SessionGame");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.PostGames.PostGame", b =>
@@ -388,6 +393,8 @@ namespace GameGather.Infrastructure.Migrations
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("SessionGames");
                 });
 #pragma warning restore 612, 618

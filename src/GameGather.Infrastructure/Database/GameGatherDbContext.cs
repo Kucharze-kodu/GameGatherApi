@@ -47,6 +47,13 @@ public class GameGatherDbContext : DbContext
          .HasForeignKey(pg => pg.SessionGameId)
          .OnDelete(DeleteBehavior.Cascade);
 
+        // link user to comments
+
+        modelBuilder.Entity<Comment>()
+         .HasOne(c => c.User)
+         .WithMany(u => u.Comments)
+         .HasForeignKey(c => c.UserId)
+         .OnDelete(DeleteBehavior.Cascade);
 
 
         // link many Users to many SessionGame
