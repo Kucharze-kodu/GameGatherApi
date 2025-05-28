@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameGather.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class databaseMigrationPostGame : Migration
+    public partial class totalDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,20 +58,7 @@ namespace GameGather.Infrastructure.Migrations
                     CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     VerifiedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModifiedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ResetPasswordToken_Value = table.Column<Guid>(type: "uuid", nullable: true),
-                    ResetPasswordToken_CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ResetPasswordToken_ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ResetPasswordToken_Type = table.Column<int>(type: "integer", nullable: true),
-                    Ban_CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Ban_ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Ban_Message = table.Column<string>(type: "text", nullable: true),
-                    Role = table.Column<string>(type: "text", nullable: false),
-                    Password_LastModifiedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Password_Value = table.Column<string>(type: "text", nullable: false),
-                    VerificationToken_CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    VerificationToken_ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    VerificationToken_Type = table.Column<int>(type: "integer", nullable: false),
-                    VerificationToken_Value = table.Column<Guid>(type: "uuid", nullable: false)
+                    Role = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,6 +111,68 @@ namespace GameGather.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bans",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Message = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bans", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Bans_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Passwords",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Passwords", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Passwords_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResetPasswordTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastSendOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UsedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Type = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResetPasswordTokens", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_ResetPasswordTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SessionGameLists",
                 columns: table => new
                 {
@@ -141,6 +190,29 @@ namespace GameGather.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SessionGameLists_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VerificationTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ExpiresOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastSendOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UsedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Type = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VerificationTokens", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_VerificationTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -173,16 +245,28 @@ namespace GameGather.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Bans");
+
+            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "OutboxMessages");
 
             migrationBuilder.DropTable(
+                name: "Passwords");
+
+            migrationBuilder.DropTable(
                 name: "PostGames");
 
             migrationBuilder.DropTable(
+                name: "ResetPasswordTokens");
+
+            migrationBuilder.DropTable(
                 name: "SessionGameLists");
+
+            migrationBuilder.DropTable(
+                name: "VerificationTokens");
 
             migrationBuilder.DropTable(
                 name: "SessionGames");
