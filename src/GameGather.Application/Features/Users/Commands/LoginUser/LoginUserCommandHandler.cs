@@ -31,7 +31,7 @@ public sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, 
 
     public async Task<ErrorOr<LoginUserResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email);
+        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
         // User not found
         if (user is null)
@@ -43,6 +43,12 @@ public sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, 
         if (!_passwordHasher.Verify(request.Password, user.Password.Value))
         {
             return Errors.User.InvalidCredentials;
+        }
+        
+        // User is not verified
+        if (user.VerifiedOnUtc is null)
+        {
+            return Errors.User.NotVerified;
         }
         
         // Password expired
