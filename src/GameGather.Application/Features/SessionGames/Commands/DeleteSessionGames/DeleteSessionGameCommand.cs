@@ -3,7 +3,7 @@ using GameGather.Application.Contracts.SessionGames;
 
 namespace GameGather.Application.Features.SessionGames.Commands.DeleteSessionGames
 {
-    public record DeleteSessionGameCommnand(
+    public record DeleteSessionGameCommand(
         int Id
         ) : ICommand<SessionGameResponse>;
 }

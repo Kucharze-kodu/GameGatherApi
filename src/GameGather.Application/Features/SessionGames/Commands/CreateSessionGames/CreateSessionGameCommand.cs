@@ -3,7 +3,7 @@ using GameGather.Application.Contracts.SessionGames;
 
 namespace GameGather.Application.Features.SessionGames.Commands.CreateSessionGames
 {
-    public record CreateSessionGameCommnand(
+    public record CreateSessionGameCommand(
         string Name,
         string Description
 

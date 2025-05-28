@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace GameGather.Application.Features.SessionGames.Commands.DeleteSessionGames
 {
-    public class DeleteSessionGameCommnandValidator : AbstractValidator<DeleteSessionGameCommnand>
+    public class DeleteSessionGameCommandValidator : AbstractValidator<DeleteSessionGameCommand>
     {
-        public DeleteSessionGameCommnandValidator()
+        public DeleteSessionGameCommandValidator()
         {
             RuleFor(r => r.Id)
             .NotEmpty()

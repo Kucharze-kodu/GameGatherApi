@@ -2,9 +2,9 @@
 
 namespace GameGather.Application.Features.SessionGames.Commands.CreateSessionGames
 {
-    public class CreateSessionGameCommnandValidator : AbstractValidator<CreateSessionGameCommnand>
+    public class CreateSessionGameCommandValidator : AbstractValidator<CreateSessionGameCommand>
     {
-        public CreateSessionGameCommnandValidator()
+        public CreateSessionGameCommandValidator()
         {
             RuleFor(r => r.Name)
            .NotEmpty()

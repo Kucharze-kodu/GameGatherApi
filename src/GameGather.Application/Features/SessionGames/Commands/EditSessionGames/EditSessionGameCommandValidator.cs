@@ -3,9 +3,9 @@
 
 namespace GameGather.Application.Features.SessionGames.Commands.EditSessionGames
 {
-    public class EditSessionGameCommnandValidator : AbstractValidator<EditSessionGameCommnand>
+    public class EditSessionGameCommandValidator : AbstractValidator<EditSessionGameCommand>
     {
-        public EditSessionGameCommnandValidator() 
+        public EditSessionGameCommandValidator() 
         {
 
             RuleFor(r => r)

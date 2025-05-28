@@ -1,23 +1,22 @@
-﻿using ErrorOr;
-using GameGather.Application.Common.Messaging;
+﻿using GameGather.Application.Common.Messaging;
 using GameGather.Application.Contracts.SessionGames;
 using GameGather.Application.Persistance;
 using GameGather.Application.Utils;
-using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
+using ErrorOr;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Errors;
+using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 
 
-
-namespace GameGather.Application.Features.SessionGames.Commands.DeleteSessionGames
+namespace GameGather.Application.Features.SessionGames.Commands.EditSessionGames
 {
-    public class DeleteSessionGameCommnandHandler : ICommandHandler<DeleteSessionGameCommnand, SessionGameResponse>
+    public class EditSessionGameCommandHandler : ICommandHandler<EditSessionGameCommand, SessionGameResponse>
     {
         private readonly ISessionGameRepository _sessionGameRepository;
         private readonly IUserContext _userContext;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteSessionGameCommnandHandler(ISessionGameRepository sessionGameRepository,
+        public EditSessionGameCommandHandler(ISessionGameRepository sessionGameRepository,
             IUserContext userContext,
             IUnitOfWork unitOfWork)
         {
@@ -26,9 +25,8 @@ namespace GameGather.Application.Features.SessionGames.Commands.DeleteSessionGam
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ErrorOr<SessionGameResponse>> Handle(DeleteSessionGameCommnand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<SessionGameResponse>> Handle(EditSessionGameCommand request, CancellationToken cancellationToken)
         {
-
             var isVerify = _userContext.IsAuthenticated;
             if (isVerify == false)
             {
@@ -37,13 +35,14 @@ namespace GameGather.Application.Features.SessionGames.Commands.DeleteSessionGam
 
             var id = _userContext.UserId;
             UserId userId = UserId.Create(Convert.ToInt32(id));
-            SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.Id));
 
+            SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.GameSessionId));
 
-            await _sessionGameRepository.DeleteSessionGame(sessionGameId, userId);
+            await _sessionGameRepository.EditSessionGame(sessionGameId, request.Name, request.Description, userId);
             await _unitOfWork.SaveChangesAsync();
 
-            return new SessionGameResponse("delete session game");
+            return new SessionGameResponse("editet session game");
+
         }
     }
-}
+    }

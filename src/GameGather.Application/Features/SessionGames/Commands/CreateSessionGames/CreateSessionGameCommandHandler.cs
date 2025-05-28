@@ -9,13 +9,13 @@ using GameGather.Domain.Common.Errors;
 
 namespace GameGather.Application.Features.SessionGames.Commands.CreateSessionGames
 {
-    public class CreateSessionGameCommnandHandler : ICommandHandler<CreateSessionGameCommnand, SessionGameResponse>
+    public class CreateSessionGameCommandHandler : ICommandHandler<CreateSessionGameCommand, SessionGameResponse>
     {
         private readonly ISessionGameRepository _sessionGameRepository;
         private readonly IUserContext _userContext;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateSessionGameCommnandHandler(ISessionGameRepository sessionGameRepository,
+        public CreateSessionGameCommandHandler(ISessionGameRepository sessionGameRepository,
             IUserContext userContext,
             IUnitOfWork unitOfWork)
         {
@@ -25,7 +25,7 @@ namespace GameGather.Application.Features.SessionGames.Commands.CreateSessionGam
         }
 
 
-        public async Task<ErrorOr<SessionGameResponse>> Handle(CreateSessionGameCommnand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<SessionGameResponse>> Handle(CreateSessionGameCommand request, CancellationToken cancellationToken)
         {
             var isVerify = _userContext.IsAuthenticated;
             if(isVerify == false)

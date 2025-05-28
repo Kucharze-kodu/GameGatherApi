@@ -3,7 +3,7 @@ using GameGather.Application.Contracts.SessionGames;
 
 namespace GameGather.Application.Features.SessionGames.Commands.EditSessionGames
 {
-    public record EditSessionGameCommnand(
+    public record EditSessionGameCommand(
         string Name,
         string Description,
         int GameSessionId

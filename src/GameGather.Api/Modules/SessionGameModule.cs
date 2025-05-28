@@ -15,7 +15,7 @@ namespace GameGather.Api.Modules
         public static void AddSessionGameModuleEndpoints(this IEndpointRouteBuilder app)
         {
             app.MapPost("/api/SessionGame/CreateSessionGame", async (
-                [FromBody] CreateSessionGameCommnand command,
+                [FromBody] CreateSessionGameCommand command,
                 [FromServices] ISender sender) =>
             {
                 var response = await sender.Send(command);
@@ -27,7 +27,7 @@ namespace GameGather.Api.Modules
             .WithTags("SessionGame");
 
             app.MapPost("/api/SessionGame/EditSessionGame", async (
-                [FromBody] EditSessionGameCommnand command,
+                [FromBody] EditSessionGameCommand command,
                 [FromServices] ISender sender) =>
             {
                 var response = await sender.Send(command);
@@ -39,7 +39,7 @@ namespace GameGather.Api.Modules
             .WithTags("SessionGame");
 
             app.MapPost("/api/SessionGame/DeleteSessionGame", async (
-                [FromBody] DeleteSessionGameCommnand command,
+                [FromBody] DeleteSessionGameCommand command,
                 [FromServices] ISender sender) =>
             {
                 var response = await sender.Send(command);
