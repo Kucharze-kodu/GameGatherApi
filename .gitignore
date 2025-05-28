@@ -426,3 +426,6 @@ fabric.properties
 .terraform.lock.hcl
 terraform.tfstate*
 *.tfvars
+
+# Environment variables
+.env

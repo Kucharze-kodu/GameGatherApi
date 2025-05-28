@@ -9,6 +9,7 @@ public static class HttpResultsExtensions
     {
         return Results.Ok(value);
     }
+    
     public static IResult Problem(List<Error> errors)
     {
         var firstError = errors[0];
@@ -18,6 +19,7 @@ public static class HttpResultsExtensions
             ErrorType.Conflict => StatusCodes.Status409Conflict,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
             ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
             _ => StatusCodes.Status500InternalServerError
         };
 
@@ -36,5 +38,10 @@ public static class HttpResultsExtensions
             detail: problemDetails.Title,
             statusCode: problemDetails.Status,
             extensions: problemDetails.Extensions);
+    }
+    
+    public static IResult Redirect(string url)
+    {
+        return Results.Redirect(url);
     }
 }
