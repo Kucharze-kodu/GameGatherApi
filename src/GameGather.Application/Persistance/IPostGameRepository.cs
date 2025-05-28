@@ -8,6 +8,7 @@ namespace GameGather.Application.Persistance
 {
     public interface IPostGameRepository
     {
+
         Task CreatePostGame(PostGame postGame, CancellationToken cancellationToken = default);
         Task DeletePostGame(PostGameId postGameId,SessionGameId sessionGameId, UserId userId, CancellationToken cancellationToken = default);
         Task EditPostGame(PostGameId postGameId, SessionGameId sessionGameId, UserId userId, DateTime gameTime, string postDescription, CancellationToken cancellationToken = default);

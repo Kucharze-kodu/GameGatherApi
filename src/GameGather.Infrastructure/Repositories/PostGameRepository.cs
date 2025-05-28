@@ -1,4 +1,4 @@
-﻿using GameGather.Application.Persistance;
+using GameGather.Application.Persistance;
 using GameGather.Domain.Aggregates.PostGames;
 using GameGather.Domain.Aggregates.PostGames.ValueObcjets;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;

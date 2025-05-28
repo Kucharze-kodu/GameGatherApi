@@ -1,4 +1,4 @@
-﻿using GameGather.Domain.Aggregates.PostGames.ValueObcjets;
+using GameGather.Domain.Aggregates.PostGames.ValueObcjets;
 using GameGather.Domain.Aggregates.SessionGames;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
@@ -47,6 +47,7 @@ public sealed class PostGame : AggregateRoot<PostGameId>
             gameTime,
             postDescription);
 
+
         return postGame;
     }
 
@@ -56,6 +57,7 @@ public sealed class PostGame : AggregateRoot<PostGameId>
         DateTime dayPost,
         DateTime gameTime,
         string postDescription)
+
     {
         Id = id;
         GameMasterId = gameMasterId;
