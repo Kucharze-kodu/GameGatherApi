@@ -5,6 +5,7 @@ using GameGather.Application.Features.PostGames.Queries.GetAllPostGame;
 using GameGather.Application.Persistance;
 using GameGather.Application.Utils;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
+using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Errors;
 
 
@@ -14,12 +15,15 @@ namespace GameGather.Application.Features.PostGames.Quries.GetAllPostGame
     public class GetAllPostGameQueryHandler : ICommandHandler<GetAllPostGameQuery, List<GetAllPostGameDto>>
     {
         private readonly IPostGameRepository _postGameRepository;
+        private readonly IPlayerManagerRepository _playerManagerRepository;
         private readonly IUserContext _userContext;
 
         public GetAllPostGameQueryHandler(IPostGameRepository postGameRepository,
+            IPlayerManagerRepository playerManagerRepository,
             IUserContext userContext)
         {
             _postGameRepository=postGameRepository;
+            _playerManagerRepository=playerManagerRepository;
             _userContext=userContext;
         }
 
@@ -31,7 +35,15 @@ namespace GameGather.Application.Features.PostGames.Quries.GetAllPostGame
                 return Errors.SessionGame.IsNotAuthorized;
             }
 
+            var id = _userContext.UserId;
+            UserId userId = UserId.Create(Convert.ToInt32(id));
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.SessionGameId));
+            var isthisYourSession = await _playerManagerRepository.IsThisYourSession(userId, sessionGameId);
+
+            if(!isthisYourSession)
+            {
+                return Errors.PostGame.IsWrongData;
+            }
             var result = await _postGameRepository.GetAllPostGameSession(sessionGameId);
 
             if (result is null)
