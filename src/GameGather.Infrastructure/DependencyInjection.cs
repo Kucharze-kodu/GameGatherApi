@@ -30,9 +30,16 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtProvider, JwtProvider>();
+
+        services.AddScoped<IUserContext, UserContext>();
+
+        services.AddScoped<ISessionGameRepository, SessionGameRepository>();
+        services.AddScoped<IPlayerManagerRepository, PlayerManagerRepository>();
+
+      
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IEmailService, EmailService>();
-        
+
         services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

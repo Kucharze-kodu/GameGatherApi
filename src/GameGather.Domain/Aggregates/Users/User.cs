@@ -2,7 +2,9 @@ using Newtonsoft.Json;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Primitives;
+using GameGather.Domain.Aggregates.SessionGameLists;
 using GameGather.Domain.DomainEvents;
+
 
 namespace GameGather.Domain.Aggregates.Users;
 
@@ -21,7 +23,10 @@ public sealed class User : AggregateRoot<UserId>
     public ResetPasswordToken? ResetPasswordToken { get; private set; }
     public Ban? Ban { get; private set; }
     public Role Role { get; private set; }
-    
+
+    private readonly List<SessionGameList> _sessionGameList = new();
+    public IReadOnlyCollection<SessionGameList> SessionGames => _sessionGameList.AsReadOnly();
+
     private User(UserId id) : base(id)
     {
     }
