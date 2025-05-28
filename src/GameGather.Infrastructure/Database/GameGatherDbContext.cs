@@ -36,16 +36,17 @@ public class GameGatherDbContext : DbContext
         // link SessionGame to commnets
         modelBuilder.Entity<SessionGame>()
             .HasMany(sg => sg.Comments)
-            .WithOne()
+            .WithOne(pg => pg.SessionGame)
             .HasForeignKey(c => c.SessionGameId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // link SessionGame to postGame
         modelBuilder.Entity<SessionGame>()
-            .HasMany(sg => sg.PostGames)
-            .WithOne()
-            .HasForeignKey(c => c.SessionGameId)
-            .OnDelete(DeleteBehavior.Cascade);
+         .HasMany(sg => sg.PostGames)
+         .WithOne(pg => pg.SessionGame)
+         .HasForeignKey(pg => pg.SessionGameId)
+         .OnDelete(DeleteBehavior.Cascade);
+
 
 
         // link many Users to many SessionGame

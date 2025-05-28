@@ -1,4 +1,4 @@
-﻿
+
 
 namespace GameGather.Application.Features.SessionGames.Queries.DTOs
 {

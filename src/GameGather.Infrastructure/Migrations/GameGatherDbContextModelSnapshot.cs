@@ -67,10 +67,11 @@ namespace GameGather.Infrastructure.Migrations
                     b.Property<DateTime>("GameTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("SessionGameId")
-                        .HasColumnType("integer");
+                    b.Property<string>("PostDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("State")
+                    b.Property<int>("SessionGameId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -204,6 +205,45 @@ namespace GameGather.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                });
+
+            modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
+                {
+                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", "SessionGame")
+                        .WithMany("Comments")
+                        .HasForeignKey("SessionGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SessionGame");
+                });
+
+            modelBuilder.Entity("GameGather.Domain.Aggregates.PostGames.PostGame", b =>
+                {
+                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", "SessionGame")
+                        .WithMany("PostGames")
+                        .HasForeignKey("SessionGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SessionGame");
+                });
+
+            modelBuilder.Entity("GameGather.Domain.Aggregates.SessionGameLists.SessionGameList", b =>
+                {
+                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", null)
+                        .WithMany("SessionGameLists")
+                        .HasForeignKey("SessionGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameGather.Domain.Aggregates.Users.User", "User")
+                        .WithMany("SessionGames")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>
