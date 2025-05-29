@@ -1,5 +1,5 @@
+﻿using GameGather.Domain.Aggregates.PostGames.Enums;
 using GameGather.Domain.Aggregates.PostGames.ValueObcjets;
-using GameGather.Domain.Aggregates.SessionGames;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Primitives;
@@ -12,12 +12,9 @@ public sealed class PostGame : AggregateRoot<PostGameId>
 {
     public UserId GameMasterId { get; private set; }
     public SessionGameId SessionGameId { get; private set; }
-    public DateTime DayPost {  get; set; }
-    public DateTime GameTime { get; set; }
-    public string PostDescription { get; set; }
-
-    public SessionGame SessionGame { get; private set; } = null;
-
+    public DateTime DayPost {  get; private set; }
+    public DateTime GameTime { get; private set; }
+    public State State { get; private set; }
 
 
     private PostGame(PostGameId id) : base(id)
@@ -29,24 +26,23 @@ public sealed class PostGame : AggregateRoot<PostGameId>
         UserId gameMasterId,
         SessionGameId sessionGameId,
         DateTime gameTime,
-        string postDescription) : base(id)
+        State state) : base(id)
     {
         GameMasterId = gameMasterId;
         SessionGameId = sessionGameId;
-        DayPost = DateTime.UtcNow;
+        DayPost = DateTime.Now;
         GameTime = gameTime;
-        PostDescription=postDescription;
+        State = state;
     }
 
-    public static PostGame Create(UserId gameMasterId, SessionGameId sessionGameId, DateTime gameTime, string postDescription)
+    public static PostGame Create(UserId gameMasterId, SessionGameId sessionGameId, DateTime gameTime, State state)
     {
         var postGame = new PostGame(
             default,
             gameMasterId,
             sessionGameId,
             gameTime,
-            postDescription);
-
+            state);
 
         return postGame;
     }
@@ -56,14 +52,13 @@ public sealed class PostGame : AggregateRoot<PostGameId>
         UserId gameMasterId,
         DateTime dayPost,
         DateTime gameTime,
-        string postDescription)
-
+        State state)
     {
         Id = id;
         GameMasterId = gameMasterId;
         DayPost = dayPost;
         GameTime = gameTime;
-        PostDescription = postDescription;
+        State = state;
         return this;
     }
 }

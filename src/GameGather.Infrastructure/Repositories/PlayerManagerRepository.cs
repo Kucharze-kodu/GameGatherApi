@@ -3,7 +3,6 @@
 using GameGather.Application.Persistance;
 using GameGather.Domain.Aggregates.SessionGameLists;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
-using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,19 +51,5 @@ namespace GameGather.Infrastructure.Repositories
 
             _dbContext.SessionGameLists.Remove(result);
         }
-
-        public async Task<bool> IsThisYourSession(UserId userId, SessionGameId sessionGameId, CancellationToken cancellationToken = default)
-        {
-            var result = await _dbContext.SessionGameLists.FirstOrDefaultAsync
-                            (c => c.UserId == userId && c.SessionGameId == sessionGameId);
-
-            if (result is not null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
     }
 }

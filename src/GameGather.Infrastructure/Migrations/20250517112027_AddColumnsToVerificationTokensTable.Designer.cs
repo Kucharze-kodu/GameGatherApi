@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameGather.Infrastructure.Migrations
 {
     [DbContext(typeof(GameGatherDbContext))]
-    [Migration("20250528210708_totalDatabase")]
-    partial class totalDatabase
+    [Migration("20250517112027_AddColumnsToVerificationTokensTable")]
+    partial class AddColumnsToVerificationTokensTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,108 +24,6 @@ namespace GameGather.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateComment")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("SessionGameId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SessionGameId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.PostGames.PostGame", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DayPost")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("GameMasterId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("GameTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("PostDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("SessionGameId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SessionGameId");
-
-                    b.ToTable("PostGames");
-                });
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.SessionGameLists.SessionGameList", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SessionGameId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "SessionGameId");
-
-                    b.HasIndex("SessionGameId");
-
-                    b.ToTable("SessionGameLists");
-                });
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.SessionGames.SessionGame", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("GameMasterId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("GameMasterName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SessionGames");
-                });
 
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>
                 {
@@ -205,45 +103,6 @@ namespace GameGather.Infrastructure.Migrations
                     b.ToTable("OutboxMessages");
                 });
 
-            modelBuilder.Entity("GameGather.Domain.Aggregates.Comments.Comment", b =>
-                {
-                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", "SessionGame")
-                        .WithMany("Comments")
-                        .HasForeignKey("SessionGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SessionGame");
-                });
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.PostGames.PostGame", b =>
-                {
-                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", "SessionGame")
-                        .WithMany("PostGames")
-                        .HasForeignKey("SessionGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SessionGame");
-                });
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.SessionGameLists.SessionGameList", b =>
-                {
-                    b.HasOne("GameGather.Domain.Aggregates.SessionGames.SessionGame", null)
-                        .WithMany("SessionGameLists")
-                        .HasForeignKey("SessionGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GameGather.Domain.Aggregates.Users.User", "User")
-                        .WithMany("SessionGames")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>
                 {
                     b.OwnsOne("GameGather.Domain.Aggregates.Users.ValueObjects.Ban", "Ban", b1 =>
@@ -307,15 +166,12 @@ namespace GameGather.Infrastructure.Migrations
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("ExpiresOnUtc");
 
-                            b1.Property<DateTime>("LastSendOnUtc")
+                            b1.Property<DateTime?>("LastSendOnUtc")
                                 .HasColumnType("timestamp with time zone");
 
                             b1.Property<int>("Type")
                                 .HasColumnType("integer")
                                 .HasColumnName("Type");
-
-                            b1.Property<DateTime?>("UsedOnUtc")
-                                .HasColumnType("timestamp with time zone");
 
                             b1.Property<Guid>("Value")
                                 .HasColumnType("uuid")
@@ -349,8 +205,8 @@ namespace GameGather.Infrastructure.Migrations
                                 .HasColumnType("integer")
                                 .HasColumnName("Type");
 
-                            b1.Property<DateTime?>("UsedOnUtc")
-                                .HasColumnType("timestamp with time zone");
+                            b1.Property<DateOnly?>("UsedOnUtc")
+                                .HasColumnType("date");
 
                             b1.Property<Guid>("Value")
                                 .HasColumnType("uuid")
@@ -373,20 +229,6 @@ namespace GameGather.Infrastructure.Migrations
 
                     b.Navigation("VerificationToken")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.SessionGames.SessionGame", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("PostGames");
-
-                    b.Navigation("SessionGameLists");
-                });
-
-            modelBuilder.Entity("GameGather.Domain.Aggregates.Users.User", b =>
-                {
-                    b.Navigation("SessionGames");
                 });
 #pragma warning restore 612, 618
         }

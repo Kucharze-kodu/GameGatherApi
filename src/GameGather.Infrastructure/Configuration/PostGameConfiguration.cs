@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using GameGather.Domain.Aggregates.PostGames;
+using GameGather.Domain.Aggregates.Comments.ValueObcjets;
 using GameGather.Domain.Aggregates.PostGames.ValueObcjets;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;

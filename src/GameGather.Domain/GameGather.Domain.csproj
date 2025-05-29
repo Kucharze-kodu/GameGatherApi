@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <Folder Include="Aggregates\Comments\Enums\" />
-      <Folder Include="Aggregates\PostGames\Enums\" />
       <Folder Include="Aggregates\SessionGames\Enums\" />
     </ItemGroup>
 
