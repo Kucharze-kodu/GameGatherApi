@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.Serialization;
 using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
@@ -30,7 +31,17 @@ public class UserBuilder
         .Build();
     private Ban? _ban = null;
     private Role _role = Constants.User.Role;
+    
+    public UserBuilder NotVerified()
+    {
+        _verifiedOnUtc = null;
+        return this;
+    }
 
+    public User EmptyObject()
+    {
+        return (User)FormatterServices.GetUninitializedObject(typeof(User));
+    }
 
     public User Build()
     {

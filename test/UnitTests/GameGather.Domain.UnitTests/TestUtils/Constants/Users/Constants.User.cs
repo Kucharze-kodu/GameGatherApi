@@ -31,6 +31,7 @@ public static partial class Constants
         public static readonly Role Role = Role.User;
         public const string VerifyEmailUrl = "https://example.com/verify-email";
         
+        public const int MaxDifferenceInMinutes = 5;
         
         private const int AgeOfUser = 20;
         private const int AccountAgeInDays = 30;
