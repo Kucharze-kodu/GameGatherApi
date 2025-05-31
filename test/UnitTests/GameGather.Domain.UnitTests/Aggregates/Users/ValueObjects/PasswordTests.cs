@@ -1,8 +1,6 @@
 using FluentAssertions;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
-using GameGather.Domain.UnitTests.TestUtils.Constants;
-using Constants = GameGather.Domain.UnitTests.TestUtils.Constants.Users.Constants;
+using GameGather.UnitTests.Utils.Builders.Users;
 
 namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects;
 

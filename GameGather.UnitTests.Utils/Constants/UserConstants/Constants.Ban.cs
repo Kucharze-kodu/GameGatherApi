@@ -1,4 +1,4 @@
-namespace GameGather.Domain.UnitTests.TestUtils.Constants.Users;
+namespace GameGather.UnitTests.Utils;
 
 public static partial class Constants
 {

@@ -1,7 +1,6 @@
 using GameGather.Domain.Aggregates.Users.Enums;
-using Password_ = GameGather.Domain.Aggregates.Users.ValueObjects.Password;
 
-namespace GameGather.Domain.UnitTests.TestUtils.Constants.Users;
+namespace GameGather.UnitTests.Utils;
 
 public static partial class Constants
 {

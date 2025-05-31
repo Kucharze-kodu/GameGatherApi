@@ -1,9 +1,8 @@
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using GameGather.Domain.UnitTests.TestUtils.Constants.Users;
 using BindingFlags = System.Reflection.BindingFlags;
 
-namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
+namespace GameGather.UnitTests.Utils.Builders.Users;
 
 public class ResetPasswordTokenBuilder
 {

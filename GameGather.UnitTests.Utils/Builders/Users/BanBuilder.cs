@@ -1,8 +1,7 @@
 using System.Reflection;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using GameGather.Domain.UnitTests.TestUtils.Constants.Users;
 
-namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
+namespace GameGather.UnitTests.Utils.Builders.Users;
 
 public class BanBuilder
 {

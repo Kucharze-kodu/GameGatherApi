@@ -18,7 +18,6 @@ public sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, 
 
     public LoginUserCommandHandler(
         IUserRepository userRepository,
-        IUnitOfWork unitOfWork, 
         IJwtProvider jwtProvider, 
         IPasswordHasher passwordHasher, 
         IOptions<PasswordOptions> passwordOptions)

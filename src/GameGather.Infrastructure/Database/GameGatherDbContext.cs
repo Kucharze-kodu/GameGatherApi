@@ -48,7 +48,7 @@ public class GameGatherDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
 
-        // link many Users to many SessionGame
+        // link many User to many SessionGame
         modelBuilder.Entity<SessionGameList>()
             .HasKey(sgl => new { sgl.UserId, sgl.SessionGameId });
 

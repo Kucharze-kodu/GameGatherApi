@@ -3,10 +3,8 @@ using System.Runtime.Serialization;
 using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
-using GameGather.Domain.UnitTests.TestUtils.Constants.Users;
 
-namespace GameGather.Domain.UnitTests.Aggregates.Users.TestUtils;
+namespace GameGather.UnitTests.Utils.Builders.Users;
 
 public class UserBuilder
 {
@@ -31,6 +29,14 @@ public class UserBuilder
         .Build();
     private Ban? _ban = null;
     private Role _role = Constants.User.Role;
+    
+    public UserBuilder WithExpiredPassword()
+    {
+        _password = new PasswordBuilder()
+            .WithExpiredPassword()
+            .Build();
+        return this;
+    }
     
     public UserBuilder NotVerified()
     {
