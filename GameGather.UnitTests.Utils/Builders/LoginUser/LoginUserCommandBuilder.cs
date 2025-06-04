@@ -7,6 +7,12 @@ public class LoginUserCommandBuilder
     private string _email = Constants.User.Email;
     private string _password = Constants.User.PasswordValue;
     
+    public LoginUserCommandBuilder WithEmail(string email)
+    {
+        _email = email;
+        return this;
+    }
+    
     public LoginUserCommandBuilder WithEmptyEmail()
     {
         _email = string.Empty;
@@ -16,6 +22,12 @@ public class LoginUserCommandBuilder
     public LoginUserCommandBuilder WithWrongEmail()
     {
         _email = Constants.LoginUserCommand.Email;
+        return this;
+    }
+    
+    public LoginUserCommandBuilder WithPassword(string password)
+    {
+        _password = password;
         return this;
     }
     
