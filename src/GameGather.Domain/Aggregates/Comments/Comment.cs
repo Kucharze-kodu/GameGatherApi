@@ -13,6 +13,8 @@ namespace GameGather.Domain.Aggregates.Comments
         public string Text { get; private set; }
         public DateTime DateComment { get; private set; }
 
+        //public SessionGame SessionGame { get; private set; } = null;
+
         public Comment(CommentId id) : base(id)
         {
         }
