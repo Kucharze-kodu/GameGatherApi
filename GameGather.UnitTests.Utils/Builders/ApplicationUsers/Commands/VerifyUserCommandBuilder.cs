@@ -1,6 +1,6 @@
 using GameGather.Application.Features.Users.Commands.VerifyUser;
 
-namespace GameGather.UnitTests.Utils.Builders.VerifyUser;
+namespace GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
 
 public class VerifyUserCommandBuilder
 {

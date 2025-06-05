@@ -1,6 +1,6 @@
 using FluentValidation.TestHelper;
 using GameGather.Application.Features.Users.Commands.RegisterUser;
-using GameGather.UnitTests.Utils.Builders.RegisterUser;
+using GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
 
 namespace GameGather.Application.UnitTests.Features.Users.Commands.RegisterUser;
 

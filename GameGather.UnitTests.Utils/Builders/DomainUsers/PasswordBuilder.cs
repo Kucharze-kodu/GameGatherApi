@@ -1,7 +1,7 @@
 using System.Reflection;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 
-namespace GameGather.UnitTests.Utils.Builders.Users;
+namespace GameGather.UnitTests.Utils.Builders.DomainUsers;
 
 public class PasswordBuilder
 {

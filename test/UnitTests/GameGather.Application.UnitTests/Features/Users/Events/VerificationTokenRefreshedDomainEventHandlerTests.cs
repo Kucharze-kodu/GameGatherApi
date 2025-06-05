@@ -8,30 +8,30 @@ using Moq;
 
 namespace GameGather.Application.UnitTests.Features.Users.Events;
 
-public class UserRegisteredDomainEventHandlerTests
+public class VerificationTokenRefreshedDomainEventHandlerTests
 {
-    private readonly UserRegisteredDomainEventHandler _userRegisteredDomainEventHandler;
+    private readonly VerificationTokenRefreshedDomainEventHandler _verificationTokenRefreshedDomainEventHandler;
     private readonly Mock<IEmailService> _emailServiceMock;
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
-    public UserRegisteredDomainEventHandlerTests()
+    public VerificationTokenRefreshedDomainEventHandlerTests()
     {
         _emailServiceMock = new Mock<IEmailService>();
         _userRepositoryMock = new Mock<IUserRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _userRegisteredDomainEventHandler = new UserRegisteredDomainEventHandler(
+        _verificationTokenRefreshedDomainEventHandler = new VerificationTokenRefreshedDomainEventHandler(
             _emailServiceMock.Object,
             _userRepositoryMock.Object,
             _unitOfWorkMock.Object);
     }
-
+    
     [Fact]
     public async Task Handle_Should_ThrowInvalidOperationException_WhenUserNotFound()
     {
         // Arrange
 
-        var notification = new UserRegisteredDomainEventBuilder()
+        var notification = new VerificationTokenRefreshedDomainEventBuilder()
             .Build();
 
         _userRepositoryMock
@@ -42,7 +42,7 @@ public class UserRegisteredDomainEventHandlerTests
 
         // Act 
 
-        var result = () => _userRegisteredDomainEventHandler
+        var result = () => _verificationTokenRefreshedDomainEventHandler
             .Handle(notification, default);
 
         // Assert
@@ -53,11 +53,11 @@ public class UserRegisteredDomainEventHandlerTests
     }
     
     [Fact]
-    public async Task Handle_Should_SendEmailWithVerificationToken_WhenUserFound()
+    public async Task Handle_Should_SendEmailWithVerificationTokenAsync_WhenUserFound()
     {
         // Arrange
 
-        var notification = new UserRegisteredDomainEventBuilder()
+        var notification = new VerificationTokenRefreshedDomainEventBuilder()
             .Build();
 
         _userRepositoryMock
@@ -70,7 +70,7 @@ public class UserRegisteredDomainEventHandlerTests
 
         // Act 
 
-        await _userRegisteredDomainEventHandler
+        await _verificationTokenRefreshedDomainEventHandler
             .Handle(notification, default);
 
         // Assert
@@ -84,8 +84,8 @@ public class UserRegisteredDomainEventHandlerTests
                     default), 
                 Times.Once);
 
-        _unitOfWorkMock
-            .Verify(x => x.SaveChangesAsync(default), 
-                Times.Once);
+        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(default), 
+            Times.Once);
     }
+    
 }

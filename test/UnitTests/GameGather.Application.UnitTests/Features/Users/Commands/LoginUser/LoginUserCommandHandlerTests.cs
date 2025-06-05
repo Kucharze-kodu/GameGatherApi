@@ -5,8 +5,8 @@ using GameGather.Application.Persistance;
 using GameGather.Application.Utils;
 using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Common.Errors;
-using GameGather.UnitTests.Utils.Builders.LoginUser;
-using GameGather.UnitTests.Utils.Builders.Users;
+using GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
+using GameGather.UnitTests.Utils.Builders.DomainUsers;
 using Microsoft.Extensions.Options;
 using Moq;
 

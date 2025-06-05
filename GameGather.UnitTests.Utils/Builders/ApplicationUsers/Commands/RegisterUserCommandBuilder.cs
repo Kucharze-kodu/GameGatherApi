@@ -1,6 +1,6 @@
 using GameGather.Application.Features.Users.Commands.RegisterUser;
 
-namespace GameGather.UnitTests.Utils.Builders.RegisterUser;
+namespace GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
 
 public class RegisterUserCommandBuilder
 {

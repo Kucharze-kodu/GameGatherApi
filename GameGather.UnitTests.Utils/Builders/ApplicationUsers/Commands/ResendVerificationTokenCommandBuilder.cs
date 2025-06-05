@@ -1,6 +1,6 @@
 using GameGather.Application.Features.Users.Commands.ResendVerificationToken;
 
-namespace GameGather.UnitTests.Utils.Builders.ResendVerificationToken;
+namespace GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
 
 public class ResendVerificationTokenCommandBuilder
 {

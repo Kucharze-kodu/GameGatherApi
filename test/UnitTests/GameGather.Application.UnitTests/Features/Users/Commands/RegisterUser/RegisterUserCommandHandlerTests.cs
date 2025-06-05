@@ -4,7 +4,7 @@ using GameGather.Application.Persistance;
 using GameGather.Application.Utils;
 using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Common.Errors;
-using GameGather.UnitTests.Utils.Builders.RegisterUser;
+using GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
 using Moq;
 
 namespace GameGather.Application.UnitTests.Features.Users.Commands.RegisterUser;

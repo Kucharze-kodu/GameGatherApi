@@ -1,6 +1,6 @@
 using FluentValidation.TestHelper;
 using GameGather.Application.Features.Users.Commands.ResendVerificationToken;
-using GameGather.UnitTests.Utils.Builders.ResendVerificationToken;
+using GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
 
 namespace GameGather.Application.UnitTests.Features.Users.Commands.ResendVerificationToken;
 

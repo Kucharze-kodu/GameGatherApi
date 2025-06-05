@@ -1,6 +1,6 @@
 ﻿using GameGather.Application.Features.Users.Commands.LoginUser;
 
-namespace GameGather.UnitTests.Utils.Builders.LoginUser;
+namespace GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
 
 public class LoginUserCommandBuilder
 {

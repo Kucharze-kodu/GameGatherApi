@@ -2,8 +2,8 @@ using FluentAssertions;
 using GameGather.Application.Features.Users.Commands.VerifyUser;
 using GameGather.Application.Persistance;
 using GameGather.Domain.Common.Errors;
-using GameGather.UnitTests.Utils.Builders.Users;
-using GameGather.UnitTests.Utils.Builders.VerifyUser;
+using GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
+using GameGather.UnitTests.Utils.Builders.DomainUsers;
 using Moq;
 
 namespace GameGather.Application.UnitTests.Features.Users.Commands.VerifyUser;

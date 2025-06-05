@@ -2,7 +2,7 @@ using FluentAssertions;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.UnitTests.Utils;
-using GameGather.UnitTests.Utils.Builders.Users;
+using GameGather.UnitTests.Utils.Builders.DomainUsers;
 
 namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects;
 

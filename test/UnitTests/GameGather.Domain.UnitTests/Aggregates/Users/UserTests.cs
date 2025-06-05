@@ -3,7 +3,7 @@ using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.DomainEvents;
 using GameGather.Domain.UnitTests.Aggregates.Users.TestUtils;
 using GameGather.UnitTests.Utils;
-using GameGather.UnitTests.Utils.Builders.Users;
+using GameGather.UnitTests.Utils.Builders.DomainUsers;
 
 namespace GameGather.Domain.UnitTests.Aggregates.Users;
 

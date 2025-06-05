@@ -6,8 +6,8 @@ using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using GameGather.Domain.Common.Errors;
 using GameGather.UnitTests.Utils;
-using GameGather.UnitTests.Utils.Builders.ResendVerificationToken;
-using GameGather.UnitTests.Utils.Builders.Users;
+using GameGather.UnitTests.Utils.Builders.ApplicationUsers.Commands;
+using GameGather.UnitTests.Utils.Builders.DomainUsers;
 using Moq;
 
 namespace GameGather.Application.UnitTests.Features.Users.Commands.ResendVerificationToken;
