@@ -13,9 +13,10 @@ public class VerifyUserCommandValidator : AbstractValidator<VerifyUserCommand>
             .WithMessage("User email is not valid");
 
         RuleFor(r => r.VerificationCode)
+            .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .WithMessage("Verification code is required")
-            .Must(x => x.ToString().Length == 36)
+            .Must(x => x.Length == 36)
             .WithMessage("Verification code must be 36 characters long");
     }
 }
