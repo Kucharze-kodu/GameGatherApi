@@ -9,7 +9,7 @@ public class ResetPasswordTokenBuilder
     private Guid _value = Constants.ResetPasswordToken.Value;
     private DateTime _createdOnUtc = Constants.ResetPasswordToken.CreatedOnUtc;
     private DateTime _expiresOnUtc = Constants.ResetPasswordToken.ExpiresOnUtc;
-    private DateTime _lastSendOnUtc = Constants.ResetPasswordToken.LastSendOnUtc;
+    private DateTime? _lastSendOnUtc = Constants.ResetPasswordToken.LastSendOnUtc;
     private DateTime? _usedOnUtc = Constants.ResetPasswordToken.UsedOnUtc;
     private TokenType _type = Constants.ResetPasswordToken.Type;
 
@@ -22,6 +22,12 @@ public class ResetPasswordTokenBuilder
     public ResetPasswordTokenBuilder WithLastSendOnUtc(DateTime lastSendOnUtc)
     {
         _lastSendOnUtc = lastSendOnUtc;
+        return this;
+    }
+    
+    public ResetPasswordTokenBuilder WithNotLastSendOnUtc()
+    {
+        _lastSendOnUtc = null;
         return this;
     }
     

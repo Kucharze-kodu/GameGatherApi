@@ -178,7 +178,9 @@ public class LoginUserCommandHandlerTests
                 It.IsAny<string>(),
                 default))
             .ReturnsAsync(new UserBuilder()
-                .WithExpiredPassword()
+                .WithPassword(new PasswordBuilder()
+                    .WithExpiredPassword()
+                    .Build())
                 .Build());
         
         _passwordHasherMock

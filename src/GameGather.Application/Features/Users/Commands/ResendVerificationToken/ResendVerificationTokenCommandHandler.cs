@@ -18,7 +18,8 @@ public class ResendVerificationTokenCommandHandler : ICommandHandler<ResendVerif
 
     public ResendVerificationTokenCommandHandler(
         IUserRepository userRepository,
-        IUnitOfWork unitOfWork, IEmailService emailService
+        IUnitOfWork unitOfWork, 
+        IEmailService emailService
     )
     {
         _userRepository = userRepository;
@@ -36,28 +37,24 @@ public class ResendVerificationTokenCommandHandler : ICommandHandler<ResendVerif
             return Errors.User.NotFound;
         }
         
-        // Token already sent
-        if (user.VerificationToken.CheckStatus() is TokenStatus.TokenAlreadySent)
-        {
-            return new ResendVerificationTokenResponse(
-                TokenStatus.TokenNotReadyToResend,
-                user.VerificationToken.GetTimeToResendToken());
-        }
-        
-        // Token expired
-        if (user.VerificationToken.CheckStatus() is TokenStatus.TokenExpired)
-        {
-            user.GenerateNewVerificationToken(request.VerifyEmailUrl);
-        }
+        var tokenStatus = user.VerificationToken.CheckStatus();
         
         // Token used
-        if (user.VerificationToken.CheckStatus() is TokenStatus.TokenUsed)
+        if (tokenStatus is TokenStatus.Used)
         {
             return Errors.Token.Invalid;
         }
         
-        // Token ready to resend
-        if (user.VerificationToken.CheckStatus() is TokenStatus.TokenReadyToResend)
+        // Token expired
+        if (tokenStatus is TokenStatus.Expired)
+        {
+            user.GenerateNewVerificationToken(request.VerifyEmailUrl);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+        
+        // Token is not sent yet
+        if (tokenStatus is TokenStatus.NotSent)
         {
             await _emailService.SendEmailWithVerificationTokenAsync(
                 user.Email,
@@ -65,13 +62,29 @@ public class ResendVerificationTokenCommandHandler : ICommandHandler<ResendVerif
                 user.VerificationToken.Value.ToString(),
                 request.VerifyEmailUrl,
                 cancellationToken);
+            
             user.VerificationToken.UpdateLastSendOnUtc();
+            
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
         
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        // Token ready to resend
+        if (tokenStatus is TokenStatus.SentAndReadyToResend)
+        {
+            await _emailService.SendEmailWithVerificationTokenAsync(
+                user.Email,
+                user.FirstName,
+                user.VerificationToken.Value.ToString(),
+                request.VerifyEmailUrl,
+                cancellationToken);
+            
+            user.VerificationToken.UpdateLastSendOnUtc();
+            
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+        }
         
         return new ResendVerificationTokenResponse(
-            TokenStatus.TokenAlreadySent,
+            tokenStatus,
             user.VerificationToken.GetTimeToResendToken());
     }
 }

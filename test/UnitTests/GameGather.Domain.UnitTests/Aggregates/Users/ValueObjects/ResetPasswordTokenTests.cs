@@ -42,9 +42,7 @@ public class ResetPasswordTokenTests
         resetPasswordToken
             .LastSendOnUtc
             .Should()
-            .BeCloseTo(
-                DateTime.UtcNow,
-                TimeSpan.FromMinutes(Constants.ResetPasswordToken.MaxDifferenceInMinutes));
+            .BeNull();
         resetPasswordToken
             .Type
             .Should()
@@ -157,51 +155,7 @@ public class ResetPasswordTokenTests
     }
     
     [Fact]
-    public void CheckStatus_ShouldReturnTokenNotReadyToResend_WhenTokenWasAlreadySent()
-    {
-        // Arrange
-        
-        var resetPasswordToken = new ResetPasswordTokenBuilder()
-            .WithLastSendOnUtc(DateTime
-                .UtcNow
-                .AddMinutes(Constants
-                    .ResetPasswordToken
-                    .MinimumTimeToResendInMinutes - 2))
-            .Build();
-        
-        // Act
-        
-        var status = resetPasswordToken.CheckStatus();
-        
-        // Assert
-        
-        status
-            .Should()
-            .Be(TokenStatus.TokenNotReadyToResend);
-    }
-    
-    [Fact]
-    public void CheckStatus_ShouldReturnTokenExpired_WhenTokenIsExpired()
-    {
-        // Arrange
-        
-        var resetPasswordToken = new ResetPasswordTokenBuilder()
-            .WithExpiredToken()
-            .Build();
-        
-        // Act
-        
-        var status = resetPasswordToken.CheckStatus();
-        
-        // Assert
-        
-        status
-            .Should()
-            .Be(TokenStatus.TokenExpired);
-    }
-    
-    [Fact]
-    public void CheckStatus_ShouldReturnTokenUsed_WhenTokenIsUsed()
+    public void CheckStatus_ShouldReturnTokenStatusUsed_WhenTokenIsUsed()
     {
         // Arrange
         
@@ -217,11 +171,82 @@ public class ResetPasswordTokenTests
         
         status
             .Should()
-            .Be(TokenStatus.TokenUsed);
+            .Be(TokenStatus.Used);
     }
     
     [Fact]
-    public void CheckStatus_ShouldReturnTokenReadyToResend_WhenTokenIsNotAlreadySentAndIsNotExpiredAndNotUsed()
+    public void CheckStatus_ShouldReturnTokenStatusExpired_WhenTokenIsExpired()
+    {
+        // Arrange
+        
+        var resetPasswordToken = new ResetPasswordTokenBuilder()
+            .WithExpiredToken()
+            .WithNotUsedOnUtc()
+            .Build();
+        
+        // Act
+        
+        var status = resetPasswordToken.CheckStatus();
+        
+        // Assert
+        
+        status
+            .Should()
+            .Be(TokenStatus.Expired);
+    }
+    
+    [Fact]
+    public void CheckStatus_Should_ReturnTokenStatusNotSent_WhenTokenWasNotSentYet()
+    {
+        // Arrange
+        
+        var resetPassworToken = new ResetPasswordTokenBuilder()
+            .WithNotUsedOnUtc()
+            .WithNotLastSendOnUtc()
+            .Build();
+        
+        // Act
+        
+        var status = resetPassworToken.CheckStatus();
+        
+        // Assert
+        
+        status
+            .Should()
+            .Be(TokenStatus.NotSent);
+    }
+    
+    [Fact]
+    public void CheckStatus_Should_ReturnTokenStatusSentWaitingForResend_WhenTokenWasAlreadySentAndNotExpiredAndNotUsed()
+    {
+        // Arrange
+        
+        var resetPasswordToken = new ResetPasswordTokenBuilder()
+            .WithNotUsedOnUtc()
+            .WithLastSendOnUtc(DateTime
+                .UtcNow
+                .AddMinutes(Constants
+                    .ResetPasswordToken
+                    .MinimumTimeToResendInMinutes - 2))
+            .Build();
+        
+        // Act
+        
+        var status = resetPasswordToken.CheckStatus();
+        
+        // Assert
+        
+        status
+            .Should()
+            .Be(TokenStatus.SentWaitingForResend);
+    }
+    
+    
+    
+    
+    
+    [Fact]
+    public void CheckStatus_Should_ReturnTokenStatusSentAndReadyToResend_WhenTokenIsReadyToResendAndIsNotExpiredAndNotUsed()
     {
         // Arrange
         
@@ -237,6 +262,6 @@ public class ResetPasswordTokenTests
         
         status
             .Should()
-            .Be(TokenStatus.TokenReadyToResend);
+            .Be(TokenStatus.SentAndReadyToResend);
     }
 }

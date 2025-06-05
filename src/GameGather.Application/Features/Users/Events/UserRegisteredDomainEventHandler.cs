@@ -9,10 +9,17 @@ namespace GameGather.Application.Features.Users.Events;
 public sealed class UserRegisteredDomainEventHandler : INotificationHandler<UserRegistered>
 {
     private readonly IEmailService _emailService;
+    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UserRegisteredDomainEventHandler(IEmailService emailService)
+    public UserRegisteredDomainEventHandler(
+        IEmailService emailService,
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork)
     {
         _emailService = emailService;
+        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UserRegistered notification, CancellationToken cancellationToken)
@@ -23,5 +30,15 @@ public sealed class UserRegisteredDomainEventHandler : INotificationHandler<User
             notification.VerificationToken.ToString(),
             notification.VerifyEmailUrl,
             cancellationToken);
+        
+        var user = await _userRepository.GetByEmailAsync(notification.Email, cancellationToken);
+        
+        if (user is null)
+        {
+            throw new InvalidOperationException("User not found");
+        }
+        
+        user.VerificationToken.UpdateLastSendOnUtc();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

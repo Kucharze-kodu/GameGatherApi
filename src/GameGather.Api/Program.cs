@@ -96,6 +96,7 @@ var app = builder.Build();
     app.UseAuthorization();
 
     app.UseCors("AllowAllOrigins");
+    app.ApplyMigration();
     app.Run();
 }
 

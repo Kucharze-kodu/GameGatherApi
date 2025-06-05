@@ -29,12 +29,16 @@ public class UserBuilder
         .Build();
     private Ban? _ban = null;
     private Role _role = Constants.User.Role;
-    
-    public UserBuilder WithExpiredPassword()
+
+    public UserBuilder WithVerificationToken(VerificationToken verificationToken)
     {
-        _password = new PasswordBuilder()
-            .WithExpiredPassword()
-            .Build();
+        _verificationToken = verificationToken;
+        return this;
+    }
+    
+    public UserBuilder WithPassword(Password password)
+    {
+        _password = password;
         return this;
     }
     
