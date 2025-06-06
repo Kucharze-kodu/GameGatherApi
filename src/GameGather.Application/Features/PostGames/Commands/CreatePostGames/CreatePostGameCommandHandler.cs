@@ -59,7 +59,7 @@ namespace GameGather.Application.Features.PostGames.Commands.CreatePostGames
             await _unitOfWork.SaveChangesAsync();
 
 
-            return new PostGameResponse("Created Post to the Game");
+            return new PostGameResponse("Post game created");
         }
     }
 }
