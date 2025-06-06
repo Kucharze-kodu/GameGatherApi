@@ -18,8 +18,9 @@ public sealed class SessionGame : AggregateRoot<SessionGameId>
 
     private readonly List<Comment> _comments = new();
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
-    private readonly List<PostGame> _postGame = new();
-    public IReadOnlyCollection<PostGame> PostGames => _postGame.AsReadOnly();
+
+    public ICollection<PostGame> PostGames { get; private set; } = new List<PostGame>();
+
 
     private readonly List<SessionGameList> _sessionGameList = new();
     public IReadOnlyCollection<SessionGameList> SessionGameLists => _sessionGameList.AsReadOnly();
