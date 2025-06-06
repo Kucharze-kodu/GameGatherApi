@@ -10,7 +10,7 @@ using GameGather.Domain.Common.Errors;
 
 
 
-namespace GameGather.Application.Features.PostGames.Quries.GetAllPostGame
+namespace GameGather.Application.Features.PostGames.Queries.GetAllPostGame
 {
     public class GetAllPostGameQueryHandler : ICommandHandler<GetAllPostGameQuery, List<GetAllPostGameDto>>
     {
