@@ -1,16 +1,15 @@
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using GameGather.Domain.UnitTests.TestUtils.Constants.Users;
 using BindingFlags = System.Reflection.BindingFlags;
 
-namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
+namespace GameGather.UnitTests.Utils.Builders.DomainUsers;
 
 public class ResetPasswordTokenBuilder
 {
     private Guid _value = Constants.ResetPasswordToken.Value;
     private DateTime _createdOnUtc = Constants.ResetPasswordToken.CreatedOnUtc;
     private DateTime _expiresOnUtc = Constants.ResetPasswordToken.ExpiresOnUtc;
-    private DateTime _lastSendOnUtc = Constants.ResetPasswordToken.LastSendOnUtc;
+    private DateTime? _lastSendOnUtc = Constants.ResetPasswordToken.LastSendOnUtc;
     private DateTime? _usedOnUtc = Constants.ResetPasswordToken.UsedOnUtc;
     private TokenType _type = Constants.ResetPasswordToken.Type;
 
@@ -23,6 +22,12 @@ public class ResetPasswordTokenBuilder
     public ResetPasswordTokenBuilder WithLastSendOnUtc(DateTime lastSendOnUtc)
     {
         _lastSendOnUtc = lastSendOnUtc;
+        return this;
+    }
+    
+    public ResetPasswordTokenBuilder WithNotLastSendOnUtc()
+    {
+        _lastSendOnUtc = null;
         return this;
     }
     

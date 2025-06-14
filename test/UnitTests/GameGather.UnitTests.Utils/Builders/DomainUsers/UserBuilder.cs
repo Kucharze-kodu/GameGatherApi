@@ -1,11 +1,10 @@
 using System.Reflection;
+using System.Runtime.Serialization;
 using GameGather.Domain.Aggregates.Users;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
-using GameGather.Domain.UnitTests.TestUtils.Constants.Users;
 
-namespace GameGather.Domain.UnitTests.Aggregates.Users.TestUtils;
+namespace GameGather.UnitTests.Utils.Builders.DomainUsers;
 
 public class UserBuilder
 {
@@ -31,6 +30,28 @@ public class UserBuilder
     private Ban? _ban = null;
     private Role _role = Constants.User.Role;
 
+    public UserBuilder WithVerificationToken(VerificationToken verificationToken)
+    {
+        _verificationToken = verificationToken;
+        return this;
+    }
+    
+    public UserBuilder WithPassword(Password password)
+    {
+        _password = password;
+        return this;
+    }
+    
+    public UserBuilder NotVerified()
+    {
+        _verifiedOnUtc = null;
+        return this;
+    }
+
+    public User EmptyObject()
+    {
+        return (User)FormatterServices.GetUninitializedObject(typeof(User));
+    }
 
     public User Build()
     {

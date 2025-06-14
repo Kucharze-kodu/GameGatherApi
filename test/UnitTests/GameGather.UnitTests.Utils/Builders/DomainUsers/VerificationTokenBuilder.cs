@@ -1,17 +1,15 @@
 using System.Reflection;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using GameGather.Domain.UnitTests.TestUtils.Constants;
-using Constants = GameGather.Domain.UnitTests.TestUtils.Constants.Users.Constants;
 
-namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
+namespace GameGather.UnitTests.Utils.Builders.DomainUsers;
 
 public class VerificationTokenBuilder
 {
     private Guid _value = Constants.VerificationToken.Value;
     private DateTime _createdOnUtc = Constants.VerificationToken.CreatedOnUtc;
     private DateTime _expiresOnUtc = Constants.VerificationToken.ExpiresOnUtc;
-    private DateTime _lastSendOnUtc = Constants.VerificationToken.LastSendOnUtc;
+    private DateTime? _lastSendOnUtc = Constants.VerificationToken.LastSendOnUtc;
     private DateTime? _usedOnUtc = Constants.VerificationToken.UsedOnUtc;
     private TokenType _type = Constants.VerificationToken.Type;
 
@@ -30,6 +28,12 @@ public class VerificationTokenBuilder
     public VerificationTokenBuilder WithLastSendOnUtc(DateTime lastSendOnUtc)
     {
         _lastSendOnUtc = lastSendOnUtc;
+        return this;
+    }
+    
+    public VerificationTokenBuilder WithNotLastSendOnUtc()
+    {
+        _lastSendOnUtc = null;
         return this;
     }
     

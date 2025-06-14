@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameGather.Application.Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameGather.Infrastructure.UnitTests", "test\UnitTests\GameGather.Infrastructure.UnitTests\GameGather.Infrastructure.UnitTests.csproj", "{6033AB92-CD5C-42E2-BA37-03C07FE4F067}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameGather.UnitTests.Utils", "test\UnitTests\GameGather.UnitTests.Utils\GameGather.UnitTests.Utils.csproj", "{AA28D81F-E994-43E6-B8B6-4EAFFA231AE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{6033AB92-CD5C-42E2-BA37-03C07FE4F067}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6033AB92-CD5C-42E2-BA37-03C07FE4F067}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6033AB92-CD5C-42E2-BA37-03C07FE4F067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA28D81F-E994-43E6-B8B6-4EAFFA231AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA28D81F-E994-43E6-B8B6-4EAFFA231AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA28D81F-E994-43E6-B8B6-4EAFFA231AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA28D81F-E994-43E6-B8B6-4EAFFA231AE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6B4CA5EF-8748-46A2-AF93-D0726B610F9E} = {09A12561-E947-4973-971D-65F40339E201}
@@ -78,5 +84,6 @@ Global
 		{AAA37262-65E9-474F-8171-DDF65E728F8F} = {3B989CE9-1561-4090-AB6C-95CD30E89372}
 		{67279F6E-5054-4DB5-BBFB-824614BF14A4} = {3B989CE9-1561-4090-AB6C-95CD30E89372}
 		{6033AB92-CD5C-42E2-BA37-03C07FE4F067} = {3B989CE9-1561-4090-AB6C-95CD30E89372}
+		{AA28D81F-E994-43E6-B8B6-4EAFFA231AE7} = {3B989CE9-1561-4090-AB6C-95CD30E89372}
 	EndGlobalSection
 EndGlobal

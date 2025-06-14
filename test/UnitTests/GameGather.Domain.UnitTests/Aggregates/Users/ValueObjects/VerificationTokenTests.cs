@@ -1,9 +1,8 @@
 using FluentAssertions;
 using GameGather.Domain.Aggregates.Users.Enums;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects.TestUtils;
-using GameGather.Domain.UnitTests.TestUtils.Constants;
-using GameGather.Domain.UnitTests.TestUtils.Constants.Users;
+using GameGather.UnitTests.Utils;
+using GameGather.UnitTests.Utils.Builders.DomainUsers;
 
 namespace GameGather.Domain.UnitTests.Aggregates.Users.ValueObjects;
 
@@ -43,9 +42,7 @@ public class VerificationTokenTests
         verificationToken
             .LastSendOnUtc
             .Should()
-            .BeCloseTo(
-                DateTime.UtcNow, 
-                TimeSpan.FromMinutes(Constants.VerificationToken.MaxDifferenceInMinutes));
+            .BeNull();
         verificationToken
             .Type
             .Should()
@@ -162,47 +159,7 @@ public class VerificationTokenTests
     } 
     
     [Fact]
-    public void CheckStatus_Should_ReturnTokenNotReadyToResend_WhenTokenWasAlreadySent()
-    {
-        // Arrange
-        
-        var verificationToken = new VerificationTokenBuilder()
-            .WithLastSendOnUtc(DateTime.UtcNow)
-            .Build();
-        
-        // Act
-        
-        var status = verificationToken.CheckStatus();
-        
-        // Assert
-        
-        status
-            .Should()
-            .Be(TokenStatus.TokenNotReadyToResend);
-    }
-    
-    [Fact]
-    public void CheckStatus_Should_ReturnTokenExpired_WhenTokenIsExpired()
-    {
-        // Arrange
-        
-        var verificationToken = new VerificationTokenBuilder()
-            .WithExpiredToken()
-            .Build();
-        
-        // Act
-        
-        var status = verificationToken.CheckStatus();
-        
-        // Assert
-        
-        status
-            .Should()
-            .Be(TokenStatus.TokenExpired);
-    }
-    
-    [Fact]
-    public void CheckStatus_Should_ReturnTokenUsed_WhenTokenWasAlreadyUsed()
+    public void CheckStatus_Should_ReturnTokenStatusUsed_WhenTokenIsUsed()
     {
         // Arrange
         
@@ -218,11 +175,78 @@ public class VerificationTokenTests
         
         status
             .Should()
-            .Be(TokenStatus.TokenUsed);
+            .Be(TokenStatus.Used);
     }
     
     [Fact]
-    public void CheckStatus_Should_ReturnTokenReadyToResend_WhenTokenWasNotAlreadySentAndNotExpiredAndNotUsed()
+    public void CheckStatus_Should_ReturnTokenStatusExpired_WhenTokenIsExpired()
+    {
+        // Arrange
+        
+        var verificationToken = new VerificationTokenBuilder()
+            .WithNotUsedOnUtc()
+            .WithExpiredToken()
+            .Build();
+        
+        // Act
+        
+        var status = verificationToken.CheckStatus();
+        
+        // Assert
+        
+        status
+            .Should()
+            .Be(TokenStatus.Expired);
+    }
+    
+    [Fact]
+    public void CheckStatus_Should_ReturnTokenStatusNotSent_WhenTokenWasNotSentYet()
+    {
+        // Arrange
+        
+        var verificationToken = new VerificationTokenBuilder()
+            .WithNotUsedOnUtc()
+            .WithNotLastSendOnUtc()
+            .Build();
+        
+        // Act
+        
+        var status = verificationToken.CheckStatus();
+        
+        // Assert
+        
+        status
+            .Should()
+            .Be(TokenStatus.NotSent);
+    }
+    
+    [Fact]
+    public void CheckStatus_Should_ReturnTokenStatusSentWaitingForResend_WhenTokenWasAlreadySentAndNotExpiredAndNotUsed()
+    {
+        // Arrange
+        
+        var verificationToken = new VerificationTokenBuilder()
+            .WithLastSendOnUtc(DateTime
+                .UtcNow
+                .AddMinutes(Constants
+                    .VerificationToken
+                    .MinimumTimeToResendInMinutes - 2))
+            .WithNotUsedOnUtc()
+            .Build();
+        
+        // Act
+        
+        var status = verificationToken.CheckStatus();
+        
+        // Assert
+        
+        status
+            .Should()
+            .Be(TokenStatus.SentWaitingForResend);
+    }
+    
+    [Fact]
+    public void CheckStatus_Should_ReturnTokenStatusSentAndReadyToResend_WhenTokenIsReadyToResendAndNotExpiredAndNotUsed()
     {
         // Arrange
         
@@ -238,7 +262,7 @@ public class VerificationTokenTests
         
         status
             .Should()
-            .Be(TokenStatus.TokenReadyToResend);
+            .Be(TokenStatus.SentAndReadyToResend);
     }
     
     [Fact]

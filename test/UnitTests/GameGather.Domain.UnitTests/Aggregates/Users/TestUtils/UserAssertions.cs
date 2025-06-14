@@ -2,7 +2,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using FluentAssertions.Primitives;
 using GameGather.Domain.Aggregates.Users;
-using GameGather.Domain.UnitTests.TestUtils.Constants.Users;
+using GameGather.UnitTests.Utils;
 
 namespace GameGather.Domain.UnitTests.Aggregates.Users.TestUtils;
 

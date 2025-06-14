@@ -10,7 +10,7 @@ public sealed class VerificationToken : ValueObject, IToken
     public Guid Value { get; private set; }
     public DateTime CreatedOnUtc { get; private set; }
     public DateTime ExpiresOnUtc { get; private set; }
-    public DateTime LastSendOnUtc { get; private set; }
+    public DateTime? LastSendOnUtc { get; private set; }
     public DateTime? UsedOnUtc { get; private set; }
     public TokenType Type { get; private set; }
     
@@ -23,7 +23,6 @@ public sealed class VerificationToken : ValueObject, IToken
         Value = Guid.NewGuid();
         CreatedOnUtc = DateTime.UtcNow;
         ExpiresOnUtc = DateTime.UtcNow.AddDays(TokenValidityInDays);
-        LastSendOnUtc = DateTime.UtcNow;
         Type = TokenType.VerificationToken;
     }
 
@@ -33,7 +32,7 @@ public sealed class VerificationToken : ValueObject, IToken
         Guid value,
         DateTime createdOnUtc,
         DateTime expiresOnUtc,
-        DateTime lastSendOnUtc,
+        DateTime? lastSendOnUtc,
         DateTime? usedOnUtc,
         TokenType type
     )
@@ -56,7 +55,7 @@ public sealed class VerificationToken : ValueObject, IToken
         }
 
         // Check if the token is expired
-        if (ExpiresOnUtc.CompareTo(DateTime.UtcNow) != 1)
+        if (IsTokenExpired())
         {
             return false;
         }
@@ -67,32 +66,34 @@ public sealed class VerificationToken : ValueObject, IToken
     
     public TokenStatus CheckStatus()
     {
-        // Check if the token was already sent
-        if (IsTokenAlreadySent())
-        {
-            return TokenStatus.TokenNotReadyToResend;
-        }
+        // Check if the token is used
         
-        // Check if the token is expired
-        if (IsTokenExpired())
-        {
-            return TokenStatus.TokenExpired;
-        }
-        
-        // Check if the token was already used
         if (UsedOnUtc is not null)
-        {
-            return TokenStatus.TokenUsed;
-        }
+            return TokenStatus.Used;
 
-        return TokenStatus.TokenReadyToResend;
+        // Check if the token is expired
+        
+        if (IsTokenExpired())
+            return TokenStatus.Expired;
+
+        // Check if the token is not sent yet
+        
+        if (LastSendOnUtc is null)
+            return TokenStatus.NotSent;
+        
+        // Check if the token is already sent and waiting for resend
+
+        if (!IsTokenReadyToResend())
+            return TokenStatus.SentWaitingForResend;
+
+        return TokenStatus.SentAndReadyToResend;
     }
     
     public TimeSpan GetTimeToResendToken()
     {
-        var timeToResend = LastSendOnUtc.AddMinutes(MinimumTimeToResendInMinutes) - DateTime.UtcNow;
+        var timeToResend = LastSendOnUtc?.AddMinutes(MinimumTimeToResendInMinutes) - DateTime.UtcNow;
 
-        return timeToResend;
+        return timeToResend ?? TimeSpan.Zero;
     }
 
     public void UpdateLastSendOnUtc() => LastSendOnUtc = DateTime.UtcNow;
@@ -107,11 +108,13 @@ public sealed class VerificationToken : ValueObject, IToken
         yield return Type;
     }
     
-    private bool IsTokenAlreadySent()
+    private bool IsTokenReadyToResend(int minimumTimeToResendInMinutes = MinimumTimeToResendInMinutes)
     {
-        return LastSendOnUtc
+        var isTokenReadyToResend = LastSendOnUtc?
             .AddMinutes(MinimumTimeToResendInMinutes)
-            .CompareTo(DateTime.UtcNow) != -1;
+            .CompareTo(DateTime.UtcNow) == -1;
+        
+        return isTokenReadyToResend;
     }
     
     private bool IsTokenExpired()

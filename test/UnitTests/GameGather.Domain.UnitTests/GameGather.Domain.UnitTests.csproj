@@ -22,7 +22,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\GameGather.UnitTests.Utils\GameGather.UnitTests.Utils.csproj" />
       <ProjectReference Include="..\..\..\src\GameGather.Domain\GameGather.Domain.csproj" />
+      <ProjectReference Include="..\GameGather.UnitTests.Utils\GameGather.UnitTests.Utils.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Aggregates\Users\ValueObjects\TestUtils\" />
     </ItemGroup>
 
 </Project>
