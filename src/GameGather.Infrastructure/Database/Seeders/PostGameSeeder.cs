@@ -19,7 +19,7 @@ namespace GameGather.Infrastructure.Database.Seeders
                     (
                         gameMasterId: existingUser.Id,
                         sessionGameId: existingSessionGame.Id,
-                        gameTime: DateTime.UtcNow.AddHours(-2),
+                        gameTime: DateTime.UtcNow.AddHours(+2),
                         postDescription: "Sesja testowa i zapoznawcza dla graczy"
                     );
 

@@ -1,7 +1,6 @@
 ﻿using ErrorOr;
 using GameGather.Application.Common.Messaging;
-using GameGather.Application.Features.PostGames.Queries.DTOs;
-using GameGather.Application.Features.PostGames.Queries.GetAllPostGame;
+using GameGather.Application.Contracts.PostGame;
 using GameGather.Application.Persistance;
 using GameGather.Application.Utils;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
@@ -12,7 +11,7 @@ using GameGather.Domain.Common.Errors;
 
 namespace GameGather.Application.Features.PostGames.Queries.GetAllPostGame
 {
-    public class GetAllPostGameQueryHandler : ICommandHandler<GetAllPostGameQuery, List<GetAllPostGameDto>>
+    public class GetAllPostGameQueryHandler : ICommandHandler<GetAllPostGameQuery, List<GetAllPostGameResponse>>
     {
         private readonly IPostGameRepository _postGameRepository;
         private readonly IPlayerManagerRepository _playerManagerRepository;
@@ -30,7 +29,7 @@ namespace GameGather.Application.Features.PostGames.Queries.GetAllPostGame
             _userContext=userContext;
         }
 
-        public async Task<ErrorOr<List<GetAllPostGameDto>>> Handle(GetAllPostGameQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<List<GetAllPostGameResponse>>> Handle(GetAllPostGameQuery request, CancellationToken cancellationToken)
         {
             var isVerify = _userContext.IsAuthenticated;
             if (isVerify == false)
@@ -55,13 +54,16 @@ namespace GameGather.Application.Features.PostGames.Queries.GetAllPostGame
             }
 
 
-            List<GetAllPostGameDto> listOfPostGame = result.Select(x => new GetAllPostGameDto
-            {
-                Id = Convert.ToInt32(x.Id.Value),
-                PostDescription = x.PostDescription,
-                DayPost = x.DayPost,
-                GameTime = x.GameTime
-            }).ToList();
+
+            List<GetAllPostGameResponse> listOfPostGame = result.Select(x =>
+             new GetAllPostGameResponse(
+             Convert.ToInt32(x.Id.Value),
+             x.PostDescription,
+             x.DayPost,
+             x.GameTime
+             )
+            ).ToList();
+
 
 
             return listOfPostGame;
