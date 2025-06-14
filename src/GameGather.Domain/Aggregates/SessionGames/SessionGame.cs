@@ -16,9 +16,7 @@ public sealed class SessionGame : AggregateRoot<SessionGameId>
     public string GameMasterName { get; private set; }
 
 
-    private readonly List<Comment> _comments = new();
-    public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
-
+    public ICollection<Comment> Comments { get; private set; } = new List<Comment>();
     public ICollection<PostGame> PostGames { get; private set; } = new List<PostGame>();
 
 

@@ -88,5 +88,13 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
                 c => c.ToString(),
                 c => (Role)Enum.Parse(typeof(Role), c))
             .HasColumnName("Role");
+
+
+        //link User to commnets
+        builder
+            .HasMany(sg => sg.Comments)
+            .WithOne(pg => pg.User)
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

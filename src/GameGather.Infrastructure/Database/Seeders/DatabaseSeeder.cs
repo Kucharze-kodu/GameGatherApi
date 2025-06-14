@@ -1,9 +1,5 @@
 ﻿using GameGather.Infrastructure.Persistance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace GameGather.Infrastructure.Database.Seeders
 {
@@ -13,9 +9,9 @@ namespace GameGather.Infrastructure.Database.Seeders
         {
 
 
-            
+            await SessionGameSeeder.SeedAsync(context);
             await PostGameSeeder.SeedAsync(context);
-
+            await CommentSeeder.SeedAsync(context);
 
 
             await context.SaveChangesAsync();

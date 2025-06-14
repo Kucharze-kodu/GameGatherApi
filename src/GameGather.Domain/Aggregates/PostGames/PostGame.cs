@@ -38,7 +38,10 @@ public sealed class PostGame : AggregateRoot<PostGameId>
         PostDescription=postDescription;
     }
 
-    public static PostGame Create(UserId gameMasterId, SessionGameId sessionGameId, DateTime gameTime, string postDescription)
+    public static PostGame Create(UserId gameMasterId,
+        SessionGameId sessionGameId,
+        DateTime gameTime,
+        string postDescription)
     {
         var postGame = new PostGame(
             default,

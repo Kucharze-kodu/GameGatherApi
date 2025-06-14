@@ -102,6 +102,7 @@ var app = builder.Build();
     app.AddPlayerManagerEndpoints();
     app.AddSessionGameModuleEndpoints();
     app.AddPostGameEndpoints();
+    app.AddCommentEndpoints();
     // END ENDPOINTS
 
     app.UseHttpsRedirection();

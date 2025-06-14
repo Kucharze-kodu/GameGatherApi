@@ -30,18 +30,14 @@ namespace GameGather.Infrastructure.Configuration
                 );
 
 
-            // link SessionGame to commnets
-            /*        modelBuilder.Entity<SessionGame>()
-                        .HasMany(sg => sg.Comments)
-                        .WithOne(pg => pg.SessionGame)
-                        .HasForeignKey(c => c.SessionGameId)
-                        .OnDelete(DeleteBehavior.Cascade);*/
-
+            //link SessionGame to commnets
             builder
                 .HasMany(sg => sg.Comments)
-                .WithOne()
+                .WithOne(pg => pg.SessionGame)
                 .HasForeignKey(c => c.SessionGameId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
 
             // link SessionGame to postGame
             builder

@@ -56,12 +56,12 @@ namespace GameGather.Application.Features.PostGames.Queries.GetAllPostGame
 
 
             List<GetAllPostGameResponse> listOfPostGame = result.Select(x =>
-             new GetAllPostGameResponse(
-             Convert.ToInt32(x.Id.Value),
-             x.PostDescription,
-             x.DayPost,
-             x.GameTime
-             )
+                 new GetAllPostGameResponse(
+                 Convert.ToInt32(x.Id.Value),
+                 x.PostDescription,
+                 x.DayPost,
+                 x.GameTime
+                 )
             ).ToList();
 
 
