@@ -33,42 +33,8 @@ public class GameGatherDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
 
-        // link SessionGame to commnets
-        /*        modelBuilder.Entity<SessionGame>()
-                    .HasMany(sg => sg.Comments)
-                    .WithOne(pg => pg.SessionGame)
-                    .HasForeignKey(c => c.SessionGameId)
-                    .OnDelete(DeleteBehavior.Cascade);*/
-
-        modelBuilder.Entity<SessionGame>()
-        .HasMany(sg => sg.Comments)
-        .WithOne()
-        .HasForeignKey(c => c.SessionGameId)
-        .OnDelete(DeleteBehavior.Cascade);
-
-        // link SessionGame to postGame
-        modelBuilder.Entity<SessionGame>()
-         .HasMany(sg => sg.PostGames)
-         .WithOne(pg => pg.SessionGame)
-         .HasForeignKey(pg => pg.SessionGameId)
-         .OnDelete(DeleteBehavior.Cascade);
 
 
-        // link many Users to many SessionGame
-        modelBuilder.Entity<SessionGameList>()
-            .HasKey(sgl => new { sgl.UserId, sgl.SessionGameId });
-
-        modelBuilder.Entity<SessionGameList>()
-            .Property(sgl => sgl.UserId)
-            .HasConversion(
-                id => id.Value,
-                value => UserId.Create(value));
-
-        modelBuilder.Entity<SessionGameList>()
-            .Property(sgl => sgl.SessionGameId)
-            .HasConversion(
-                id => id.Value,
-                value => SessionGameId.Create(value));
 
 
     }

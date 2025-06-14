@@ -41,18 +41,8 @@ namespace GameGather.Infrastructure.Repositories
             var result = await _dbContext.PostGames.FirstOrDefaultAsync(
                                c => c.Id == postGameId && c.SessionGameId == sessionGameId && c.GameMasterId == userId);
 
-            if (result == null)
-            {
-                return;
-            }
-            if (gameTime > DateTime.UtcNow)
-            {
                 result.GameTime = gameTime;
-            }
-            if (postDescription is not null)
-            {
                 result.PostDescription = postDescription;
-            }
         }
 
         public async Task<IEnumerable<PostGame>> GetAllPostGameSession(SessionGameId sessionGameId, CancellationToken cancellationToken)

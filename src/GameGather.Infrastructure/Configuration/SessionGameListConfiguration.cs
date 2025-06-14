@@ -3,6 +3,7 @@ using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 
 namespace GameGather.Infrastructure.Configuration
@@ -26,6 +27,21 @@ namespace GameGather.Infrastructure.Configuration
                    value => SessionGameId.Create(value)
                );
 
+            // link many Users to many SessionGame
+            builder
+                .HasKey(sgl => new { sgl.UserId, sgl.SessionGameId });
+
+            builder
+                .Property(sgl => sgl.UserId)
+                .HasConversion(
+                    id => id.Value,
+                    value => UserId.Create(value));
+
+            builder
+                .Property(sgl => sgl.SessionGameId)
+                .HasConversion(
+                    id => id.Value,
+                    value => SessionGameId.Create(value));
 
 
         }

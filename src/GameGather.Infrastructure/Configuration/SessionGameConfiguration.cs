@@ -3,6 +3,7 @@ using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace GameGather.Infrastructure.Configuration
 {
@@ -27,6 +28,27 @@ namespace GameGather.Infrastructure.Configuration
                     id => id.Value,
                     value => UserId.Create(value)
                 );
+
+
+            // link SessionGame to commnets
+            /*        modelBuilder.Entity<SessionGame>()
+                        .HasMany(sg => sg.Comments)
+                        .WithOne(pg => pg.SessionGame)
+                        .HasForeignKey(c => c.SessionGameId)
+                        .OnDelete(DeleteBehavior.Cascade);*/
+
+            builder
+                .HasMany(sg => sg.Comments)
+                .WithOne()
+                .HasForeignKey(c => c.SessionGameId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // link SessionGame to postGame
+            builder
+                 .HasMany(sg => sg.PostGames)
+                 .WithOne(pg => pg.SessionGame)
+                 .HasForeignKey(pg => pg.SessionGameId)
+                 .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

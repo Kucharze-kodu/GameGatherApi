@@ -9,16 +9,16 @@ namespace GameGather.Application.Features.PostGames.Commands.CreatePostGames
         public CreatePostGameCommandValidator()
         {
             RuleFor(r => r.GameSessionId)
-           .NotEmpty()
-           .WithMessage("SessionId is required");
+               .NotEmpty()
+               .WithMessage("SessionId is required");
 
             RuleFor(r => r.PostDescription)
-            .NotEmpty()
-            .WithMessage("Description post is required");
+                .NotEmpty()
+                .WithMessage("Description post is required");
 
             RuleFor(r => r.GameTime)
-            .NotEmpty()
-            .WithMessage("Time of the game is required");
+                .NotEmpty()
+                .WithMessage("Time of the game is required");
         }
     }
 }

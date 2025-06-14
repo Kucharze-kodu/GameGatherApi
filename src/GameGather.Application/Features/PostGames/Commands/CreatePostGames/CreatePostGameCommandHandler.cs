@@ -47,6 +47,7 @@ namespace GameGather.Application.Features.PostGames.Commands.CreatePostGames
             {
                 return Errors.PostGame.IsNotAuthorized;
             }
+
             var postGame = PostGame.Create
             (
                 userId,

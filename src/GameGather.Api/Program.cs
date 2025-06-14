@@ -2,6 +2,8 @@ using GameGather.Api.Modules;
 using GameGather.Application;
 using GameGather.Infrastructure;
 using GameGather.Infrastructure.Authentication;
+using GameGather.Infrastructure.Database.Seeders;
+using GameGather.Infrastructure.Persistance;
 using GameGather.Infrastructure.Utils.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
@@ -75,11 +77,21 @@ var builder = WebApplication.CreateBuilder(args);
     
 var app = builder.Build();
 {
+    //Seeder
+/*    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<GameGatherDbContext>();
+        await DatabaseSeeder.SeedAsync(context);
+    }*/
+
+
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         
     }
+
+
 
     app.UseSwagger(); 
     app.UseSwaggerUI();

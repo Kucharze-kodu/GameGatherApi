@@ -15,7 +15,7 @@ namespace GameGather.Api.Modules
     {
         public static void AddPostGameEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/PostGame/CreatePostGame", async (
+            app.MapPost("/api/post-game", async (
                 [FromBody] CreatePostGameCommand command,
                 [FromServices] ISender sender) =>
             {
@@ -28,7 +28,7 @@ namespace GameGather.Api.Modules
             .WithTags("PostGame"); ;
 
 
-            app.MapPost("/api/PostGame/EditPostGame", async (
+            app.MapPut("/api/post-game", async (
                 [FromBody] EditPostGameCommand command,
                 [FromServices] ISender sender) =>
             {
@@ -38,10 +38,10 @@ namespace GameGather.Api.Modules
                     result => Ok(result),
                     errors => Problem(errors));
             }).RequireAuthorization()
-            .WithTags("PostGame"); ;
+            .WithTags("PostGame");
 
 
-            app.MapPost("/api/PostGame/DeletePostGame", async (
+            app.MapDelete("/api/post-game", async (
                 [FromBody] DeletePostGameCommand command,
                 [FromServices] ISender sender) =>
             {
@@ -54,7 +54,7 @@ namespace GameGather.Api.Modules
             .WithTags("PostGame");
 
 
-            app.MapGet("/api/PostGame/GetAllPostGame", async (
+            app.MapGet("/api/post-game", async (
             [AsParameters] GetAllPostGameQuery query,
             [FromServices] ISender sender) =>
             {
