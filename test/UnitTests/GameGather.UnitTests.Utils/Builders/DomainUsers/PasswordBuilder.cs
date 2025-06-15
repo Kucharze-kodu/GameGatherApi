@@ -13,6 +13,12 @@ public class PasswordBuilder
         _value = value;
         return this;
     }
+    
+    public PasswordBuilder WithLastModifiedOnUtc(DateTime lastModifiedOnUtc)
+    {
+        _lastModifiedOnUtc = lastModifiedOnUtc;
+        return this;
+    }
 
     public PasswordBuilder WithExpiredPassword()
     {
