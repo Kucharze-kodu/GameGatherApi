@@ -24,7 +24,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\GameGather.UnitTests.Utils\GameGather.UnitTests.Utils.csproj" />
       <ProjectReference Include="..\..\..\src\GameGather.Domain\GameGather.Domain.csproj" />
-      <ProjectReference Include="..\GameGather.UnitTests.Utils\GameGather.UnitTests.Utils.csproj" />
+      <ProjectReference Include="..\..\TestUtils\GameGather.TestUtils\GameGather.TestUtils.csproj" />
     </ItemGroup>
 
     <ItemGroup>
