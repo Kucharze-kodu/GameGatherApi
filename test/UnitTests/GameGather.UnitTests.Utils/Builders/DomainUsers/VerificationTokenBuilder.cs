@@ -13,6 +13,36 @@ public class VerificationTokenBuilder
     private DateTime? _usedOnUtc = Constants.VerificationToken.UsedOnUtc;
     private TokenType _type = Constants.VerificationToken.Type;
 
+    public VerificationTokenBuilder WithValue(Guid value)
+    {
+        _value = value;
+        return this;
+    }
+    
+    public VerificationTokenBuilder WithCreatedOnUtc(DateTime createdOnUtc)
+    {
+        _createdOnUtc = createdOnUtc;
+        return this;
+    }
+    
+    public VerificationTokenBuilder WithExpiresOnUtc(DateTime expiresOnUtc)
+    {
+        _expiresOnUtc = expiresOnUtc;
+        return this;
+    }
+    
+    public VerificationTokenBuilder WithLastSendOnUtc(DateTime lastSendOnUtc)
+    {
+        _lastSendOnUtc = lastSendOnUtc;
+        return this;
+    }
+    
+    public VerificationTokenBuilder WithUsedOnUtc(DateTime? usedOnUtc)
+    {
+        _usedOnUtc = usedOnUtc;
+        return this;
+    }
+    
     public VerificationTokenBuilder WithExpiredToken()
     {
         _expiresOnUtc = DateTime.UtcNow.AddDays(-2);
@@ -25,11 +55,7 @@ public class VerificationTokenBuilder
         return this;
     }
     
-    public VerificationTokenBuilder WithLastSendOnUtc(DateTime lastSendOnUtc)
-    {
-        _lastSendOnUtc = lastSendOnUtc;
-        return this;
-    }
+    
     
     public VerificationTokenBuilder WithNotLastSendOnUtc()
     {
@@ -43,11 +69,7 @@ public class VerificationTokenBuilder
         return this;
     }
     
-    public VerificationTokenBuilder WithValue(Guid value)
-    {
-        _value = value;
-        return this;
-    }
+    
     
     public VerificationToken Build()
     {
