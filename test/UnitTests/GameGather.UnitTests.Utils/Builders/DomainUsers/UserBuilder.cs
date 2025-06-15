@@ -30,15 +30,81 @@ public class UserBuilder
     private Ban? _ban = null;
     private Role _role = Constants.User.Role;
 
-    public UserBuilder WithVerificationToken(VerificationToken verificationToken)
+    public UserBuilder WithUserId(UserId userId)
     {
-        _verificationToken = verificationToken;
+        _userId = userId;
+        return this;
+    }
+    
+    public UserBuilder WithFirstName(string firstName)
+    {
+        _firstName = firstName;
+        return this;
+    }
+    
+    public UserBuilder WithLastName(string lastName)
+    {
+        _lastName = lastName;
+        return this;
+    }
+    
+    public UserBuilder WithEmail(string email)
+    {
+        _email = email;
         return this;
     }
     
     public UserBuilder WithPassword(Password password)
     {
         _password = password;
+        return this;
+    }
+    
+    public UserBuilder WithBirthday(DateTime birthday)
+    {
+        _birthday = birthday;
+        return this;
+    }
+    
+    public UserBuilder WithCreatedOnUtc(DateTime createdOnUtc)
+    {
+        _createdOnUtc = createdOnUtc;
+        return this;
+    }
+    
+    public UserBuilder WithVerifiedOnUtc(DateTime? verifiedOnUtc)
+    {
+        _verifiedOnUtc = verifiedOnUtc;
+        return this;
+    }
+    
+    public UserBuilder WithLastModifiedOnUtc(DateTime lastModifiedOnUtc)
+    {
+        _lastModifiedOnUtc = lastModifiedOnUtc;
+        return this;
+    }
+    
+    public UserBuilder WithVerificationToken(VerificationToken verificationToken)
+    {
+        _verificationToken = verificationToken;
+        return this;
+    }
+    
+    public UserBuilder WithResetPasswordToken(ResetPasswordToken? resetPasswordToken)
+    {
+        _resetPasswordToken = resetPasswordToken;
+        return this;
+    }
+    
+    public UserBuilder WithBan(Ban? ban)
+    {
+        _ban = ban;
+        return this;
+    }
+    
+    public UserBuilder WithRole(Role role)
+    {
+        _role = role;
         return this;
     }
     
