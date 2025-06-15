@@ -53,7 +53,7 @@ namespace GameGather.Application.Features.Comments.Commands.EditComments
             await _unitOfWork.SaveChangesAsync();
 
 
-            return new CommentResponse("Comment created");
+            return new CommentResponse("Comment edited");
         }
     }
 }

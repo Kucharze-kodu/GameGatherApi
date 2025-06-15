@@ -13,18 +13,19 @@ namespace GameGather.Application.Features.Comments.Queries.GetAllComments
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IPlayerManagerRepository _playerManagerRepository;
+        private readonly ISessionGameRepository _sessionGameRepository;
         private readonly IUserContext _userContext;
-        private readonly IUnitOfWork _unitOfWork;
+
 
         public GetAllCommentQueryHandler(ICommentRepository commentRepository,
             IPlayerManagerRepository playerManagerRepository,
-            IUserContext userContext,
-            IUnitOfWork unitOfWork)
+            ISessionGameRepository sessionGameRepository,
+            IUserContext userContext)
         {
             _commentRepository=commentRepository;
             _playerManagerRepository=playerManagerRepository;
+            _sessionGameRepository=sessionGameRepository;
             _userContext=userContext;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<ErrorOr<List<GetAllCommentResponse>>> Handle(GetAllCommentQuery request, CancellationToken cancellationToken)
@@ -41,8 +42,8 @@ namespace GameGather.Application.Features.Comments.Queries.GetAllComments
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.GameSessionId));
 
             var isthisYourSession = await _playerManagerRepository.IsThisYourSession(userId, sessionGameId);
-
-            if (!isthisYourSession)
+            var isGameMaster = await _sessionGameRepository.IsThisGameMaster(userId, sessionGameId);
+            if (!isthisYourSession && !isGameMaster)
             {
                 return Errors.PostGame.IsWrongData;
             }
@@ -57,11 +58,12 @@ namespace GameGather.Application.Features.Comments.Queries.GetAllComments
             List<GetAllCommentResponse> listOfComment = result.Select(x =>
                  new GetAllCommentResponse(
                  Convert.ToInt32(x.Id.Value),
+                 Convert.ToInt32(x.UserId.Value),
+                 x.Name,
                  x.Text,
                  x.DateComment
                  )
             ).ToList();
-
 
             return listOfComment;
         }

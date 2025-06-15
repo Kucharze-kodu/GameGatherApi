@@ -1,4 +1,5 @@
-﻿using GameGather.Application.Persistance;
+﻿using GameGather.Application.Features.Comments.Queries.DTOs;
+using GameGather.Application.Persistance;
 using GameGather.Domain.Aggregates.Comments;
 using GameGather.Domain.Aggregates.Comments.ValueObcjets;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
@@ -42,9 +43,19 @@ namespace GameGather.Infrastructure.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<Comment>> GetAllCommentSession(SessionGameId sessionGameId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<CommentDto>> GetAllCommentSession(SessionGameId sessionGameId, CancellationToken cancellationToken = default)
         {
-            var resultlist = await _dbContext.Comments.Where(c => c.SessionGameId == sessionGameId).ToListAsync();
+            var resultlist = await _dbContext.Comments
+            .Where(c => c.SessionGameId == sessionGameId)
+            .Select(x => new CommentDto
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                Name = x.User.FirstName + " " + x.User.LastName,
+                Text = x.Text,
+                DateComment = x.DateComment
+            })
+            .ToListAsync(cancellationToken);
 
 
             return resultlist;

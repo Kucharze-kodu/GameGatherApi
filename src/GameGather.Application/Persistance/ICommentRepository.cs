@@ -1,4 +1,5 @@
-﻿using GameGather.Domain.Aggregates.Comments;
+﻿using GameGather.Application.Features.Comments.Queries.DTOs;
+using GameGather.Domain.Aggregates.Comments;
 using GameGather.Domain.Aggregates.Comments.ValueObcjets;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
@@ -11,7 +12,7 @@ namespace GameGather.Application.Persistance
         Task DeleteComment(CommentId commentId, SessionGameId sessionGameId, UserId userId, CancellationToken cancellationToken = default);
         Task<Comment> EditComment(CommentId commentId, SessionGameId sessionGameId, UserId userId, CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<Comment>> GetAllCommentSession(SessionGameId sessionGameId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<CommentDto>> GetAllCommentSession(SessionGameId sessionGameId, CancellationToken cancellationToken = default);
 
 
     }

@@ -54,7 +54,7 @@ namespace GameGather.Application.Features.Comments.Commands.DeleteComments
             await _unitOfWork.SaveChangesAsync();
 
 
-            return new CommentResponse("Comment created");
+            return new CommentResponse("Comment deleted");
 
         }
     }

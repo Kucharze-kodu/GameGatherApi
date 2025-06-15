@@ -11,8 +11,6 @@ using static GameGather.Api.Common.HttpResultsExtensions;
 
 namespace GameGather.Api.Modules
 {
-
-
     public static class CommentModule
     {
         public static void AddCommentEndpoints(this IEndpointRouteBuilder app)

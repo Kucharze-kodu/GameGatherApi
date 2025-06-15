@@ -8,6 +8,8 @@ namespace GameGather.Application.Contracts.Comments
 {
     public record GetAllCommentResponse(
         int Id,
+        int UserId,
+        string Name,
         string Text,
         DateTime DateComment
         );

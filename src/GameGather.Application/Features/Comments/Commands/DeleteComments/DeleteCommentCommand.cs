@@ -7,6 +7,6 @@ namespace GameGather.Application.Features.Comments.Commands.DeleteComments
     public record DeleteCommentCommand(
         int CommentId,
         int GameSessionId,
-        int UserId
+        int UserId = 0
         ) : ICommand<CommentResponse>;
 }
