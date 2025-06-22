@@ -25,8 +25,8 @@ public sealed class User : AggregateRoot<UserId>
     public Ban? Ban { get; private set; }
     public Role Role { get; private set; }
 
-    private readonly List<SessionGameList> _sessionGameList = new();
-    public IReadOnlyCollection<SessionGameList> SessionGames => _sessionGameList.AsReadOnly();
+
+    public ICollection<SessionGameList> SessionGameList { get; private set; } = new List<SessionGameList>();
     public ICollection<Comment> Comments { get; private set; } = new List<Comment>();
 
 

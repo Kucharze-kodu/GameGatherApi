@@ -77,13 +77,6 @@ var builder = WebApplication.CreateBuilder(args);
     
 var app = builder.Build();
 {
-    //Seeder
-/*    using (var scope = app.Services.CreateScope())
-    {
-        var context = scope.ServiceProvider.GetRequiredService<GameGatherDbContext>();
-        await DatabaseSeeder.SeedAsync(context);
-    }*/
-
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -111,6 +104,8 @@ var app = builder.Build();
 
     app.UseCors("AllowAllOrigins");
     app.ApplyMigration();
+    app.ApplySeeder();
+
     app.Run();
 }
 

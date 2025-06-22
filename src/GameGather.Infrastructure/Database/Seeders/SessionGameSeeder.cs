@@ -15,7 +15,7 @@ namespace GameGather.Infrastructure.Database.Seeders
         {
             if (!context.PostGames.Any())
             {
-                var existingUser = context.Users.FirstOrDefault();
+                var existingUser = context.Users.FirstOrDefault(x=> x.FirstName == "Jan");
 
                 if (existingUser != null)
                 {
