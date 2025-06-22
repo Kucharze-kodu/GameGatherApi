@@ -2,14 +2,14 @@
 using System.Runtime.Serialization;
 using GameGather.Domain.Aggregates.SessionGames.ValueObcjects;
 using GameGather.Domain.Aggregates.Users.ValueObjects;
-using Microsoft.VisualBasic;
-
+using GameGather.UnitTests.Utils.Builders.DomainUsers;
+using GameGather.Domain.Aggregates.SessionGames;
 
 namespace GameGather.UnitTests.Utils.Builders.DomainSessionGame;
 
 public class SessionGameBuilder
 {
-    private SessionGameId _sessionGameId = new SessionGameId()
+    private SessionGameId _sessionGameId = new SessionGameIdBuilder()
         .WithValue(Constants.SessionGame.SessionGameIdValue)
         .Build();
     private string _name = Constants.SessionGame.Name;

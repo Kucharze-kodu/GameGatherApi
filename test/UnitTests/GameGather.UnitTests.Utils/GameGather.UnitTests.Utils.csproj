@@ -12,4 +12,12 @@
       <ProjectReference Include="..\..\..\src\GameGather.Infrastructure\GameGather.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Builders\ApplicationSessionGame\Commands\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Constants\SessionGameConstats\Constants.SessionGameId.cs" />
+    </ItemGroup>
+
 </Project>
