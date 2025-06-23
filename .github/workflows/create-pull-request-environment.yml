@@ -1,0 +1,194 @@
+name: Create pull request environment - GameGatherApi
+
+on:
+  pull_request:
+    branches:
+      - DEV
+    # types: [edited]
+    types: [reopened, opened, synchronize, edited]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore ./GameGather.sln
+        
+      - name: Substitute appsettings.json entries
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './src/GameGather.Api/appsettings.json'
+        env:
+          Email.ApiKeyPublic: ${{ secrets.EMAIL_API_KEY_PUBLIC }}
+          Email.ApiKeyPrivate: ${{ secrets.EMAIL_API_KEY_PRIVATE }}
+          Email.FromEmail: ${{ secrets.EMAIL_FROM_EMAIL }}
+          Email.FromName: ${{ secrets.EMAIL_FROM_NAME }}
+          Jwt.Issuer: "issuer"
+          Jwt.Audience: "audience"
+          Jwt.SecretKey: "ssupasde sdamek asdmk a kasdkasnd ksak ndkasnd ksa ndkasdn"
+          Jwt.ValidFor: 120
+
+      - name: Build
+        run: dotnet build ./GameGather.sln --no-restore --configuration Release
+
+      - name: Test
+        run:  dotnet test ./GameGather.sln --configuration Release --no-restore --no-build
+
+      - name: Publish
+        run: dotnet publish ./src/GameGather.Api/GameGather.Api.csproj -c Release -o ./publish --no-restore --no-build
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: ./publish
+
+  terraform:
+    if: github.event_name == 'pull_request'
+    defaults:
+      run:
+        working-directory: ./terraform/pr_infrastructure
+    runs-on: ubuntu-latest
+    environment: 
+      name: "Development"
+      url: ${{ steps.terraform_output.outputs.webapp_url }}
+    needs: build
+    outputs:
+      webapp_name: ${{ steps.terraform_output.outputs.webapp_name }}
+      resource_group_name: ${{ steps.terraform_output.outputs.resource_group_name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.1.2
+        
+      - name: Terraform Init
+        id: init
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        run: |
+          echo "##[group]Terraform Init"
+          echo "Initializing Terraform..."
+          
+          terraform init -input=false \
+            -backend-config="resource_group_name=${{ secrets.AZURE_STORAGE_RESOURCE_GROUP_NAME }}" \
+            -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" \
+            -backend-config="container_name=${{ secrets.AZURE_CONTAINER_NAME }}" \
+            -backend-config="key=${{ secrets.AZURE_KEY }}"
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve -no-color -input=false 
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_USE_AZUREAD: true
+          
+      - name: Terraform Output
+        id: terraform_output
+        run: |
+          echo "webapp_name=$(terraform output -raw webapp_name)" >> $GITHUB_OUTPUT
+          echo $(terraform output -raw webapp_name)
+          echo "resource_group_name=$(terraform output -raw resource_group_name)" >> $GITHUB_OUTPUT
+          echo $(terraform output -raw resource_group_name)
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: "Development"
+      url: ${{ steps.deploy.outputs.webapp_url }}
+    needs: [build, terraform]
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    steps:        
+      - name: Login to Azure
+        run: |
+          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }} --output none   
+      
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+      
+      - name: Deploy to Azure Web App
+        id: deploy
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ needs.terraform.outputs.webapp_name }}
+          resource-group-name: ${{ needs.terraform.outputs.resource_group_name }}
+          package: .
+
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Istniejący kod komentarzy
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            })
+            
+            const deployComment = comments.find(comment => {
+              return comment.user.type === 'Bot' && comment.body.includes('🚀 Deployment Status')
+            })
+            
+            const appUrl = 'http://${{ needs.terraform.outputs.webapp_name }}.azurewebsites.net/swagger/index.html';
+            
+            const output = `#### 🚀 Deployment Status: \`Success\`
+            
+            Your PR environment has been deployed successfully!
+            
+            ### 🌐 Environment URL
+            
+            **Application URL**: [Click here to access the application](${appUrl})
+            
+            *Deployed by: @${{ github.actor }}, PR: #${{ github.event.pull_request.number }}*`;
+            
+            // Reszta kodu komentarza
+            if (deployComment) {
+              github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: deployComment.id,
+                body: output
+              })
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output
+              })
+            }
+
+      - name: Logout from Azure
+        run: |
+          az logout
+
+  
