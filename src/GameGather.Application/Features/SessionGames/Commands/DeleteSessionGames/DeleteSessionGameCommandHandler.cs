@@ -35,12 +35,22 @@ namespace GameGather.Application.Features.SessionGames.Commands.DeleteSessionGam
                 return Errors.SessionGame.IsNotAuthorized;
             }
 
+
+
             var id = _userContext.UserId;
             UserId userId = UserId.Create(Convert.ToInt32(id));
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.Id));
+            var isThisGameMasterSession = await _sessionGameRepository.IsThisGameMaster(userId, sessionGameId);
 
+            if (_userContext.Role != "Admin")
+            {
+                if (!isThisGameMasterSession)
+                {
+                    return Errors.SessionGame.IsNotAuthorized;
+                }
+            }
 
-            await _sessionGameRepository.DeleteSessionGame(sessionGameId, userId);
+            await _sessionGameRepository.DeleteSessionGame(sessionGameId);
             await _unitOfWork.SaveChangesAsync();
 
             return new SessionGameResponse("delete session game");

@@ -12,7 +12,7 @@ namespace GameGather.Api.Modules
     {
         public static void AddPlayerManagerEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/Player/AddPlayerToSession", async (
+            app.MapPost("/api/player-session", async (
                 [FromBody] AddPlayerManagerCommand command,
                 [FromServices] ISender sender) =>
             {
@@ -22,9 +22,9 @@ namespace GameGather.Api.Modules
                     result => Ok(result),
                     errors => Problem(errors));
             }).RequireAuthorization()
-            .WithTags("SessionForPlayer"); ;
+            .WithTags("PlayerSessionManager"); ;
 
-            app.MapPost("/api/Player/RemovePlayerFromSession", async (
+            app.MapDelete("/api/player-session", async (
                 [FromBody] RemovePlayerManagerCommand command,
                 [FromServices] ISender sender) =>
             {
@@ -34,7 +34,7 @@ namespace GameGather.Api.Modules
                     result => Ok(result),
                     errors => Problem(errors));
             }).RequireAuthorization()
-             .WithTags("SessionForPlayer"); ;
+             .WithTags("PlayerSessionManager"); ;
         }
     }
 }

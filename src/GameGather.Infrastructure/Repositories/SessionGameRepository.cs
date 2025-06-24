@@ -22,11 +22,11 @@ namespace GameGather.Infrastructure.Repositories
         }
 
 
-        public async Task DeleteSessionGame(SessionGameId sessionGameId, UserId userId, CancellationToken cancellationToken = default)
+        public async Task DeleteSessionGame(SessionGameId sessionGameId, CancellationToken cancellationToken = default)
         {
 
             var result = await _dbContext.SessionGames.FirstOrDefaultAsync(
-                                c => c.Id == sessionGameId && c.GameMasterId == userId);
+                                c => c.Id == sessionGameId);
             if (result == null)
             {
                 return;
@@ -35,10 +35,10 @@ namespace GameGather.Infrastructure.Repositories
 
         }
 
-        public async Task EditSessionGame(SessionGameId sessionGameId, string name, string description, UserId userId, CancellationToken cancellationToken = default)
+        public async Task EditSessionGame(SessionGameId sessionGameId, string name, string description, CancellationToken cancellationToken = default)
         {
             var result = await _dbContext.SessionGames.FirstOrDefaultAsync(
-                                c => c.Id == sessionGameId && c.GameMasterId == userId);
+                                c => c.Id == sessionGameId);
             if (result == null)
             {
                 return;

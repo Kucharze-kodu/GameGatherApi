@@ -14,7 +14,7 @@ namespace GameGather.Api.Modules
     {
         public static void AddSessionGameModuleEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/SessionGame/CreateSessionGame", async (
+            app.MapPost("/api/session-game", async (
                 [FromBody] CreateSessionGameCommand command,
                 [FromServices] ISender sender) =>
             {
@@ -26,7 +26,7 @@ namespace GameGather.Api.Modules
             }).RequireAuthorization()
             .WithTags("SessionGame");
 
-            app.MapPost("/api/SessionGame/EditSessionGame", async (
+            app.MapPut("/api/session-game", async (
                 [FromBody] EditSessionGameCommand command,
                 [FromServices] ISender sender) =>
             {
@@ -38,7 +38,7 @@ namespace GameGather.Api.Modules
             }).RequireAuthorization()
             .WithTags("SessionGame");
 
-            app.MapPost("/api/SessionGame/DeleteSessionGame", async (
+            app.MapDelete("/api/session-game", async (
                 [FromBody] DeleteSessionGameCommand command,
                 [FromServices] ISender sender) =>
             {
@@ -51,7 +51,7 @@ namespace GameGather.Api.Modules
             .WithTags("SessionGame");
 
 
-            app.MapGet("/api/SessionGame/GetAllSessionGame", async (
+            app.MapGet("/api/session-game-all", async (
                 [FromServices] ISender sender) =>
             {
                 var response = await sender.Send(new GetAllSessionGameQuery());
@@ -62,7 +62,7 @@ namespace GameGather.Api.Modules
             })
             .WithTags("SessionGame");
 
-            app.MapGet("/api/SessionGame/GetSessionGame", async (
+            app.MapGet("/api/session-game", async (
                 [AsParameters] GetSessionGameQuery query, 
                 [FromServices] ISender sender) =>
             {

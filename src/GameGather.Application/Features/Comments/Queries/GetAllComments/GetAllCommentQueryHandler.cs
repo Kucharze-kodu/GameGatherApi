@@ -42,12 +42,15 @@ namespace GameGather.Application.Features.Comments.Queries.GetAllComments
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.GameSessionId));
 
             var isthisYourSession = await _playerManagerRepository.IsThisYourSession(userId, sessionGameId);
-            var isGameMaster = await _sessionGameRepository.IsThisGameMaster(userId, sessionGameId);
-            if (!isthisYourSession && !isGameMaster)
-            {
-                return Errors.PostGame.IsWrongData;
-            }
+            var isThisGameMasterSession = await _sessionGameRepository.IsThisGameMaster(userId, sessionGameId);
 
+            if (_userContext.Role != "Admin") 
+            {
+                if (!isthisYourSession && !isThisGameMasterSession)
+                {
+                    return Errors.PostGame.IsWrongData;
+                }
+            }
             var result = await _commentRepository.GetAllCommentSession(sessionGameId);
 
             if (result is null)

@@ -43,10 +43,15 @@ namespace GameGather.Application.Features.PostGames.Commands.CreatePostGames
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.GameSessionId));
             var isThisGameMasterSession = await _sessionGameRepository.IsThisGameMaster(userId, sessionGameId);
 
-            if (!isThisGameMasterSession)
+
+            if (_userContext.Role != "Admin")
             {
-                return Errors.PostGame.IsNotAuthorized;
+                if (!isThisGameMasterSession)
+                {
+                    return Errors.PostGame.IsNotAuthorized;
+                }
             }
+
 
             var postGame = PostGame.Create
             (

@@ -14,15 +14,18 @@ namespace GameGather.Application.Features.PostGames.Commands.EditPostGames
     public class EditPostGameCommandHandler : ICommandHandler<EditPostGameCommand, PostGameResponse>
     {
         private readonly IPostGameRepository _postGameRepository;
+        private readonly ISessionGameRepository _sessionGameRepository;
         private readonly IUserContext _userContext;
         private readonly IUnitOfWork _unitOfWork;
 
         public EditPostGameCommandHandler(IPostGameRepository postGameRepository,
             IUserContext userContext,
+            ISessionGameRepository sessionGameRepository,
             IUnitOfWork unitOfWork)
         {
             _postGameRepository=postGameRepository;
             _userContext=userContext;
+            _sessionGameRepository = sessionGameRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -39,6 +42,15 @@ namespace GameGather.Application.Features.PostGames.Commands.EditPostGames
 
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.GameSessionId));
             PostGameId postGameId = PostGameId.Create(Convert.ToInt32(request.PostGameId));
+            var isThisGameMasterSession = await _sessionGameRepository.IsThisGameMaster(userId, sessionGameId);
+
+            if (_userContext.Role != "Admin")
+            {
+                if (!isThisGameMasterSession)
+                {
+                    return Errors.PostGame.IsNotAuthorized;
+                }
+            }
 
             await _postGameRepository.EditPostGame(postGameId,sessionGameId, userId, request.GameTime, request.PostDescription);
             await _unitOfWork.SaveChangesAsync();

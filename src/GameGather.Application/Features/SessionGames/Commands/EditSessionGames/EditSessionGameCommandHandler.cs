@@ -37,11 +37,21 @@ namespace GameGather.Application.Features.SessionGames.Commands.EditSessionGames
             UserId userId = UserId.Create(Convert.ToInt32(id));
 
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.GameSessionId));
+            var isThisGameMasterSession = await _sessionGameRepository.IsThisGameMaster(userId, sessionGameId);
 
-            await _sessionGameRepository.EditSessionGame(sessionGameId, request.Name, request.Description, userId);
+            if (_userContext.Role != "Admin")
+            {
+                if (!isThisGameMasterSession)
+                {
+                    return Errors.SessionGame.IsNotAuthorized;
+                }
+            }
+
+
+            await _sessionGameRepository.EditSessionGame(sessionGameId, request.Name, request.Description);
             await _unitOfWork.SaveChangesAsync();
 
-            return new SessionGameResponse("editet session game");
+            return new SessionGameResponse("edited session game");
 
         }
     }

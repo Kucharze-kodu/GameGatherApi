@@ -17,4 +17,11 @@ public static class ClaimsPrincipalExtensions
 
         return name;
     }
+
+    public static string GetUserRole(this ClaimsPrincipal? principal)
+    {
+        var role = principal.FindFirstValue(ClaimTypes.Role);
+
+        return role;
+    }
 }
