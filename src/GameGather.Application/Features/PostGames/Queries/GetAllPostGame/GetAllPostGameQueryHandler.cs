@@ -15,14 +15,17 @@ namespace GameGather.Application.Features.PostGames.Queries.GetAllPostGame
     {
         private readonly IPostGameRepository _postGameRepository;
         private readonly IPlayerManagerRepository _playerManagerRepository;
+        private readonly ISessionGameRepository _sessionGameRepository;
         private readonly IUserContext _userContext;
 
         public GetAllPostGameQueryHandler(IPostGameRepository postGameRepository,
             IPlayerManagerRepository playerManagerRepository,
+            ISessionGameRepository sessionGameRepository,
             IUserContext userContext)
         {
             _postGameRepository=postGameRepository;
             _playerManagerRepository=playerManagerRepository;
+            _sessionGameRepository=sessionGameRepository;
             _userContext=userContext;
         }
 
@@ -38,10 +41,11 @@ namespace GameGather.Application.Features.PostGames.Queries.GetAllPostGame
             UserId userId = UserId.Create(Convert.ToInt32(id));
             SessionGameId sessionGameId = SessionGameId.Create(Convert.ToInt32(request.SessionGameId));
             var isThisYourSession = await _playerManagerRepository.IsThisYourSession(userId, sessionGameId);
+            var isThisGameMasterSession = await _sessionGameRepository.IsThisGameMaster(userId, sessionGameId);
 
             if (_userContext.Role != "Admin")
             {
-                if (!isThisYourSession)
+                if (!isThisYourSession && !isThisGameMasterSession)
                 {
                     return Errors.PostGame.IsWrongData;
                 }
