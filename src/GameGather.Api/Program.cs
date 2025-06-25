@@ -1,3 +1,4 @@
+using GameGather.Api.Middleware;
 using GameGather.Api.Modules;
 using GameGather.Application;
 using GameGather.Infrastructure;
@@ -7,6 +8,12 @@ using GameGather.Infrastructure.Persistance;
 using GameGather.Infrastructure.Utils.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -74,7 +81,10 @@ var builder = WebApplication.CreateBuilder(args);
         .AddInfrastructure(builder.Configuration);
 }
 
-    
+
+builder.Host.UseSerilog();
+
+
 var app = builder.Build();
 {
 
@@ -97,6 +107,9 @@ var app = builder.Build();
     app.AddPostGameEndpoints();
     app.AddCommentEndpoints();
     // END ENDPOINTS
+
+    // logging
+    app.UseMiddleware<RequestLoggingMiddleware>();
 
     app.UseHttpsRedirection();
     app.UseAuthentication();

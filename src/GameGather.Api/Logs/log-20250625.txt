@@ -1,0 +1,137 @@
+2025-06-25 13:11:42.124 +02:00 [INF] Executed DbCommand (53ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-06-25 13:11:42.165 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-06-25 13:11:42.182 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-06-25 13:11:42.192 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-06-25 13:11:42.193 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-06-25 13:11:42.201 +02:00 [INF] No migrations were applied. The database is already up to date.
+2025-06-25 13:11:42.376 +02:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS u)
+2025-06-25 13:11:42.391 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "PostGames" AS p)
+2025-06-25 13:11:42.397 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "PostGames" AS p)
+2025-06-25 13:11:42.402 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "SessionGameLists" AS s)
+2025-06-25 13:11:42.407 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Comments" AS c)
+2025-06-25 13:11:42.419 +02:00 [INF] User profile is available. Using 'C:\Users\barte\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-06-25 13:11:42.492 +02:00 [INF] Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+2025-06-25 13:11:42.493 +02:00 [INF] Quartz Scheduler created
+2025-06-25 13:11:42.493 +02:00 [INF] JobFactory set to: Quartz.Simpl.MicrosoftDependencyInjectionJobFactory
+2025-06-25 13:11:42.493 +02:00 [INF] RAMJobStore initialized.
+2025-06-25 13:11:42.494 +02:00 [INF] Quartz Scheduler 3.14.0.0 - 'QuartzScheduler' with instanceId 'NON_CLUSTERED' initialized
+2025-06-25 13:11:42.494 +02:00 [INF] Using thread pool 'Quartz.Simpl.DefaultThreadPool', size: 10
+2025-06-25 13:11:42.494 +02:00 [INF] Using job store 'Quartz.Simpl.RAMJobStore', supports persistence: False, clustered: False
+2025-06-25 13:11:42.503 +02:00 [INF] Adding 1 jobs, 1 triggers.
+2025-06-25 13:11:42.505 +02:00 [INF] Adding job: DEFAULT.ProcessOutboxMessagesJob
+2025-06-25 13:11:42.817 +02:00 [INF] Now listening on: https://localhost:7117
+2025-06-25 13:11:42.818 +02:00 [INF] Now listening on: http://localhost:5043
+2025-06-25 13:11:42.832 +02:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2025-06-25 13:11:42.876 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-25 13:11:42.876 +02:00 [INF] Hosting environment: Development
+2025-06-25 13:11:42.876 +02:00 [INF] Content root path: D:\Github\Test\BAW-Backend\src\GameGather.Api
+2025-06-25 13:11:42.880 +02:00 [INF] Scheduler QuartzScheduler_$_NON_CLUSTERED started.
+2025-06-25 13:11:42.984 +02:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2025-06-25 13:11:43.028 +02:00 [INF] Executed DbCommand (7ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT o."Id", o."Content", o."ErrorMessage", o."MessageType", o."OccuredOnUtc", o."ProcessedOnUtc"
+FROM "OutboxMessages" AS o
+WHERE o."ProcessedOnUtc" IS NULL
+LIMIT @__p_0
+2025-06-25 13:11:48.643 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7117/swagger - null null
+2025-06-25 13:11:48.929 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7117/swagger - 301 0 null 298.3967ms
+2025-06-25 13:11:49.010 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7117/swagger/index.html - null null
+2025-06-25 13:11:49.121 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7117/swagger/index.html - 200 null text/html;charset=utf-8 111.0879ms
+2025-06-25 13:11:49.167 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7117/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-25 13:11:49.168 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7117/swagger/swagger-ui.css - null null
+2025-06-25 13:11:49.183 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7117/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 15.9042ms
+2025-06-25 13:11:49.202 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7117/_vs/browserLink - null null
+2025-06-25 13:11:49.209 +02:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-06-25 13:11:49.209 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7117/swagger/swagger-ui.css - 499 152034 text/css 41.4472ms
+2025-06-25 13:11:49.272 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7117/_vs/browserLink - 200 null text/javascript; charset=UTF-8 73.3583ms
+2025-06-25 13:11:49.494 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7117/swagger/favicon-32x32.png - null null
+2025-06-25 13:11:49.497 +02:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-25 13:11:49.497 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7117/swagger/favicon-32x32.png - 200 628 image/png 3.1508ms
+2025-06-25 13:11:49.595 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7117/swagger/v1/swagger.json - null null
+2025-06-25 13:11:49.628 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7117/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 41.4586ms
+2025-06-25 13:11:50.904 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT o."Id", o."Content", o."ErrorMessage", o."MessageType", o."OccuredOnUtc", o."ProcessedOnUtc"
+FROM "OutboxMessages" AS o
+WHERE o."ProcessedOnUtc" IS NULL
+LIMIT @__p_0
+2025-06-25 13:11:54.607 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7117/api/comment?GameSessionId=2 - null null
+2025-06-25 13:11:54.691 +02:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-06-25 13:11:54.694 +02:00 [INF] AuthenticationScheme: Bearer was challenged.
+2025-06-25 13:11:54.696 +02:00 [INF] HTTP GET /api/comment responded 401 in 84 ms | IP: 127.0.0.1 | User: Anonymous
+2025-06-25 13:11:54.697 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7117/api/comment?GameSessionId=2 - 401 0 null 90.062ms
+2025-06-25 13:12:00.900 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT o."Id", o."Content", o."ErrorMessage", o."MessageType", o."OccuredOnUtc", o."ProcessedOnUtc"
+FROM "OutboxMessages" AS o
+WHERE o."ProcessedOnUtc" IS NULL
+LIMIT @__p_0
+2025-06-25 13:12:10.902 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT o."Id", o."Content", o."ErrorMessage", o."MessageType", o."OccuredOnUtc", o."ProcessedOnUtc"
+FROM "OutboxMessages" AS o
+WHERE o."ProcessedOnUtc" IS NULL
+LIMIT @__p_0
+2025-06-25 13:12:20.901 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT o."Id", o."Content", o."ErrorMessage", o."MessageType", o."OccuredOnUtc", o."ProcessedOnUtc"
+FROM "OutboxMessages" AS o
+WHERE o."ProcessedOnUtc" IS NULL
+LIMIT @__p_0
+2025-06-25 13:12:23.366 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7117/api/login - application/json 56
+2025-06-25 13:12:23.371 +02:00 [INF] CORS policy execution successful.
+2025-06-25 13:12:23.372 +02:00 [INF] Executing endpoint 'HTTP: POST /api/login'
+2025-06-25 13:12:23.487 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[@__email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Birthday", u."CreatedOnUtc", u."Email", u."FirstName", u."LastModifiedOnUtc", u."LastName", u."Role", u."VerifiedOnUtc", b."UserId", b."CreatedOnUtc", b."ExpiresOnUtc", b."Message", p."UserId", p."LastModifiedOnUtc", p."Value", r."UserId", r."CreatedOnUtc", r."ExpiresOnUtc", r."LastSendOnUtc", r."Type", r."UsedOnUtc", r."Value", v."UserId", v."CreatedOnUtc", v."ExpiresOnUtc", v."LastSendOnUtc", v."Type", v."UsedOnUtc", v."Value"
+FROM "Users" AS u
+LEFT JOIN "Bans" AS b ON u."Id" = b."UserId"
+LEFT JOIN "Passwords" AS p ON u."Id" = p."UserId"
+LEFT JOIN "ResetPasswordTokens" AS r ON u."Id" = r."UserId"
+LEFT JOIN "VerificationTokens" AS v ON u."Id" = v."UserId"
+WHERE u."Email" = @__email_0
+LIMIT 1
+2025-06-25 13:12:23.664 +02:00 [INF] Setting HTTP status code 200.
+2025-06-25 13:12:23.666 +02:00 [INF] Writing value of type 'LoginUserResponse' as Json.
+2025-06-25 13:12:23.675 +02:00 [INF] Executed endpoint 'HTTP: POST /api/login'
+2025-06-25 13:12:23.676 +02:00 [INF] HTTP POST /api/login responded 200 in 307 ms | IP: 127.0.0.1 | User: Anonymous
+2025-06-25 13:12:23.676 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7117/api/login - 200 null application/json; charset=utf-8 310.2771ms
+2025-06-25 13:12:30.899 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT o."Id", o."Content", o."ErrorMessage", o."MessageType", o."OccuredOnUtc", o."ProcessedOnUtc"
+FROM "OutboxMessages" AS o
+WHERE o."ProcessedOnUtc" IS NULL
+LIMIT @__p_0
