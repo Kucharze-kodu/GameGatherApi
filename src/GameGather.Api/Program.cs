@@ -11,7 +11,12 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File(
+        "Logs/log-.txt",
+        rollOnFileSizeLimit: true,               // new file will be created when the current file reaches the size limit
+        fileSizeLimitBytes: 20_000_000,          // ~20 MB
+        retainedFileCountLimit: 7             // 7 files of logs only
+    )
     .CreateLogger();
 
 
